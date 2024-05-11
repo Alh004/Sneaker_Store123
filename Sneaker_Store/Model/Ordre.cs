@@ -13,33 +13,34 @@ public class Ordre
      */
     public int OrdreId
     {
-        get => _OrdreID;
-        set => _OrdreID = value;
+        get { return _OrdreID; }
+        set { _OrdreID = value; }
     }
 
     public int KundeId
     {
-        get => _KundeID;
-        set => _KundeID = value;
+        get { return _KundeID; }
+        set { _KundeID = value; }
     }
 
     public int SkoId
     {
-        get => _SkoID;
-        set => _SkoID = value;
+        get { return _SkoID; }
+        set { _SkoID = value; }
     }
 
     public int Antal
     {
-        get => _Antal;
-        set => _Antal = value;
+        get { return _Antal; }
+        set { _Antal = value; }
     }
 
     public double TotalPris
     {
-        get => _TotalPris;
-        set => _TotalPris = value;
+        get { return _TotalPris; }
+        set { _TotalPris = value; }
     }
+
     
     /*
      * Constructor

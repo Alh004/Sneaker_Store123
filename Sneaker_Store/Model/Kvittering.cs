@@ -13,48 +13,47 @@ public class Kvittering
     /*
      * Properties
      */
-    public int Id
+    ppublic int Id
     {
-        get => _ID;
-        set => _ID = value;
+        get { return _ID; }
+        set { _ID = value; }
     }
 
     public int KvitteringId
     {
-        get => _KvitteringID;
-        set => _KvitteringID = value;
+        get { return _KvitteringID; }
+        set { _KvitteringID = value; }
     }
 
     public int KundeId
     {
-        get => _KundeID;
-        set => _KundeID = value;
+        get { return _KundeID; }
+        set { _KundeID = value; }
     }
 
     public int Antal
     {
-        get => _Antal;
-        set => _Antal = value;
+        get { return _Antal; }
+        set { _Antal = value; }
     }
 
     public double TotalPris
     {
-        get => _TotalPris;
-        set => _TotalPris = value;
+        get { return _TotalPris; }
+        set { _TotalPris = value; }
     }
 
     public string Beskrivelse
     {
-        get => _Beskrivelse;
-        set => _Beskrivelse = value ?? throw new ArgumentNullException(nameof(value));
+        get { return _Beskrivelse; }
+        set { _Beskrivelse = value; }
     }
 
     public DateTime Koebsdato
     {
-        get => _Koebsdato;
-        set => _Koebsdato = value;
+        get { return _Koebsdato; }
+        set { _Koebsdato = value; }
     }
-
     /*
      * Constructor
      */

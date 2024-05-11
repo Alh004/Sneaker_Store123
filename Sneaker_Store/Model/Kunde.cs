@@ -16,51 +16,52 @@ public class Kunde
     // properties
     public string Navn
     {
-        get => _navn;
-        set => _navn = value ?? throw new ArgumentNullException(nameof(value));
+        get { return _navn; }
+        set { _navn = value; }
     }
 
     public string Efternavn
     {
-        get => _efternavn;
-        set => _efternavn = value ?? throw new ArgumentNullException(nameof(value));
+        get { return _efternavn; }
+        set { _efternavn = value; }
     }
 
     public string Email
     {
-        get => _email;
-        set => _email = value ?? throw new ArgumentNullException(nameof(value));
+        get { return _email; }
+        set { _email = value; }
     }
 
     public string Adresse
     {
-        get => _adresse;
-        set => _adresse = value ?? throw new ArgumentNullException(nameof(value));
+        get { return _adresse; }
+        set { _adresse = value; }
     }
 
     public string By
     {
-        get => _by;
-        set => _by = value ?? throw new ArgumentNullException(nameof(value));
+        get { return _by; }
+        set { _by = value; }
     }
 
     public int Postnr
     {
-        get => _postnr;
-        set => _postnr = value;
+        get { return _postnr; }
+        set { _postnr = value; }
     }
 
     public string Kode
     {
-        get => _kode;
-        set => _kode = value ?? throw new ArgumentNullException(nameof(value));
+        get { return _kode; }
+        set { _kode = value; }
     }
 
     public bool Admin
     {
-        get => _admin;
-        set => _admin = value;
+        get { return _admin; }
+        set { _admin = value; }
     }
+
 
     public Kunde()
     {
