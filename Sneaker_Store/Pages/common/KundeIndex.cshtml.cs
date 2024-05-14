@@ -15,17 +15,18 @@ namespace Sneaker_Store.Pages.common
         {
             _kunder = kunder;
         }
-
+        
         public IActionResult OnGet()
         {
             if (_kunder is null || _kunder.KundeLoggedIn is null)
             {
-                return RedirectToPage("/Login");
+                // Redirect to the SkoIndex page
+                return RedirectToPage("/common/SkoIndex");
             }
 
-            KundeLoggedIn = _kunder.KundeLoggedIn;
-
+            // You might have other logic here
             return Page();
         }
+
     }
 }

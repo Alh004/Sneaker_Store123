@@ -1,0 +1,40 @@
+@page
+@model SkoIndexModel
+@{
+    ViewData["Title"] = "Shoe Store - Index";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+</head>
+<body>
+<h1>Shoe Store - Index</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Brand</th>
+        <th>Model</th>
+        <th>Size</th>
+        <th>Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var shoe in Model.Skos)
+    {
+        <tr>
+            <td>@shoe.Maerke</td>
+            <td>@shoe.Model</td>
+            <td>@shoe.Str</td>
+            <td>@shoe.Pris</td>
+            <td><a asp-page="Details" asp-route-id="@shoe.SkoId">Details</a></td>
+        </tr>
+    }
+    </tbody>
+</table>
+</body>
+</html>

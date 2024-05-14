@@ -6,6 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddSingleton<IKundeRepository>(new KundeRepository(true));
+builder.Services.AddSingleton<ISkoRepository>(new SkoRepository(true));
+
 
 var app = builder.Build();
 
