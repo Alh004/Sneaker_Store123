@@ -2,40 +2,41 @@ using Sneaker_Store.Model;
 
 namespace Sneaker_Store.Services;
 
-public class KundeRepository
+public class KundeRepository:IKundeRepository
 {
-    private List<Kunde> _users = new List<Kunde>();
+    private List<Kunde> _kunder = new List<Kunde>();
 
-    public Kunde? UserLoggedIn { get; private set; }
+    public Kunde? KundeLoggedIn { get; private set; }
 
     public KundeRepository(bool mockData = false)
     {
-        UserLoggedIn = null;
+        KundeLoggedIn = null;
 
         if (mockData)
         {
-            _users.Add(new Kunde(1,"ali","h","ali@1.dk","øvej","kbh",2450,"test", true));
+            _kunder.Add(new Kunde(1,"ali","h","ali@1.dk","øvej","kbh",2450,"test", true));
+            _kunder.Add(new Kunde(2, "dani", "h", "dani@2.dk", "øvej", "kbh", 2450, "test2", false));
         }
 
     }
 
-    public void AddUser(Kunde kunde)
+    public void AddKunde(Kunde kunde)
     {
-        _users.Add(kunde);
+        _kunder.Add(kunde);
     }
 
-    public void RemoveUser(Kunde kunde)
+    public void RemoveKunde(Kunde kunde)
     {
-        _users.Remove(kunde);
+        _kunder.Remove(kunde);
     }
 
-    public bool CheckUser(string username, string password)
+    public bool CheckKunde(string email, string kode)
     {
-        Kunde? foundUser = _users.Find(u => u.Navn == username && u.Kode == password);
+        Kunde? foundKunde = _kunder.Find(u => u.Email == email && u.Kode == kode);
 
-        if (foundUser != null)
+        if (foundKunde != null)
         {
-            UserLoggedIn = foundUser;
+            KundeLoggedIn = foundKunde;
             return true;
         }
         else
@@ -44,8 +45,8 @@ public class KundeRepository
         }
     }
 
-    public void LogoutUser()
+    public void LogoutKunde()
     {
-        UserLoggedIn = null;
+        KundeLoggedIn = null;
     }
 }

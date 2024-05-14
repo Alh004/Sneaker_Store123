@@ -13,11 +13,11 @@ namespace Sneaker_Store.Services
 
                 if (mockData)
                 {
-                    PopulateDrinks();
+                    PopulateSko();
                 }
             }
 
-            private void PopulateDrinks()
+            private void PopulateSko()
             {
                 _sko.Add(new Sko(1, "Nike","Air Max",44, 999));
                 _sko.Add(new Sko(2, "Asics", "Gel-1130", 38, 850));

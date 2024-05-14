@@ -1,0 +1,11 @@
+﻿@page
+@model LoginModel
+@{
+}
+<h1>Login page</h1>
+
+<form method="post">
+    Email: <input type="text" asp-for="@Model.Email" /><br />
+    Kode: <input type="password" asp-for="@Model.Kode" /><br />
+    <input type="submit" value="Login" class="btn btn-primary" /><br />
+</form>

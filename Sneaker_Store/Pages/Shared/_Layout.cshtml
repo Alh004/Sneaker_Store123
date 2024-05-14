@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject Sneaker_Store.Services.IKundeRepository Kunder
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -25,6 +26,21 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                     </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/common/KundeIndex">Common</a>
+                        </li>
+                        @if (Kunder.KundeLoggedIn is not null && Kunder.KundeLoggedIn.Admin)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/AdminSideLogin/IndexLoginA">Admin</a>
+                            </li>
+                        }
+                        @if (Kunder.KundeLoggedIn is not null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Logout</a>
+                            </li>
+                        }
                 </ul>
             </div>
         </div>
