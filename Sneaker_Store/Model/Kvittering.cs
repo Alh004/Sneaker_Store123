@@ -13,7 +13,7 @@ public class Kvittering
     /*
      * Properties
      */
-    ppublic int Id
+    public int Id
     {
         get { return _ID; }
         set { _ID = value; }

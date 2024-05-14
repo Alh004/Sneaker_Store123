@@ -2,7 +2,8 @@ namespace Sneaker_Store.Model;
 
 public class Kunde
 {
-    //instans felt
+    // Instansfelter
+    private int _kundeId;
     private string _navn;
     private string _efternavn;
     private string _email;
@@ -11,9 +12,14 @@ public class Kunde
     private int _postnr;
     private string _kode;
     private bool _admin;
-   
-    
-    // properties
+
+    // Egenskaber
+    public int KundeId
+    {
+        get { return _kundeId; }
+        set { _kundeId = value; }
+    }
+
     public string Navn
     {
         get { return _navn; }
@@ -62,9 +68,10 @@ public class Kunde
         set { _admin = value; }
     }
 
-
+    // Konstruktører
     public Kunde()
     {
+        _kundeId = 0;
         _navn = "";
         _efternavn = "";
         _email = "";
@@ -75,8 +82,9 @@ public class Kunde
         _admin = false;
     }
 
-    public Kunde(string navn, string efternavn, string email, string adresse, string by, int postnr, string kode, bool admin)
+    public Kunde(int kundeId, string navn, string efternavn, string email, string adresse, string by, int postnr, string kode, bool admin)
     {
+        _kundeId = kundeId;
         _navn = navn;
         _efternavn = efternavn;
         _email = email;
@@ -87,8 +95,9 @@ public class Kunde
         _admin = admin;
     }
 
+    // ToString-metode
     public override string ToString()
     {
-        return $"{nameof(_navn)}: {_navn}, {nameof(_efternavn)}: {_efternavn}, {nameof(_email)}: {_email}, {nameof(_adresse)}: {_adresse}, {nameof(_by)}: {_by}, {nameof(_postnr)}: {_postnr}, {nameof(_kode)}: {_kode}, {nameof(_admin)}: {_admin}";
+        return $"{nameof(_kundeId)}: {_kundeId}, {nameof(_navn)}: {_navn}, {nameof(_efternavn)}: {_efternavn}, {nameof(_email)}: {_email}, {nameof(_adresse)}: {_adresse}, {nameof(_by)}: {_by}, {nameof(_postnr)}: {_postnr}, {nameof(_kode)}: {_kode}, {nameof(_admin)}: {_admin}";
     }
 }
