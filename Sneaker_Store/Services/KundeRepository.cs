@@ -20,6 +20,12 @@ public class KundeRepository:IKundeRepository
 
     }
 
+
+    public List<Kunde> GetAll()
+    {
+        return new List<Kunde>(_kunder);
+    }
+
     public void AddKunde(Kunde kunde)
     {
         _kunder.Add(kunde);
