@@ -1,0 +1,77 @@
+@page
+@model SkoIndexModel
+@{
+    ViewData["Title"] = "Shoe Store - Index";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .shoe-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .shoe-image {
+            width: 100%;
+            height: 200px; /* Fixed height for images */
+            object-fit: cover; /* Ensures images cover the area without distortion */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">Shoe Store - Index</h1>
+
+        <div class="row">
+            @foreach (var shoe in Model.Skos)
+            {
+                <div class="col-md-4">
+                    <div class="shoe-card">
+                        <h3>@shoe.Maerke - @shoe.Model</h3>
+                        <img src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/bfc04b0f-32d9-48a9-b4b7-7acb7fbcb54b/air-max-90-sko-bnz7pN.png" class="shoe-image" alt="Shoe Image">
+                        <p class="my-2"><strong>Price:</strong> @shoe.Pris</p>
+
+                        <!-- Purchase button and form -->
+                        <form method="post">
+                            <input type="hidden" name="SelectedSkoId" value="@shoe.SkoId" />
+                            <div class="form-group">
+                                <label for="size-@shoe.SkoId">Select Size:</label>
+                                <select id="size-@shoe.SkoId" name="SelectedSize" class="form-control">
+                                    @foreach (var size in Model.Sizes)
+                                    {
+                                        <option value="@size">@size</option>
+                                    }
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Purchase</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @if (!Model.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (var error in Model.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

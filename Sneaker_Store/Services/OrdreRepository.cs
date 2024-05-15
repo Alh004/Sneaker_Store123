@@ -27,11 +27,7 @@ namespace Sneaker_Store.Services
         {
             return _ordrer;
         }
-
-        public void OpdaterOrdre(Ordre ordre)
-        {
-            // Implementer opdateringslogik her
-        }
+        
 
         public void SletOrdre(int ordreId)
         {

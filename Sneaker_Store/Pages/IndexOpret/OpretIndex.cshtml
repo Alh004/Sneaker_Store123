@@ -1,0 +1,85 @@
+@page
+@model Sneaker_Store.IndexOpret.OpretIndex
+
+@{
+    Layout = null;
+}
+
+<style>
+    .side-bar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        width: 200px; /* Width of the side bar */
+   
+        z-index: -1;
+    }
+    .side-bar.left {
+        left: 0;
+    }
+    .side-bar.right {
+        right: 0;
+    }
+
+    .form-container {
+        margin-left: 220px; /* Adjust this value to match the width of your side bar */
+        padding: 20px;
+    }
+
+    /* You can add additional styling as needed */
+</style>
+
+<div class="side-bar left"></div>
+<div class="side-bar right"></div>
+
+<div class="form-container">
+    <h1>Register</h1>
+
+    <form method="post">
+        <div class="form-group">
+            <label asp-for="navn"></label>
+            <input asp-for="navn" class="form-control" />
+            <span asp-validation-for="navn" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="efternavn"></label>
+            <input asp-for="efternavn" class="form-control" />
+            <span asp-validation-for="efternavn" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="adresse"></label>
+            <input asp-for="adresse" class="form-control" />
+            <span asp-validation-for="adresse" class="text-danger"></span>
+        </div>
+        
+
+        <div class="form-group">
+            <label asp-for="by"></label>
+            <input asp-for="by" class="form-control" />
+            <span asp-validation-for="by" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="postnr"></label>
+            <input asp-for="postnr" class="form-control" />
+            <span asp-validation-for="postnr" class="text-danger"></span>
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="email"></label>
+            <input asp-for="email" class="form-control" />
+            <span asp-validation-for="email" class="text-danger"></span>
+        </div>
+        
+        
+        <div class="form-group">
+            <label asp-for="kode"></label>
+            <input asp-for="kode" type="password" class="form-control" />
+            <span asp-validation-for="kode" class="text-danger"></span>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</div>

@@ -10,7 +10,6 @@ namespace Sneaker_Store.Services
         public KvitteringRepository()
         {
             _kvitteringer = new List<Kvittering>();
-            // Her kan du initialisere repository med nogle standard kvitteringer, hvis nødvendigt
         }
 
         public void OpretKvittering(Kvittering kvittering)

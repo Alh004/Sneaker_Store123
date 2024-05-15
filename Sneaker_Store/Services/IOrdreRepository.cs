@@ -15,10 +15,7 @@ namespace Sneaker_Store.Services
 
         // Hent alle ordrer
         IEnumerable<Ordre> HentAlleOrdrer();
-
-        // Opdater en eksisterende ordre
-        void OpdaterOrdre(Ordre ordre);
-
+        
         // Slet en ordre
         void SletOrdre(int ordreId);
     }
