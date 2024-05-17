@@ -3,7 +3,7 @@ using Sneaker_Store.Model;
 
 namespace Sneaker_Store.Services
 {
-    public class DB_Kunde:IKundeRepository
+    public class DbKunde:IKundeRepository
     {
         private const string ConnectionString =
             "Data Source=mssql13.unoeuro.com;Initial Catalog=sirat_dk_db_thread;User ID=sirat_dk;Password=m5k6BgDhAzxbprH49cyE;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
@@ -13,7 +13,7 @@ namespace Sneaker_Store.Services
         private const String insertSql = "insert into Kunde values(@kundeId,@navn,@efternavn,@email,@addrese,@by,@postnummer,@kode)";
         public Kunde Add(Kunde newKunde)
         {
-            SqlConnection connection = new SqlConnection(DB_Kunde.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbKunde.ConnectionString);
             connection.Open();
 
             SqlCommand cmd = new SqlCommand(insertSql, connection);
