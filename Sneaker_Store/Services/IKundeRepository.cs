@@ -10,5 +10,6 @@ namespace Sneaker_Store.Services
         bool CheckKunde(string email, string password);
         void LogoutKunde();
         void RemoveKunde(Kunde kunde);
+        
     }
 }

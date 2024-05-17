@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder.Services.AddSingleton<IKundeRepository>(new KundeRepository(true));
+builder.Services.AddSingleton<IKundeRepository>(new DB_Kunde()); /** ændret fordi db*/
 builder.Services.AddSingleton<ISkoRepository>(new SkoRepository(true));
 
 

@@ -1,4 +1,5 @@
-﻿using Sneaker_Store.Model;
+﻿using Microsoft.Data.SqlClient;
+using Sneaker_Store.Model;
 
 namespace Sneaker_Store.Services
 {
@@ -9,5 +10,7 @@ namespace Sneaker_Store.Services
         Sko GetById(int skoid);
         Sko Delete(int skoid);
         Sko Update(int skoid, Sko updatedSko);
+
+        Sko ReadSko(SqlDataReader reader);
     }
 }

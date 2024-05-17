@@ -3,28 +3,28 @@ using Sneaker_Store.Model;
 
 namespace Sneaker_Store.Services
 {
-    public class DB_Kunde:IKundeRepository
+    public class DB_Kunde : IKundeRepository
     {
         private const string ConnectionString =
             "Data Source=mssql13.unoeuro.com;Initial Catalog=sirat_dk_db_thread;User ID=sirat_dk;Password=m5k6BgDhAzxbprH49cyE;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
-        public Kunde? KundeLoggedIn => throw new NotImplementedException();
+        public Kunde? KundeLoggedIn => /* hack */ null;
 
-        private const String insertSql = "insert into Kunde values(@kundeId,@navn,@efternavn,@email,@addrese,@by,@postnummer,@kode)";
+        private const String insertSql = "insert into Kunder values(@navn,@efternavn,@email,@kode,@by,@postnr,@addrese)";
         public Kunde Add(Kunde newKunde)
         {
             SqlConnection connection = new SqlConnection(DB_Kunde.ConnectionString);
             connection.Open();
 
             SqlCommand cmd = new SqlCommand(insertSql, connection);
-            cmd.Parameters.AddWithValue("@kundeid", newKunde.KundeId);
             cmd.Parameters.AddWithValue("@navn", newKunde.Navn);
             cmd.Parameters.AddWithValue("@efternavn", newKunde.Efternavn);
             cmd.Parameters.AddWithValue("@email", newKunde.Email);
-            cmd.Parameters.AddWithValue("@addrese", newKunde.Adresse);
+            cmd.Parameters.AddWithValue("@kode", newKunde.Kode);
             cmd.Parameters.AddWithValue("@by", newKunde.By);
             cmd.Parameters.AddWithValue("@postnr", newKunde.Postnr);
-            cmd.Parameters.AddWithValue("@kode", newKunde.Kode);
+            cmd.Parameters.AddWithValue("@addrese", newKunde.Adresse);
+            
             
             int rows = cmd.ExecuteNonQuery();
             if (rows == 0)
@@ -38,12 +38,26 @@ namespace Sneaker_Store.Services
 
         public void AddKunde(Kunde kunde)
         {
-            throw new NotImplementedException();
+            Add(kunde);
         }
 
         public bool CheckKunde(string email, string password)
         {
-            throw new NotImplementedException();
+            bool isKundeValid = false;
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                string sql = "SELECT COUNT(*) FROM Kunde WHERE Email = @Email AND Kode = @Kode";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@Email", email);
+                cmd.Parameters.AddWithValue("@Kode", password);
+                int count = (int)cmd.ExecuteScalar();
+        
+                isKundeValid = count > 0;
+            }
+
+            return isKundeValid;
         }
 
         public List<Kunde> GetAll()
@@ -88,11 +102,13 @@ namespace Sneaker_Store.Services
             kunde.Navn = reader.GetString(1);
             kunde.Efternavn = reader.GetString(2);
             kunde.Email = reader.GetString(3);
-            kunde.Adresse = reader.GetString(4);
             kunde.By = reader.GetString(5);
             kunde.Postnr = reader.GetInt32(6);
 
             return kunde;
+            
+          
+            
         }
     }
 }

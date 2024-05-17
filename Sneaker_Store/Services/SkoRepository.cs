@@ -1,4 +1,5 @@
-﻿using Sneaker_Store.Model;
+﻿using Microsoft.Data.SqlClient;
+using Sneaker_Store.Model;
 using static Sneaker_Store.Services.SkoRepository;
 
 namespace Sneaker_Store.Services
@@ -68,6 +69,11 @@ namespace Sneaker_Store.Services
                 updateThisSko.Pris = updatedSko.Pris;
 
                 return updateThisSko;
+            }
+
+            public Sko ReadSko(SqlDataReader reader)
+            {
+                throw new NotImplementedException();
             }
     }
 }

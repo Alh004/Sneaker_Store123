@@ -4,11 +4,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Sneaker_Store.Model;
 using Sneaker_Store.Services;
 
-namespace Sneaker_Store.IndexOpret;
+namespace Sneaker_Store.Pages.IndexOpret;
 
 public class OpretIndex : PageModel
 {
-    // ...
+    
+    private readonly IKundeRepository _DB_Kunde;
+
+    public OpretIndex(IKundeRepository dbKundeRepository)
+    {
+        _DB_Kunde = dbKundeRepository;
+    }
     [BindProperty]
     [Required(ErrorMessage = "Indtast Navn")]
     [StringLength(50, MinimumLength = 2, ErrorMessage = "Navn skal være mellem 2 og 50 tegn")]
@@ -62,7 +68,9 @@ public class OpretIndex : PageModel
             return Page();
         }
 
-      
+        Kunde k = new Kunde(0, navn, efternavn, email, adresse, by, postnr, kode, false);
+            
+      _DB_Kunde.AddKunde(k);
         
         return RedirectToPage("/Privacy");
     }

@@ -2,7 +2,7 @@ using Sneaker_Store.Model;
 
 namespace Sneaker_Store.Services;
 
-public class KundeRepository:IKundeRepository
+public class KundeRepository : IKundeRepository
 {
     private List<Kunde> _kunder = new List<Kunde>();
 
@@ -14,7 +14,7 @@ public class KundeRepository:IKundeRepository
 
         if (mockData)
         {
-            _kunder.Add(new Kunde(1,"ali","h","ali@1.dk","vej","kbh",2450,"test", true));
+            _kunder.Add(new Kunde(1, "ali", "h", "ali@1.dk", "vej", "kbh", 2450, "test", true));
             _kunder.Add(new Kunde(2, "dani", "h", "dani@2.dk", "vej", "kbh", 2450, "test2", false));
         }
 
@@ -36,7 +36,9 @@ public class KundeRepository:IKundeRepository
         _kunder.Remove(kunde);
     }
 
-    public bool CheckKunde(string email, string kode)
+    
+    
+public bool CheckKunde(string email, string kode)
     {
         Kunde? foundKunde = _kunder.Find(u => u.Email == email && u.Kode == kode);
 
@@ -51,8 +53,12 @@ public class KundeRepository:IKundeRepository
         }
     }
 
+    
+
     public void LogoutKunde()
     {
         KundeLoggedIn = null;
     }
+    
+    
 }
