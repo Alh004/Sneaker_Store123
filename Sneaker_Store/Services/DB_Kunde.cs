@@ -48,10 +48,10 @@ namespace Sneaker_Store.Services
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
-                string sql = "SELECT COUNT(*) FROM Kunde WHERE Email = @Email AND Kode = @Kode";
+                string sql = "SELECT COUNT(*) FROM Kunder WHERE Email = @Email AND Adgangskode = @kode";
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@Email", email);
-                cmd.Parameters.AddWithValue("@Kode", password);
+                cmd.Parameters.AddWithValue("@kode", password);
                 int count = (int)cmd.ExecuteScalar();
         
                 isKundeValid = count > 0;

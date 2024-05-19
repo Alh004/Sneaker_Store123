@@ -7,9 +7,10 @@ namespace Sneaker_Store.Services
         Kunde? KundeLoggedIn { get; }
         List<Kunde> GetAll();
         void AddKunde(Kunde kunde);
-        bool CheckKunde(string email, string password);
+        bool CheckKunde(string email, string kode);
         void LogoutKunde();
         void RemoveKunde(Kunde kunde);
+        
         
     }
 }

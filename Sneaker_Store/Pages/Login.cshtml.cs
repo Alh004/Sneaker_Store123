@@ -39,7 +39,7 @@ namespace Sneaker_Store.Pages
                 return Page();
             }
 
-            return RedirectToPage("Index");
+            return RedirectToPage("Privacy");
         }
     }
 }
