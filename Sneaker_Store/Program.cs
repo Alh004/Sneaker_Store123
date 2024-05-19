@@ -7,8 +7,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddSingleton<IKundeRepository>(new DB_Kunde()); /** ændret fordi db*/
 builder.Services.AddSingleton<ISkoRepository>(new SkoRepository(true));
-
-
+builder.Services.AddSession();
 var app = builder.Build();
 
 
@@ -24,6 +23,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthorization();
 

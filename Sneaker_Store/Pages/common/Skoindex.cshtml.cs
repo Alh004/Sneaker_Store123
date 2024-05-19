@@ -42,6 +42,7 @@ namespace Sneaker_Store.Pages
             ModelState.AddModelError(string.Empty, "Selected shoe not found.");
             Skos = _skoRepository.GetAll();
             return Page();
+            
         }
     }
 }
