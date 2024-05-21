@@ -12,5 +12,6 @@ namespace Sneaker_Store.Services
         void RemoveKunde(Kunde kunde);
         
         
+        
     }
 }

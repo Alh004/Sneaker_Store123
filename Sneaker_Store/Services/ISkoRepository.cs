@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Data.SqlClient;
 using Sneaker_Store.Model;
 
 namespace Sneaker_Store.Services
@@ -13,4 +14,6 @@ namespace Sneaker_Store.Services
 
         Sko ReadSko(SqlDataReader reader);
     }
+    
+    
 }

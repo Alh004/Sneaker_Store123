@@ -9,7 +9,7 @@ namespace TestSessions.Pages.Personer
     {
         public Kurv Kurv{ get; set; }
 
-        public PageResult OnGet()
+        public IActionResult OnGet()
         {
             try
             {

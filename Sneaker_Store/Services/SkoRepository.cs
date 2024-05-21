@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Data.SqlClient;
 using Sneaker_Store.Model;
 using static Sneaker_Store.Services.SkoRepository;
 
@@ -75,5 +76,8 @@ namespace Sneaker_Store.Services
             {
                 throw new NotImplementedException();
             }
+
+        
+           
     }
 }
