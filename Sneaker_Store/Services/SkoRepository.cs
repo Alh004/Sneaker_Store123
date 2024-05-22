@@ -21,10 +21,11 @@ namespace Sneaker_Store.Services
 
             private void PopulateSko()
             {
-                _sko.Add(new Sko(1, "Nike","Air Max",44, 999));
+                _sko.Add(new Sko(1, "Nike","Air Max",44, 1000));
                 _sko.Add(new Sko(2, "Asics", "Gel-1130", 38, 850));
                 _sko.Add(new Sko(3, "Adidas", "Campus", 42, 700));
-                _sko.Add(new Sko(4, "Asics", "Gel-Kayano", 44, 999));
+                _sko.Add(new Sko(4, "Asics", "Gel-Kayano", 44, 600));
+                _sko.Add(new Sko(5, "SneakerCare", "SneakerCare", 0, 49));
             }
 
             public List<Sko> GetAll()
