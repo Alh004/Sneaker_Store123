@@ -18,7 +18,7 @@ namespace Sneaker_Store.Pages
 
         public List<Sko> Skos { get; set; }
         [BindProperty] public int SelectedSkoId { get; set; }
-        [BindProperty] public string? SelectedBrand { get; set; }
+        [BindProperty] public string SelectedBrand { get; set; }
         [BindProperty] public string PriceFilter { get; set; }
         public List<string> Brands { get; set; } = new List<string> { "Nike", "Asics", "Adidas", "SneakerCare" };
 
@@ -48,13 +48,29 @@ namespace Sneaker_Store.Pages
             Skos = skos;
         }
 
-        public IActionResult OnPost()
+        public IActionResult OnPostAddToBasket()
         {
-            // Handle the purchase logic here
+            // Get the selected shoe from the repository
             var selectedSko = _skoRepository.GetById(SelectedSkoId);
             if (selectedSko != null)
             {
-                // Process the purchase (e.g., save to database, update stock, etc.)
+                // Retrieve the current Kurv from the session or create a new one if it doesn't exist
+                Kurv kurv;
+                try
+                {
+                    kurv = Testsession.Get<Kurv>(HttpContext);
+                }
+                catch (NoSessionObjectException)
+                {
+                    kurv = new Kurv();
+                }
+
+                // Add the selected shoe to the Kurv
+                kurv.Tilføj(selectedSko);
+
+                // Save the updated Kurv back to the session
+                Testsession.Set(kurv, HttpContext);
+
                 // Redirect to a confirmation page or show a success message
                 return RedirectToPage("PurchaseConfirmation", new { id = SelectedSkoId });
             }
@@ -64,5 +80,6 @@ namespace Sneaker_Store.Pages
             Skos = _skoRepository.GetAll();
             return Page();
         }
+
     }
 }

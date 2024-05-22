@@ -6,6 +6,9 @@
 
 <h2>Available Shoes</h2>
 
+<!-- Basket button -->
+<a asp-page="BasketIndex" class="btn btn-primary">Go to Basket</a>
+
 <form method="post">
     <select asp-for="SelectedBrand" asp-items="@(new SelectList(Model.Brands))">
         <option value="">All Brands</option>
@@ -28,7 +31,7 @@
             <p>Price: @sko.Pris.ToString("C")</p>
             <form method="post">
                 <input type="hidden" name="SelectedSkoId" value="@sko.SkoId" />
-                <button type="submit">Buy Now</button>
+                <button type="submit" formaction="/SkoIndex?handler=AddToBasket">Add to Basket</button>
             </form>
         </div>
     }

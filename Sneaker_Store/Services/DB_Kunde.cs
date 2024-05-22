@@ -53,7 +53,7 @@ namespace Sneaker_Store.Services
                 cmd.Parameters.AddWithValue("@Email", email);
                 cmd.Parameters.AddWithValue("@kode", password);
                 int count = (int)cmd.ExecuteScalar();
-        
+
                 isKundeValid = count > 0;
             }
 

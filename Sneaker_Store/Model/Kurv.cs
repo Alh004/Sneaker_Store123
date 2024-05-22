@@ -1,68 +1,77 @@
-namespace Sneaker_Store.Model;
-
-public class Kurv
+namespace Sneaker_Store.Model
 {
-    // instans felt 
-    private List<Sko> _liste;
-
-
-    // evt property
-    public List<Sko> Liste 
-    { 
-        get { return _liste; } 
-        set { _liste = value; }
-    }
-
-    /*
-     * Konstruktør
-     */
-    public Kurv()
+    public class Kurv
     {
-        _liste = new List<Sko>();
-    }
+        // instance field 
+        private List<Sko> _liste;
 
+        // property
+        public List<Sko> Liste 
+        { 
+            get { return _liste; } 
+            set { _liste = value; }
+        }
 
-    /*
-     * Metoder
-     */
-    public void Tilføj(Sko sko)
-    {
-        _liste.Add(sko);
-    }
-
-    public List<Sko> HentAlleSko()
-    {
-        return _liste;
-    }
-
-
-    public List<Sko> HentFraSko(int SkoID)
-    {
-        List<Sko> resultatListe = new List<Sko>();
-
-        for (int i = 0; i < _liste.Count; i++)
+        /*
+         * Constructor
+         */
+        public Kurv()
         {
-            if (_liste[i].SkoId == SkoID)
+            _liste = new List<Sko>();
+        }
+
+        /*
+         * Methods
+         */
+        public void Tilføj(Sko sko)
+        {
+            _liste.Add(sko);
+        }
+
+        public List<Sko> HentAlleSko()
+        {
+            return _liste;
+        }
+
+        public List<Sko> HentFraSko(int SkoID)
+        {
+            List<Sko> resultatListe = new List<Sko>();
+
+            for (int i = 0; i < _liste.Count; i++)
             {
-                resultatListe.Add(_liste[i]);
+                if (_liste[i].SkoId == SkoID)
+                {
+                    resultatListe.Add(_liste[i]);
+                }
             }
+
+            return resultatListe;
         }
 
-        return resultatListe;
-    }
-
-    public Sko Slet(Sko sko)
-    {
-        if (_liste.Contains(sko))
+        public Sko Slet(Sko sko)
         {
-            _liste.Remove(sko);
-            return sko;
+            if (_liste.Contains(sko))
+            {
+                _liste.Remove(sko);
+                return sko;
+            }
+
+            // not found
+            return null;
         }
 
-        // findes ikke
-        return null;
+        // Property to calculate the total price
+        public double TotalPrice 
+        { 
+            get 
+            { 
+                double totalPrice = 0;
+                foreach (var sko in _liste)
+                {
+                    totalPrice += sko.Pris;
+                }
+                return totalPrice;
+            } 
+        }
     }
-
-        
-
 }
