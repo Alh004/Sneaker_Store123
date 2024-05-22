@@ -14,8 +14,8 @@ public class KundeRepository : IKundeRepository
 
         if (mockData)
         {
-            _kunder.Add(new Kunde(1, "ali", "h", "ali@1.dk", "vej", "kbh", 2450, "test", true));
-            _kunder.Add(new Kunde(2, "dani", "h", "dani@2.dk", "vej", "kbh", 2450, "test2", false));
+            _kunder.Add(new Kunde(1, "ali", "h", "ali@1.dk", "vej", 2450, "test", true));
+            _kunder.Add(new Kunde(2, "dani", "h", "dani@2.dk", "vej",  2450, "test2", false));
         }
 
     }
