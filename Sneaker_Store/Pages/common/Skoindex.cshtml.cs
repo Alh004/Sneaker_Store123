@@ -18,7 +18,7 @@ namespace Sneaker_Store.Pages
 
         public List<Sko> Skos { get; set; }
         [BindProperty] public int SelectedSkoId { get; set; }
-        [BindProperty] public string SelectedBrand { get; set; }
+        [BindProperty] public string? SelectedBrand { get; set; }
         [BindProperty] public string PriceFilter { get; set; }
         public List<string> Brands { get; set; } = new List<string> { "Nike", "Asics", "Adidas", "SneakerCare" };
 
@@ -63,7 +63,6 @@ namespace Sneaker_Store.Pages
             ModelState.AddModelError(string.Empty, "Selected shoe not found.");
             Skos = _skoRepository.GetAll();
             return Page();
-            
         }
     }
 }

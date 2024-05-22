@@ -1,103 +1,51 @@
 @page
 @model Sneaker_Store.Pages.SkoIndexModel
 @{
-    ViewData["Title"] = "Shoe Store - Index";
+    ViewData["Title"] = "Sneaker Store";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .shoe-card {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .shoe-image {
-            width: 100%;
-            height: 200px; /* Fixed height for images */
-            object-fit: cover; /* Ensures images cover the area without distortion */
-        }
-    </style>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</head>
-<body>
-    <div class="container">
-        <h1 class="my-4">Shoe Store - Index</h1>
+<h2>Available Shoes</h2>
 
-        <!-- Filter Form -->
-        <form method="post" asp-page-handler="Filter" class="mb-4">
-            <div class="form-group">
-                <label>Mærke:</label><br />
-                @foreach (var brand in Model.Brands)
-                {
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" asp-for="SelectedBrand" value="@brand" />
-                        <label class="form-check-label" for="brand">@brand</label>
-                    </div>
-                }
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" asp-for="SelectedBrand" value="" />
-                    <label class="form-check-label" for="allShoes">Alle Sko</label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Prisfilter:</label><br />
-                <button type="submit" name="PriceFilter" value="Lowest" class="btn btn-secondary">Laveste Pris</button>
-                <button type="submit" name="PriceFilter" value="Highest" class="btn btn-secondary">Højeste Pris</button>
-            </div>
-        </form>
+<form method="post">
+    <select asp-for="SelectedBrand" asp-items="@(new SelectList(Model.Brands))">
+        <option value="">All Brands</option>
+    </select>
+    <select asp-for="PriceFilter">
+        <option value="">No Filter</option>
+        <option value="Lowest">Lowest Price</option>
+        <option value="Highest">Highest Price</option>
+    </select>
+    <button type="submit" asp-page-handler="Filter">Filter</button>
+</form>
 
-        <!-- Shoe Cards -->
-        <div class="row">
-            @foreach (var shoe in Model.Skos)
-            {
-                <div class="col-md-4">
-                    <div class="shoe-card">
-                        <h3>@shoe.Maerke - @shoe.Model</h3>
-                        @{
-                            var imageUrl = shoe.Model switch
-                            {
-                                "Air Max 90" => "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/bfc04b0f-32d9-48a9-b4b7-7acb7fbcb54b/air-max-90-sko-bnz7pN.png",
-                                "Air Jordan 1" => "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/d324f219-d69d-4c96-bbdb-5c6d8e58e3c4/air-jordan-1-sko.png",
-                                "Blazer Mid '77" => "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/cz7tyk-25c7488f-923f-43a6-b47c-1e7c51dbaf84/blazer-mid-77-sko.png",
-                                "React Infinity Run Flyknit" => "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/ab346717-d912-451f-b92a-403a90478f0b/react-infinity-run-flyknit-sko.png",
-                                "Pegasus Trail 2" => "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/fd9fd68b-7a3f-467d-812b-f5ea0e9cf8e3/pegasus-trail-2-sko.png",
-                                _ => "https://via.placeholder.com/200"
-                            };
-                        }
-                        <img src="@imageUrl" class="shoe-image" alt="Shoe Image">
-                        <p class="my-2"><strong>Pris:</strong> @shoe.Pris DKK</p>
-
-                        <!-- Purchase button and form -->
-                        <form method="post">
-                            <input type="hidden" name="SelectedSkoId" value="@shoe.SkoId" />
-                            <button type="submit" class="btn btn-primary">Køb</button>
-                        </form>
-                    </div>
-                </div>
-            }
+<div>
+    @foreach (var sko in Model.Skos)
+    {
+        <div class="shoe-item">
+            <img src="@sko.ImageUrl" alt="@sko.Model" width="200" />
+            <h3>@sko.Maerke @sko.Model</h3>
+            <p>Size: @sko.Str</p>
+            <p>Price: @sko.Pris.ToString("C")</p>
+            <form method="post">
+                <input type="hidden" name="SelectedSkoId" value="@sko.SkoId" />
+                <button type="submit">Buy Now</button>
+            </form>
         </div>
+    }
+</div>
 
-        @if (!Model.ModelState.IsValid)
-        {
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach (var error in Model.ModelState.Values.SelectMany(v => v.Errors))
-                    {
-                        <li>@error.ErrorMessage</li>
-                    }
-                </ul>
-            </div>
-        }
-    </div>
+<style>
+    .shoe-item {
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin: 10px;
+        text-align: center;
+        display: inline-block;
+        width: 220px;
+    }
 
-</body>
-</html>
+    .shoe-item img {
+        max-width: 100%;
+        height: auto;
+    }
+</style>
