@@ -33,5 +33,7 @@ namespace Sneaker_Store.Services
         {
             _ordrer.RemoveAll(o => o.OrdreId == ordreId);
         }
+        
+        
     }
 }   

@@ -1,18 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
+﻿using System;
 
 namespace Sneaker_Store.Model
 {
     public class Sko
     {
-        //Instansfelter
+        // Instance fields
         private int _skoid;
         private string _maerke;
         private string _model;
         private int _str;
         private double _pris;
+        private string _imageUrl; // Add this line
 
-        //Properties
+        // Properties
         public int SkoId
         {
             get { return _skoid; }
@@ -43,14 +43,21 @@ namespace Sneaker_Store.Model
             set { _pris = value; }
         }
 
-        //Konstruktør
-        public Sko(int skoid, string maerke, string model, int str, double pris)
+        public string ImageUrl // Add this property
+        {
+            get { return _imageUrl; }
+            set { _imageUrl = value; }
+        }
+
+        // Constructor
+        public Sko(int skoid, string maerke, string model, int str, double pris, string imageUrl) // Update constructor
         {
             _skoid = skoid;
             _maerke = maerke;
             _model = model;
             _str = str;
             _pris = pris;
+            _imageUrl = imageUrl;
         }
 
         public Sko() // default
@@ -60,14 +67,13 @@ namespace Sneaker_Store.Model
             _model = "";
             _str = 0;
             _pris = 0;
+            _imageUrl = ""; // Add this line
         }
 
-
-        //metode
+        // Method
         public override string ToString()
         {
-            return $"{{{nameof(SkoId)}={SkoId.ToString()}, {nameof(Maerke)}={Maerke}, {nameof(Model)}={Model}, {nameof(Str)}={Str.ToString()}, {nameof(Pris)}={Pris.ToString()}}}";
+            return $"{{{nameof(SkoId)}={SkoId.ToString()}, {nameof(Maerke)}={Maerke}, {nameof(Model)}={Model}, {nameof(Str)}={Str.ToString()}, {nameof(Pris)}={Pris.ToString()}, {nameof(ImageUrl)}={ImageUrl}}}";
         }
-
     }
 }

@@ -11,7 +11,7 @@ namespace Sneaker_Store.Services
 
         public Kunde? KundeLoggedIn => /* hack */ null;
 
-        private const String insertSql = "insert into Kunder values(@navn,@efternavn,@email,@kode,@by,@postnr,@addrese)";
+        private const String insertSql = "insert into Kunder values(@navn,@efternavn,@email,@kode,@postnr,@addrese)";
         public Kunde Add(Kunde newKunde)
         {
             SqlConnection connection = new SqlConnection(DB_Kunde.ConnectionString);
@@ -22,7 +22,6 @@ namespace Sneaker_Store.Services
             cmd.Parameters.AddWithValue("@efternavn", newKunde.Efternavn);
             cmd.Parameters.AddWithValue("@email", newKunde.Email);
             cmd.Parameters.AddWithValue("@kode", newKunde.Kode);
-            cmd.Parameters.AddWithValue("@by", newKunde.By);
             cmd.Parameters.AddWithValue("@postnr", newKunde.Postnr);
             cmd.Parameters.AddWithValue("@addrese", newKunde.Adresse);
             
@@ -54,7 +53,7 @@ namespace Sneaker_Store.Services
                 cmd.Parameters.AddWithValue("@Email", email);
                 cmd.Parameters.AddWithValue("@kode", password);
                 int count = (int)cmd.ExecuteScalar();
-        
+
                 isKundeValid = count > 0;
             }
 

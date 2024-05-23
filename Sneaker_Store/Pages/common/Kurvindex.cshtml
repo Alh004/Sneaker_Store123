@@ -1,0 +1,49 @@
+@page
+@model TestSessions.Pages.Personer.IndexModel
+@{
+    ViewData["Title"] = "Basket";
+}
+
+<h2>Basket</h2>
+
+@if (Model._kurv.Liste.Count == 0)
+{
+    <p>Your basket is empty.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Image</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Size</th>
+            <th>Price</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model._kurv.Liste)
+        {
+            <tr>
+                <td><img src="@item.ImageUrl" alt="@item.Model" width="100" /></td>
+                <td>@item.Maerke</td>
+                <td>@item.Model</td>
+                <td>@item.Str</td>
+                <td>@item.Pris.ToString("C")</td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="skoId" value="@item.SkoId" />
+                        <button type="submit" formaction="/Personer/Index?handler=AddToBasket">Add to Basket</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <p>Total: @Model._kurv.TotalPrice.ToString("C")</p>
+
+    <a asp-page="Checkout" class="btn btn-primary">Proceed to Checkout</a>
+}

@@ -47,11 +47,7 @@ public class OpretIndex : PageModel
         ErrorMessage = "Adgangskode skal indeholde mindst ét bogstav og ét tal")]
     [Display(Name = "Adgangskode")]
     public string kode { get; set; }
-
-    [BindProperty]
-    [Required(ErrorMessage = "Indtast By")]
-    [Display(Name = "By")]
-    public string by { get; set; }
+    
 
     [BindProperty]
     [Required(ErrorMessage = "Indtast Postnummer")]
@@ -68,11 +64,11 @@ public class OpretIndex : PageModel
             return Page();
         }
 
-        Kunde k = new Kunde(0, navn, efternavn, email, adresse, by, postnr, kode, false);
+        Kunde k = new Kunde(0, navn, efternavn, email, adresse, postnr, kode, false);
             
       _DB_Kunde.AddKunde(k);
         
-        return RedirectToPage("/Privacy");
+        return RedirectToPage("/Common/SkoIndex");
     }
 }
 

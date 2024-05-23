@@ -8,7 +8,6 @@ public class Kunde
     private string _efternavn;
     private string _email;
     private string _adresse;
-    private string _by;
     private int _postnr;
     private string _kode;
     private bool _admin;
@@ -43,13 +42,7 @@ public class Kunde
         get { return _adresse; }
         set { _adresse = value; }
     }
-
-    public string By
-    {
-        get { return _by; }
-        set { _by = value; }
-    }
-
+    
     public int Postnr
     {
         get { return _postnr; }
@@ -76,20 +69,18 @@ public class Kunde
         _efternavn = "";
         _email = "";
         _adresse = "";
-        _by = "";
         _postnr = 0;
         _kode = "";
         _admin = false;
     }
 
-    public Kunde(int kundeId, string navn, string efternavn, string email, string adresse, string by, int postnr, string kode, bool admin)
+    public Kunde(int kundeId, string navn, string efternavn, string email, string adresse, int postnr, string kode, bool admin)
     {
         _kundeId = kundeId;
         _navn = navn;
         _efternavn = efternavn;
         _email = email;
         _adresse = adresse;
-        _by = by;
         _postnr = postnr;
         _kode = kode;
         _admin = admin;
@@ -98,6 +89,6 @@ public class Kunde
     // ToString-metode
     public override string ToString()
     {
-        return $"{nameof(_kundeId)}: {_kundeId}, {nameof(_navn)}: {_navn}, {nameof(_efternavn)}: {_efternavn}, {nameof(_email)}: {_email}, {nameof(_adresse)}: {_adresse}, {nameof(_by)}: {_by}, {nameof(_postnr)}: {_postnr}, {nameof(_kode)}: {_kode}, {nameof(_admin)}: {_admin}";
+        return $"{nameof(_kundeId)}: {_kundeId}, {nameof(_navn)}: {_navn}, {nameof(_efternavn)}: {_efternavn}, {nameof(_email)}: {_email}, {nameof(_adresse)}: {_adresse}, {nameof(_postnr)}: {_postnr}, {nameof(_kode)}: {_kode}, {nameof(_admin)}: {_admin}";
     }
 }
