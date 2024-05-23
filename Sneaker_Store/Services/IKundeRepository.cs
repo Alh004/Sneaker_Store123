@@ -10,8 +10,13 @@ namespace Sneaker_Store.Services
         bool CheckKunde(string email, string kode);
         void LogoutKunde();
         void RemoveKunde(Kunde kunde);
-        
-        
-        
+        public Kunde GetById(int Kundeid);
+        public Kunde Opdater(Kunde kunde);
+
+
+
+        public List<Kunde> Search(int number, string name, string phone);
+        public List<Kunde> SortNumber();
+        public List<Kunde> SortName();
     }
 }

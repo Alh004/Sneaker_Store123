@@ -24,9 +24,9 @@
             <form method="post">
             <th><input type="submit" asp-page-handler="SortNumber" value="Kunde Nummer" class="btn btn-outline-success" /></th>
             <th><input type="submit" asp-page-handler="SortName" value="Navn" class="btn btn-outline-success" /></th>
-            <th>Telefon</th>
-            <th>Firma</th>
-            <th>Ranking</th>
+            <th>Navn</th>
+            <th>Efternavn</th>
+            <th>Kode</th>
             <th></th>
             <th></th>
             </form>
@@ -41,7 +41,6 @@
                 <td>@k.Efternavn</td>
                 <td>@k.Email</td>
                 <td>@k.Adresse</td>
-                <td>@k.By</td>
                 <td>@k.Postnr</td>
                 <td><a asp-page="EditKunde" asp-route-nummer="@k.KundeId">Ændre</a></td>
                 <td><a asp-page="DeleteKunde" asp-route-nummer="@k.KundeId">Slet</a></td>

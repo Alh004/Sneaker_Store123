@@ -21,9 +21,9 @@ namespace Sneaker_Store.Pages.common.KundeListe
 
 
 
-            public IActionResult OnGet(int kundeid)
+            public IActionResult OnGet(int nummer)
             {
-                Kunde = _repo.GetKunde(kundeid);
+                Kunde = _repo.GetById(nummer);
 
                 return Page();
             }

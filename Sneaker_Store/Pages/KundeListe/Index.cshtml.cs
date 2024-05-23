@@ -21,11 +21,11 @@ namespace Sneaker_Store.Pages.KundeListe
         public List<Kunde> Kunder { get; set; }
 
         [BindProperty]
-        public int? SearchNumber { get; set; }
+        public int SearchNumber { get; set; }
         [BindProperty]
-        public string? SearchName { get; set; }
+        public string SearchName { get; set; }
         [BindProperty]
-        public string? SearchPhone { get; set; }
+        public string SearchPhone { get; set; }
 
 
         public void OnGet()

@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.Data.SqlClient;
 using Sneaker_Store.Model;
 using System.Data;
 
@@ -113,30 +114,29 @@ namespace Sneaker_Store.Services
 
 
 
-        public Kunde GetKunde(int kundeid)
+        private const String selectByIdlSql = "select * from Kunder where KundeId = @KundeId";
+        public Kunde GetById(int kundeid)
         {
+            SqlConnection connection = new SqlConnection(DB_Kunde.ConnectionString);
+            connection.Open();
 
-            if (_katalog.ContainsKey(kundeid))
+            SqlCommand cmd = new SqlCommand(selectByIdlSql, connection);
+            cmd.Parameters.AddWithValue("@KundeId", kundeid);
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            Kunde kunde = null;
+            if (reader.Read())
             {
-                return _katalog[kundeid];
+                kunde = ReadKunde(reader);
             }
             else
             {
-                // opdaget en fejl
-                throw new KeyNotFoundException($"kundenummer {kundeid} findes ikke");
-            }
-        }
-
-
-
-
-        public Kunde GetById(int Kundeid)
-        {
-            Kunde? kunde = _kunder.Find(k => k.KundeId == Kundeid);
-            if (kunde is null)
-            {
+                // no row i.e. not found
                 throw new KeyNotFoundException();
             }
+
+            connection.Close();
             return kunde;
         }
 
@@ -144,18 +144,17 @@ namespace Sneaker_Store.Services
         {
             throw new NotImplementedException();
         }
-
-        public List<Kunde> Search(int? number, string? name, string? phone)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<Kunde> SortNumber()
         {
             throw new NotImplementedException();
         }
 
         public List<Kunde> SortName()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Kunde> Search(int number, string name, string phone)
         {
             throw new NotImplementedException();
         }
