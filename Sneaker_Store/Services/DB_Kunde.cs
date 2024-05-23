@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Sneaker_Store.Model;
+using System.Data;
 
 namespace Sneaker_Store.Services
 {
@@ -68,7 +69,7 @@ namespace Sneaker_Store.Services
 
                 connection.Open();
 
-                String sql = "select * from Kunde";
+                String sql = "select * from Kunder";
                 SqlCommand cmd = new SqlCommand(sql, connection);
 
                 SqlDataReader reader = cmd.ExecuteReader(); 
@@ -102,13 +103,62 @@ namespace Sneaker_Store.Services
             kunde.Navn = reader.GetString(1);
             kunde.Efternavn = reader.GetString(2);
             kunde.Email = reader.GetString(3);
-            kunde.By = reader.GetString(5);
-            kunde.Postnr = reader.GetInt32(6);
+            kunde.Adresse = reader.GetString(4);
+            kunde.Postnr = reader.GetInt32(5);
 
             return kunde;
             
           
             
+        }
+
+
+
+        public Kunde GetKunde(int kundeid)
+        {
+
+            if (_katalog.ContainsKey(kundeid))
+            {
+                return _katalog[kundeid];
+            }
+            else
+            {
+                // opdaget en fejl
+                throw new KeyNotFoundException($"kundenummer {kundeid} findes ikke");
+            }
+        }
+
+
+
+
+        public Kunde GetById(int Kundeid)
+        {
+            Kunde? kunde = _kunder.Find(k => k.KundeId == Kundeid);
+            if (kunde is null)
+            {
+                throw new KeyNotFoundException();
+            }
+            return kunde;
+        }
+
+        public Kunde Opdater(Kunde kunde)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Kunde> Search(int? number, string? name, string? phone)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Kunde> SortNumber()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Kunde> SortName()
+        {
+            throw new NotImplementedException();
         }
     }
 }

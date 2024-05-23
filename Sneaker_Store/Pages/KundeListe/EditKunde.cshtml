@@ -1,0 +1,48 @@
+﻿@page
+@model Sneaker_Store.Pages.KundeListe.EditKundeModel
+@{
+}
+<h1>Ændre en kunde</h1>
+
+
+<form method="post">
+    <div class="form-group>">
+        <label>Kunde nummer</label> : @Model.NytKundeId<br />
+        <input type="hidden" asp-for="@Model.NytKundeId" /><br />
+        <label class="text text-danger">@Model.ErrorMessage</label><br />
+        <br />
+
+
+        <label>Kunde navn</label><br />
+        <input class="form-control" asp-for="@Model.NytKundeNavn" /><br />
+        <span asp-validation-for="@Model.NytKundeNavn" class="text-danger"></span><br />
+
+
+        <label>Kunde efternavn</label><br />
+        <input class="form-control" asp-for="@Model.NytKundeEfternavn" /><br />
+
+        <label>Kunde email</label><br />
+        <input Type="checkbox" asp-for="@Model.NytKundeEmail" />Er Firma<br />
+
+
+        <label>Kunde adresse</label><br />
+        <input class="form-control" asp-for="@Model.NytAdresse" /><br />
+
+        <label>Kunde by</label><br />
+        <input class="form-control" asp-for="@Model.NytBy" /><br />
+
+        <label>Kunde postnr</label><br />
+        <input class="form-control" asp-for="@Model.NytPostnr" /><br />
+
+
+        @if (Model.Error)
+        {
+            <input type="submit" value="Ændre Ny Kunde" class="btn btn-secondary" asp-page-handler="Change" disabled />
+        }
+        else
+        {
+            <input type="submit" value="Ændre Ny Kunde" class="btn btn-success" asp-page-handler="Change" />
+        }
+        <input type="submit" value="Fortryd" class="btn btn-danger" asp-page-handler="Cancel" />
+    </div>
+</form>

@@ -1,0 +1,51 @@
+﻿@page
+@using Sneaker_Store.Model;
+@model Sneaker_Store.Pages.KundeListe.IndexModel
+@{
+}
+<h1 class="jumbotron">Vis Alle Kunder</h1>
+
+<form method="post">
+    Vil du oprette en ny kunde tryk på <input type="submit" value="Opret" class="btn btn-outline-primary" />
+</form>
+
+<p></p>
+<form method="post" class="border border-success rounded">
+    <input type="submit" asp-page-handler="Search" value="Søg" class="btn btn-outline-success" />
+    Kunde Nummer <input type="number" asp-for="@Model.SearchNumber" />
+    Kunde Navn <input type="text" asp-for="@Model.SearchName" />
+    Kunde Tlf <input type="text" asp-for="@Model.SearchPhone" />
+</form>
+<p></p>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <form method="post">
+            <th><input type="submit" asp-page-handler="SortNumber" value="Kunde Nummer" class="btn btn-outline-success" /></th>
+            <th><input type="submit" asp-page-handler="SortName" value="Navn" class="btn btn-outline-success" /></th>
+            <th>Telefon</th>
+            <th>Firma</th>
+            <th>Ranking</th>
+            <th></th>
+            <th></th>
+            </form>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Kunde k in Model.Kunder)
+        {
+            <tr>
+                <td>@k.KundeId</td>
+                <td>@k.Navn</td>
+                <td>@k.Efternavn</td>
+                <td>@k.Email</td>
+                <td>@k.Adresse</td>
+                <td>@k.By</td>
+                <td>@k.Postnr</td>
+                <td><a asp-page="EditKunde" asp-route-nummer="@k.KundeId">Ændre</a></td>
+                <td><a asp-page="DeleteKunde" asp-route-nummer="@k.KundeId">Slet</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

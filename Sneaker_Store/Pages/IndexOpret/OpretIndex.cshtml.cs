@@ -60,7 +60,7 @@ public class OpretIndex : PageModel
     public int postnr { get; set; }
 
     // ...
-
+                                                                                                                                                                                                                                                            
     public IActionResult OnPost()
     {
         if (!ModelState.IsValid)

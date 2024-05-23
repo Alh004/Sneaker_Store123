@@ -6,7 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddSingleton<IKundeRepository>(new DB_Kunde()); /** ændret fordi db*/
-builder.Services.AddSingleton<ISkoRepository>(new SkoRepository(true));
+builder.Services.AddSingleton<ISkoRepository>(new DB_Sko());
+builder.Services.AddSingleton<IOrdreRepository>(new DB_Ordre());
+
 builder.Services.AddSession();
 var app = builder.Build();
 

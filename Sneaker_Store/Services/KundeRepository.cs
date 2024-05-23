@@ -6,9 +6,30 @@ public class KundeRepository : IKundeRepository
 {
     private List<Kunde> _kunder = new List<Kunde>();
 
+    Dictionary<int, Kunde> _katalog;
+
+    // properties
+    public Dictionary<int, Kunde> Katalog
+    {
+        get { return _katalog; }
+        set { _katalog = value; }
+    }
+
+    // konstruktør
+    public KundeRepository(bool mockData = false)
+    {
+        _katalog = new Dictionary<int, Kunde>();
+
+
+        if (mockData)
+        {
+            PopulateKundeRepository();
+        }
+    }
+
     public Kunde? KundeLoggedIn { get; private set; }
 
-    public KundeRepository(bool mockData = false)
+    public void PopulateKundeRepository(bool mockData = false)
     {
         KundeLoggedIn = null;
 
@@ -20,6 +41,29 @@ public class KundeRepository : IKundeRepository
 
     }
 
+    public Kunde GetKunde(int kundeid)
+    {
+        if (_katalog.ContainsKey(kundeid))
+        {
+            return _katalog[kundeid];
+        }
+        else
+        {
+            // opdaget en fejl
+            throw new KeyNotFoundException($"kundenummer {kundeid} findes ikke");
+        }
+    }
+
+
+    public Kunde GetById(int Kundeid)
+    {
+        Kunde? kunde = _kunder.Find(k => k.KundeId == Kundeid);
+        if (kunde is null)
+        {
+            throw new KeyNotFoundException();
+        }
+        return kunde;
+    }
 
     public List<Kunde> GetAll()
     {
@@ -53,7 +97,33 @@ public bool CheckKunde(string email, string kode)
         }
     }
 
-    
+    public Kunde Opdater(Kunde kunde)
+    {
+        Kunde editKunde = GetById(kunde.KundeId);
+        _kunder[kunde.KundeId] = kunde;
+        return kunde;
+    }
+
+    public List<Kunde> Search(int? number, string? name, string? phone)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<Kunde> Search(int number, string name, string phone)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<Kunde> SortNumber()
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<Kunde> SortName()
+    {
+        throw new NotImplementedException();
+    }
+
 
     public void LogoutKunde()
     {

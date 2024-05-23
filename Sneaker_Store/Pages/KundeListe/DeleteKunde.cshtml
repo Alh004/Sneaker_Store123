@@ -1,0 +1,33 @@
+﻿@page
+@model Sneaker_Store.Pages.common.KundeListe.DeleteKundeModel
+@{
+}
+
+<h1> Slet en kunde </h1>
+
+<form method="post">
+    <div class="form-group>">
+        <label>Kunde nummer</label> : @Model.Kunde.KundeId<br />
+        <br />
+        <label>Kunde navn</label> : @Model.Kunde.Navn<br />
+        <br />
+        <label>Kunde efternavn</label>  : @Model.Kunde.Efternavn<br />
+        <br />
+        <label>Kunde email</label>  : @Model.Kunde.Email<br />
+        <br />
+        <label>Kunde adresse</label>  : @Model.Kunde.Adresse<br />
+        <br />
+        <label>Kunde by</label>  : @Model.Kunde.By<br />
+        <br />
+        <label>Kunde postnr</label>  : @Model.Kunde.Postnr<br />
+        <br />
+        <label>Kunde kode</label>  : @Model.Kunde.Kode<br />
+        <br />
+
+
+
+        <input type="submit" value="Slet Kunde" class="btn btn-danger" asp-page-handler="Delete" asp-route-nummer="@Model.Kunde.KundeId" />
+
+        <input type="submit" value="Fortryd" class="btn btn-warning" asp-page-handler="Cancel" />
+    </div>
+</form>
