@@ -20,7 +20,7 @@ namespace Sneaker_Store.Services.Tests
         [TestMethod]
         public void AddKunde_ValidPerson_AddsPersonToList()
         {
-            var newKunde = new Kunde(3, "new", "person", "new@3.dk", "vej", "kbh", 2450, "test3", false);
+            var newKunde = new Kunde(3, "new", "person", "new@3.dk", "vej", 2450, "test3", false);
             _kundeRepository.AddKunde(newKunde);
             var result = _kundeRepository.GetAll();
             Assert.AreEqual(3, result.Count);
@@ -47,7 +47,7 @@ namespace Sneaker_Store.Services.Tests
         [TestMethod]
         public void RemoveKunde_NonExistingPerson_ListRemainsUnchanged()
         {
-            var nonExistingKunde = new Kunde(999, "non", "existing", "non@999.dk", "vej", "kbh", 2450, "test999", false);
+            var nonExistingKunde = new Kunde(999, "non", "existing", "non@999.dk", "vej",  2450, "test999", false);
             _kundeRepository.RemoveKunde(nonExistingKunde);
             var result = _kundeRepository.GetAll();
             Assert.AreEqual(2, result.Count);

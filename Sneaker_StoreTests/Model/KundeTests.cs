@@ -16,7 +16,7 @@ namespace Sneaker_Store.Model.Tests
             _defaultKunde = new Kunde();
 
             // Initialiser parameteriseret kunde
-            _parameterizedKunde = new Kunde(1, "John", "Doe", "john.doe@example.com", "123 Main St", "Copenhagen", 1234, "password123", true);
+            _parameterizedKunde = new Kunde(1, "John", "Doe", "john.doe@example.com", "123 Main St", 1234, "password123", true);
         }
 
         [TestMethod]
@@ -28,7 +28,6 @@ namespace Sneaker_Store.Model.Tests
             Assert.AreEqual("", _defaultKunde.Efternavn);
             Assert.AreEqual("", _defaultKunde.Email);
             Assert.AreEqual("", _defaultKunde.Adresse);
-            Assert.AreEqual("", _defaultKunde.By);
             Assert.AreEqual(0, _defaultKunde.Postnr);
             Assert.AreEqual("", _defaultKunde.Kode);
             Assert.AreEqual(false, _defaultKunde.Admin);
@@ -43,7 +42,6 @@ namespace Sneaker_Store.Model.Tests
             Assert.AreEqual("Doe", _parameterizedKunde.Efternavn);
             Assert.AreEqual("john.doe@example.com", _parameterizedKunde.Email);
             Assert.AreEqual("123 Main St", _parameterizedKunde.Adresse);
-            Assert.AreEqual("Copenhagen", _parameterizedKunde.By);
             Assert.AreEqual(1234, _parameterizedKunde.Postnr);
             Assert.AreEqual("password123", _parameterizedKunde.Kode);
             Assert.AreEqual(true, _parameterizedKunde.Admin);
@@ -58,7 +56,6 @@ namespace Sneaker_Store.Model.Tests
             _defaultKunde.Efternavn = "Smith";
             _defaultKunde.Email = "jane.smith@example.com";
             _defaultKunde.Adresse = "456 Another St";
-            _defaultKunde.By = "Aarhus";
             _defaultKunde.Postnr = 5678;
             _defaultKunde.Kode = "password456";
             _defaultKunde.Admin = false;
@@ -68,7 +65,6 @@ namespace Sneaker_Store.Model.Tests
             Assert.AreEqual("Smith", _defaultKunde.Efternavn);
             Assert.AreEqual("jane.smith@example.com", _defaultKunde.Email);
             Assert.AreEqual("456 Another St", _defaultKunde.Adresse);
-            Assert.AreEqual("Aarhus", _defaultKunde.By);
             Assert.AreEqual(5678, _defaultKunde.Postnr);
             Assert.AreEqual("password456", _defaultKunde.Kode);
             Assert.AreEqual(false, _defaultKunde.Admin);

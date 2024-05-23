@@ -68,7 +68,7 @@ public class OpretIndex : PageModel
             
       _DB_Kunde.AddKunde(k);
         
-        return RedirectToPage("/Privacy");
+        return RedirectToPage("/Common/SkoIndex");
     }
 }
 
