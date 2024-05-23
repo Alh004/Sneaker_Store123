@@ -37,9 +37,6 @@ namespace Sneaker_Store.Pages.KundeListe
         public string NytAdresse { get; set; }
 
         [BindProperty]
-        public string NytBy { get; set; }
-
-        [BindProperty]
         public int NytPostnr { get; set; }
 
         [BindProperty]
@@ -62,7 +59,7 @@ namespace Sneaker_Store.Pages.KundeListe
 
             try
             {
-                Kunde kunde = _repo.GetKunde(nummer);
+                Kunde kunde = _repo.GetById(nummer);
 
                 NytKundeId = kunde.KundeId;
                 NytKundeNavn = kunde.Navn;
@@ -83,7 +80,7 @@ namespace Sneaker_Store.Pages.KundeListe
                 return Page();
             }
 
-            Kunde kunde = _repo.Opdater(new Kunde(NytKundeId, NytKundeNavn, NytKundeEfternavn, NytKundeEmail, NytAdresse, NytBy, NytPostnr, NytKode, NytAdmin));
+            Kunde kunde = _repo.Opdater(new Kunde(NytKundeId, NytKundeNavn, NytKundeEfternavn, NytKundeEmail, NytAdresse, NytPostnr, NytKode, NytAdmin));
 
             return RedirectToPage("Index");
         }

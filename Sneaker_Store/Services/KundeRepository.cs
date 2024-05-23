@@ -6,26 +6,7 @@ public class KundeRepository : IKundeRepository
 {
     private List<Kunde> _kunder = new List<Kunde>();
 
-    Dictionary<int, Kunde> _katalog;
-
-    // properties
-    public Dictionary<int, Kunde> Katalog
-    {
-        get { return _katalog; }
-        set { _katalog = value; }
-    }
-
     // konstruktør
-    public KundeRepository(bool mockData = false)
-    {
-        _katalog = new Dictionary<int, Kunde>();
-
-
-        if (mockData)
-        {
-            PopulateKundeRepository();
-        }
-    }
 
     public Kunde? KundeLoggedIn { get; private set; }
 
@@ -39,19 +20,6 @@ public class KundeRepository : IKundeRepository
             _kunder.Add(new Kunde(2, "dani", "h", "dani@2.dk", "vej",  2450, "test2", false));
         }
 
-    }
-
-    public Kunde GetKunde(int kundeid)
-    {
-        if (_katalog.ContainsKey(kundeid))
-        {
-            return _katalog[kundeid];
-        }
-        else
-        {
-            // opdaget en fejl
-            throw new KeyNotFoundException($"kundenummer {kundeid} findes ikke");
-        }
     }
 
 
