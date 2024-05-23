@@ -11,6 +11,7 @@ namespace Sneaker_Store.Services
 
         public NoSessionObjectException(string? message) : base(message)
         {
+            
         }
     }
     public static class Testsession
