@@ -3,42 +3,38 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Sneaker_Store.Model;
 using Sneaker_Store.Services;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace TestSessions.Pages.Personer
+namespace Sneaker_Store.Pages.common
 {
-    public class IndexModel : PageModel
+    public class KurvIndexModel : PageModel
     {
         private readonly ISkoRepository _skoRepository;
-        public readonly Kurv _kurv; // Inject Kurv dependency
+        private readonly Kurv _kurv;
 
-        public IndexModel(ISkoRepository skoRepository, Kurv kurv)
+        public KurvIndexModel(ISkoRepository skoRepository, Kurv kurv)
         {
             _skoRepository = skoRepository;
-            _kurv = kurv; // Store the injected Kurv instance
+            _kurv = kurv;
         }
 
-        public List<Sko> Skos { get; set; } // Add Skos property
+        public List<Sko> Skos { get; set; }
 
         public IActionResult OnGet()
         {
-            // Retrieve the list of shoes from the repository
-            Skos = _skoRepository.GetAll();
-
+            Skos = _kurv.HentAlleSko();
             return Page();
         }
 
-        // Handle POST request to add item to basket
-        public IActionResult OnPostAddToBasket(int skoId)
+        public IActionResult OnPostDeleteFromBasket(int SkoId)
         {
-            // Find the shoe with the given ID
-            Sko selectedSko = Skos.Find(s => s.SkoId == skoId);
-            if (selectedSko != null)
+            var sko = _kurv.HentAlleSko().FirstOrDefault(s => s.SkoId == SkoId);
+            if (sko != null)
             {
-                // Add the shoe to the basket
-                _kurv.Tilføj(selectedSko);
+                _kurv.Slet(sko);
             }
 
-            // Redirect back to the index page
+            Skos = _kurv.HentAlleSko();
             return RedirectToPage();
         }
     }

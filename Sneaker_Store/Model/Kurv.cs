@@ -1,77 +1,47 @@
+using Microsoft.AspNetCore.Http;
+using Sneaker_Store.Services;
+using System.Collections.Generic;
+
 namespace Sneaker_Store.Model
 {
     public class Kurv
     {
-        // instance field 
-        private List<Sko> _liste;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        // property
-        public List<Sko> Liste 
-        { 
-            get { return _liste; } 
-            set { _liste = value; }
-        }
-
-        /*
-         * Constructor
-         */
-        public Kurv()
+        public Kurv(IHttpContextAccessor httpContextAccessor)
         {
-            _liste = new List<Sko>();
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        /*
-         * Methods
-         */
         public void Tilføj(Sko sko)
         {
-            _liste.Add(sko);
+            var items = HentAlleSko();
+            items.Add(sko);
+            SaveToSession(items);
         }
 
         public List<Sko> HentAlleSko()
         {
-            return _liste;
-        }
-
-        public List<Sko> HentFraSko(int SkoID)
-        {
-            List<Sko> resultatListe = new List<Sko>();
-
-            for (int i = 0; i < _liste.Count; i++)
+            try
             {
-                if (_liste[i].SkoId == SkoID)
-                {
-                    resultatListe.Add(_liste[i]);
-                }
+                return Testsession.Get<List<Sko>>(_httpContextAccessor.HttpContext);
             }
-
-            return resultatListe;
-        }
-
-        public Sko Slet(Sko sko)
-        {
-            if (_liste.Contains(sko))
+            catch (NoSessionObjectException)
             {
-                _liste.Remove(sko);
-                return sko;
+                return new List<Sko>();
             }
-
-            // not found
-            return null;
         }
 
-        // Property to calculate the total price
-        public double TotalPrice 
-        { 
-            get 
-            { 
-                double totalPrice = 0;
-                foreach (var sko in _liste)
-                {
-                    totalPrice += sko.Pris;
-                }
-                return totalPrice;
-            } 
+        public void Slet(Sko sko)
+        {
+            var items = HentAlleSko();
+            items.RemoveAll(s => s.SkoId == sko.SkoId);
+            SaveToSession(items);
+        }
+
+        private void SaveToSession(List<Sko> items)
+        {
+            Testsession.Set(items, _httpContextAccessor.HttpContext);
         }
     }
 }
