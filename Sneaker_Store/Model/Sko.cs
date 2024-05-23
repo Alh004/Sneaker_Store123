@@ -8,9 +8,9 @@ namespace Sneaker_Store.Model
         private int _skoid;
         private string _maerke;
         private string _model;
-        private int _str;
+        private int? _str; // Nullable size attribute
         private double _pris;
-        private string _imageUrl; // Add this line
+        private string _imageUrl;
 
         // Properties
         public int SkoId
@@ -31,7 +31,7 @@ namespace Sneaker_Store.Model
             set { _model = value; }
         }
 
-        public int Str
+        public int? Str // Nullable size property
         {
             get { return _str; }
             set { _str = value; }
@@ -43,14 +43,14 @@ namespace Sneaker_Store.Model
             set { _pris = value; }
         }
 
-        public string ImageUrl // Add this property
+        public string ImageUrl
         {
             get { return _imageUrl; }
             set { _imageUrl = value; }
         }
 
         // Constructor
-        public Sko(int skoid, string maerke, string model, int str, double pris, string imageUrl) // Update constructor
+        public Sko(int skoid, string maerke, string model, int? str, double pris, string imageUrl) // Update constructor
         {
             _skoid = skoid;
             _maerke = maerke;
@@ -60,20 +60,20 @@ namespace Sneaker_Store.Model
             _imageUrl = imageUrl;
         }
 
-        public Sko() // default
+        public Sko() // default constructor
         {
             _skoid = 0;
-            _maerke = "";
-            _model = "";
-            _str = 0;
+            _maerke = string.Empty;
+            _model = string.Empty;
+            _str = null; // Nullable by default
             _pris = 0;
-            _imageUrl = ""; // Add this line
+            _imageUrl = string.Empty;
         }
 
         // Method
         public override string ToString()
         {
-            return $"{{{nameof(SkoId)}={SkoId.ToString()}, {nameof(Maerke)}={Maerke}, {nameof(Model)}={Model}, {nameof(Str)}={Str.ToString()}, {nameof(Pris)}={Pris.ToString()}, {nameof(ImageUrl)}={ImageUrl}}}";
+            return $"{{{nameof(SkoId)}={SkoId.ToString()}, {nameof(Maerke)}={Maerke}, {nameof(Model)}={Model}, {nameof(Str)}={Str?.ToString() ?? "N/A"}, {nameof(Pris)}={Pris.ToString()}, {nameof(ImageUrl)}={ImageUrl}}}";
         }
     }
 }

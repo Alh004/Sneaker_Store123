@@ -1,5 +1,5 @@
 @page
-@model Sneaker_Store.Pages.SkoIndexModel
+@model Sneaker_Store.Pages.common.SkoIndexModel
 @{
     ViewData["Title"] = "Sneaker Store";
 }
@@ -7,7 +7,7 @@
 <h2>Available Shoes</h2>
 
 <!-- Basket button -->
-<a asp-page="BasketIndex" class="btn btn-primary">Go to Basket</a>
+<a asp-page="/common/KurvIndex" class="btn btn-primary">Go to Basket</a>
 
 <form method="post">
     <select asp-for="SelectedBrand" asp-items="@(new SelectList(Model.Brands))">
@@ -27,11 +27,11 @@
         <div class="shoe-item">
             <img src="@sko.ImageUrl" alt="@sko.Model" width="200" />
             <h3>@sko.Maerke @sko.Model</h3>
-            <p>Size: @sko.Str</p>
+            <p>Size: @(sko.Str.HasValue ? sko.Str.ToString() : "N/A")</p>
             <p>Price: @sko.Pris.ToString("C")</p>
-            <form method="post">
+            <form method="post" asp-page-handler="AddToBasket">
                 <input type="hidden" name="SelectedSkoId" value="@sko.SkoId" />
-                <button type="submit" formaction="/SkoIndex?handler=AddToBasket">Add to Basket</button>
+                <button type="submit">Add to Basket</button>
             </form>
         </div>
     }
