@@ -8,6 +8,11 @@ public class DB_Ordre : IOrdreRepository
     private const string ConnectionString =
               "Data Source=mssql13.unoeuro.com;Initial Catalog=sirat_dk_db_thread;User ID=sirat_dk;Password=m5k6BgDhAzxbprH49cyE;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
+    public void TilfÃ¸jOrdre(Ordre ordre)
+    {
+        throw new NotImplementedException();
+    }
+
     public Ordre FindOrdre(int ordreId)
     {
         throw new NotImplementedException();
@@ -47,7 +52,7 @@ public class DB_Ordre : IOrdreRepository
         throw new NotImplementedException();
     }
 
-    public void TilføjOrdre(Ordre ordre)
+    public void TilfojOrdre(Ordre ordre)
     {
         throw new NotImplementedException();
     }

@@ -14,7 +14,6 @@ namespace Sneaker_Store.Services.Tests
         public void TestInitialize()
         {
             // Initialiser kunde repository med testdata
-            _kundeRepository = new KundeRepository(mockData: true);
         }
 
         [TestMethod]
