@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Data.SqlClient;
 using Sneaker_Store.Model;
+using System.Collections.Generic;
 using System.Data;
 
 namespace Sneaker_Store.Services
@@ -140,9 +141,8 @@ namespace Sneaker_Store.Services
             
         }
 
+        private const string selectByIdlSql = "SELECT * FROM Kunder WHERE KundeId = @KundeId";
 
-
-        private const String selectByIdlSql = "select * from Kunder where KundeId = @KundeId";
         public Kunde GetById(int kundeid)
         {
             SqlConnection connection = new SqlConnection(DB_Kunde.ConnectionString);
@@ -164,8 +164,10 @@ namespace Sneaker_Store.Services
                 throw new KeyNotFoundException();
             }
 
-            connection.Close();
-            return kunde;
+                        return kunde;
+                    }
+                }
+            }
         }
 
         private const String updateSql = "update Kunder set Fornavn=@Navn, Efternavn=@Efternavn, Adgangskode = @Kode, Postnr = @Postnr, Adresse = @Adresse WHERE KundeId = @kundeid";

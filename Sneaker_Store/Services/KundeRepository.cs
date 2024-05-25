@@ -1,5 +1,12 @@
+using Microsoft.Data.SqlClient;
 using Sneaker_Store.Model;
 
+namespace Sneaker_Store.Services
+{
+    public class KundeRepository : IKundeRepository
+    {
+        private List<Kunde> _kunder = new List<Kunde>();
+        private const string ConnectionString = "Data Source=mssql13.unoeuro.com;Initial Catalog=sirat_dk_db_thread;User ID=sirat_dk;Password=m5k6BgDhAzxbprH49cyE;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 namespace Sneaker_Store.Services;
 
 public class KundeRepository : IKundeRepository
@@ -8,46 +15,111 @@ public class KundeRepository : IKundeRepository
 
     // konstruktør
 
-    public Kunde? KundeLoggedIn { get; private set; }
+        public Kunde? KundeLoggedIn { get; private set; }
 
-    public void PopulateKundeRepository(bool mockData = false)
-    {
-        KundeLoggedIn = null;
-
-        if (mockData)
+        public LoginResult? CheckKunde(string email, string kode)
         {
-            _kunder.Add(new Kunde(1, "ali", "h", "ali@1.dk", "vej", 2450, "test", true));
-            _kunder.Add(new Kunde(2, "dani", "h", "dani@2.dk", "vej",  2450, "test2", false));
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    string sql = "SELECT KundeId, Fornavn, Efternavn, Email, Adresse, Postnr, Adgangskode, Admin FROM Kunder WHERE Email = @Email AND Adgangskode = @kode";
+                    using (SqlCommand cmd = new SqlCommand(sql, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Email", email);
+                        cmd.Parameters.AddWithValue("@kode", kode);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                KundeLoggedIn = new Kunde
+                                {
+                                    KundeId = reader.GetInt32(0),
+                                    Navn = reader.GetString(1),
+                                    Efternavn = reader.GetString(2),
+                                    Email = reader.GetString(3),
+                                    Adresse = reader.GetString(4),
+                                    Postnr = reader.GetInt32(5),
+                                    Kode = reader.GetString(6),
+                                    Admin = reader.GetBoolean(7)
+                                };
+                                return new LoginResult
+                                {
+                                    IsAdmin = KundeLoggedIn.Admin
+                                };
+                            }
+                            else
+                            {
+                                KundeLoggedIn = null;
+                                return null;
+                            }
+                        }
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    // Handle the SQL exception
+                    Console.WriteLine($"SQL Exception: {ex.Message}");
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    // Handle any other exceptions
+                    Console.WriteLine($"Exception: {ex.Message}");
+                    return null;
+                }
+            }
         }
 
-    }
-
-
-    public Kunde GetById(int Kundeid)
-    {
-        Kunde? kunde = _kunder.Find(k => k.KundeId == Kundeid);
-        if (kunde is null)
+        public Kunde GetById(int Kundeid)
         {
-            throw new KeyNotFoundException();
+            Kunde? kunde = _kunder.Find(k => k.KundeId == Kundeid);
+            if (kunde is null)
+            {
+                throw new KeyNotFoundException();
+            }
+            return kunde;
         }
-        return kunde;
-    }
 
-    public List<Kunde> GetAll()
-    {
-        return new List<Kunde>(_kunder);
-    }
+        public List<Kunde> GetAll()
+        {
+            return new List<Kunde>(_kunder);
+        }
 
-    public void AddKunde(Kunde kunde)
-    {
-        _kunder.Add(kunde);
-    }
+        public void AddKunde(Kunde kunde)
+        {
+            if (kunde == null)
+            {
+                throw new ArgumentNullException(nameof(kunde));
+            }
+            _kunder.Add(kunde);
+        }
 
+        public void RemoveKunde(Kunde kunde)
+        {
+            _kunder.Remove(kunde);
+        }
     public void Remove(Kunde kunde)
     {
         _kunder.Remove(kunde);
     }
 
+        public Kunde Opdater(Kunde kunde)
+        {
+            Kunde editKunde = GetById(kunde.KundeId);
+            if (editKunde != null)
+            {
+                editKunde.Navn = kunde.Navn;
+                editKunde.Efternavn = kunde.Efternavn;
+                editKunde.Email = kunde.Email;
+                editKunde.Kode = kunde.Kode;
+                editKunde.Postnr = kunde.Postnr;
+                editKunde.Adresse = kunde.Adresse;
+                editKunde.Admin = kunde.Admin; // Update the Admin property
+            }
+            return editKunde;
+        }
     
     
 public bool CheckKunde(string email, string kode)
@@ -89,26 +161,26 @@ public bool CheckKunde(string email, string kode)
         return _kunder.FirstOrDefault(k => k.Email == email);
     }
 
-
+   
     public List<Kunde> Search(int number, string name, string phone)
     {
         throw new NotImplementedException();
     }
 
-    public List<Kunde> SortNumber()
-    {
-        throw new NotImplementedException();
-    }
+        public List<Kunde> SortNumber()
+        {
+            throw new NotImplementedException();
+        }
 
-    public List<Kunde> SortName()
-    {
-        throw new NotImplementedException();
-    }
+        public List<Kunde> SortName()
+        {
+            throw new NotImplementedException();
+        }
 
-
-    public void LogoutKunde()
-    {
-        KundeLoggedIn = null;
+        public void LogoutKunde()
+        {
+            KundeLoggedIn = null;
+        }
     }
 
     public Kunde Update(Kunde kunde)

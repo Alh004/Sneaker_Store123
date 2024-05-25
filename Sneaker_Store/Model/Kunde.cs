@@ -74,6 +74,8 @@ public class Kunde
         _admin = false;
     }
 
+    
+    
     public Kunde(int kundeId, string navn, string efternavn, string email, string adresse, int postnr, string kode, bool admin)
     {
         _kundeId = kundeId;

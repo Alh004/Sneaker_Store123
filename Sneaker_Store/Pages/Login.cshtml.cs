@@ -34,16 +34,28 @@ namespace Sneaker_Store.Pages
         {
             if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Kode))
             {
-                ErrorMessage = "Både email og kode skal udfyldes.";
+                ErrorMessage = "baade email og kode er forkert.";
                 return Page();
             }
 
-            if (!_kundeRepository.CheckKunde(Email, Kode))
+            var loginResult = _kundeRepository.CheckKunde(Email, Kode);
+
+            if (loginResult == null)
             {
                 ErrorMessage = "Forkert kode eller email.";
                 return Page();
             }
-
+            // Gem brugerens email i sessionen
+            _httpContextAccessor.HttpContext.Session.SetString("UserEmail", Email);
+            
+            if (loginResult.IsAdmin)
+            {
+                return RedirectToPage("/AdminSideLogin/IndexLoginA"); // Redirect to admin page
+            }
+            else
+            {
+                return RedirectToPage("/common/KundeIndex"); // Redirect to regular user page
+            }
             // Gem brugerens email i sessionen
             _httpContextAccessor.HttpContext.Session.SetString("UserEmail", Email);
 
