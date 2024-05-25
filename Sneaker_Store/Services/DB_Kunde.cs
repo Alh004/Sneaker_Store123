@@ -21,13 +21,31 @@ namespace Sneaker_Store.Services
         public Kunde LoggedInKunde => _httpContextAccessor.HttpContext?.Items["LoggedInKunde"] as Kunde;
         public Kunde? KundeLoggedIn => /* hack */ null;
 
-        private const String insertSql = "insert into Kunder values(@navn,@efternavn,@email,@kode,@postnr,@addrese,@admin)";
+        private const string InsertSql = "INSERT INTO Kunder (Fornavn, Efternavn, Email, Adgangskode, Postnr, Adresse, Admin) VALUES (@navn, @efternavn, @email, @kode, @postnr, @addrese, @admin)";
+
         public Kunde Add(Kunde newKunde)
         {
-            SqlConnection connection = new SqlConnection(DB_Kunde.ConnectionString);
-            connection.Open();
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
 
-            SqlCommand cmd = new SqlCommand(insertSql, connection);
+                using (SqlCommand cmd = new SqlCommand(InsertSql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@navn", newKunde.Navn);
+                    cmd.Parameters.AddWithValue("@efternavn", newKunde.Efternavn);
+                    cmd.Parameters.AddWithValue("@email", newKunde.Email);
+                    cmd.Parameters.AddWithValue("@kode", newKunde.Kode);
+                    cmd.Parameters.AddWithValue("@postnr", newKunde.Postnr);
+                    cmd.Parameters.AddWithValue("@addrese", newKunde.Adresse);
+                    cmd.Parameters.AddWithValue("@admin", newKunde.Admin); // Add the Admin parameter
+
+                    int rows = cmd.ExecuteNonQuery();
+                    if (rows == 0)
+                    {
+                        throw new ArgumentException("Kunne ikke oprette Kunde = " + newKunde);
+                    }
+                }
+            SqlCommand cmd = new SqlCommand(InsertSql, connection);
             cmd.Parameters.AddWithValue("@navn", newKunde.Navn);
             cmd.Parameters.AddWithValue("@efternavn", newKunde.Efternavn);
             cmd.Parameters.AddWithValue("@email", newKunde.Email);
@@ -41,70 +59,104 @@ namespace Sneaker_Store.Services
             {
                 throw new ArgumentException("Kunne ikke oprette Kunde =" + newKunde);
             }
-            connection.Close();
             return newKunde;
         }
-
 
         public void AddKunde(Kunde kunde)
         {
             Add(kunde);
         }
 
-        public bool CheckKunde(string email, string password)
+        public LoginResult? CheckKunde(string email, string kode)
         {
-            bool isKundeValid = false;
-
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
-                string sql = "SELECT COUNT(*) FROM Kunder WHERE Email = @Email AND Adgangskode = @kode";
-                SqlCommand cmd = new SqlCommand(sql, connection);
-                cmd.Parameters.AddWithValue("@Email", email);
-                cmd.Parameters.AddWithValue("@kode", password);
-                int count = (int)cmd.ExecuteScalar();
-
-                isKundeValid = count > 0;
+                string sql = "SELECT KundeId, Fornavn, Efternavn, Email, Adresse, Postnr, Adgangskode, Admin FROM Kunder WHERE Email = @Email AND Adgangskode = @kode";
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@kode", kode);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            KundeLoggedIn = new Kunde
+                            {
+                                KundeId = reader.GetInt32(0),
+                                Navn = reader.GetString(1),
+                                Efternavn = reader.GetString(2),
+                                Email = reader.GetString(3),
+                                Adresse = reader.GetString(4),
+                                Postnr = reader.GetInt32(5),
+                                Kode = reader.GetString(6),
+                                Admin = reader.GetBoolean(7)
+                            };
+                            return new LoginResult
+                            {
+                                IsAdmin = KundeLoggedIn.Admin
+                            };
+                        }
+                        else
+                        {
+                            KundeLoggedIn = null;
+                            return null;
+                        }
+                    }
+                }
             }
 
             return isKundeValid;
         }
 
         public List<Kunde> GetAll()
+        {
+            List<Kunde> kunder = new List<Kunde>();
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                List<Kunde> kunder = new List<Kunde>();
-
-                SqlConnection connection = new SqlConnection(ConnectionString);
-
                 connection.Open();
-
-                String sql = "select * from Kunder";
-                SqlCommand cmd = new SqlCommand(sql, connection);
-
-                SqlDataReader reader = cmd.ExecuteReader(); 
-                while (reader.Read()) 
+                string sql = "SELECT KundeId, Fornavn, Efternavn, Email, Adresse, Postnr, Adgangskode, Admin FROM Kunder";
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
                 {
-                    Kunde kunde = ReadKunde(reader);
-                    kunder.Add(kunde);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Kunde kunde = new Kunde
+                            {
+                                KundeId = reader.GetInt32(0),
+                                Navn = reader.GetString(1),
+                                Efternavn = reader.GetString(2),
+                                Email = reader.GetString(3),
+                                Adresse = reader.GetString(4),
+                                Postnr = reader.GetInt32(5),
+                                Kode = reader.GetString(6),
+                                Admin = reader.GetBoolean(7)
+                            };
+                            kunder.Add(kunde);
+                        }
+                    }
                 }
-
-                connection.Close();
-
-                return kunder;
-
             }
 
-        public void LogoutKunde()
-        {
-            throw new NotImplementedException();
+            return kunder;
         }
 
+        public Kunde GetById(int kundeId)
         /*
          * DELETE
          */
         private const String deleteByIdlSql = "Delete from Kunder where KundeId = @KundeId";
         public Kunde Remove(int kundeid)
         {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                string sql = "SELECT KundeId, Fornavn, Efternavn, Email, Adresse, Postnr, Adgangskode, Admin FROM Kunder WHERE KundeId = @KundeId";
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@KundeId", kundeId);
             Kunde kunde = GetById(kundeid);
 
             SqlConnection connection = new SqlConnection(DB_Kunde.ConnectionString);
@@ -151,25 +203,77 @@ namespace Sneaker_Store.Services
             SqlCommand cmd = new SqlCommand(selectByIdlSql, connection);
             cmd.Parameters.AddWithValue("@KundeId", kundeid);
 
-            SqlDataReader reader = cmd.ExecuteReader();
-
-            Kunde kunde = null;
-            if (reader.Read())
-            {
-                kunde = ReadKunde(reader);
-            }
-            else
-            {
-                // no row i.e. not found
-                throw new KeyNotFoundException();
-            }
-
-                        return kunde;
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Kunde
+                            {
+                                KundeId = reader.GetInt32(0),
+                                Navn = reader.GetString(1),
+                                Efternavn = reader.GetString(2),
+                                Email = reader.GetString(3),
+                                Adresse = reader.GetString(4),
+                                Postnr = reader.GetInt32(5),
+                                Kode = reader.GetString(6),
+                                Admin = reader.GetBoolean(7)
+                            };
+                        }
+                        else
+                        {
+                            throw new KeyNotFoundException();
+                        }
                     }
                 }
             }
         }
 
+        public void RemoveKunde(Kunde kunde)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                string sql = "DELETE FROM Kunder WHERE KundeId = @KundeId";
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@KundeId", kunde.KundeId);
+                    int rows = cmd.ExecuteNonQuery();
+                    if (rows == 0)
+                    {
+                        throw new ArgumentException("Kunne ikke slette Kunde = " + kunde);
+                    }
+                }
+            }
+        }
+
+        public Kunde Opdater(Kunde kunde)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                string sql = "UPDATE Kunder SET Fornavn = @navn, Efternavn = @efternavn, Email = @email, Adgangskode = @kode, Postnr = @postnr, Adresse = @addrese, Admin = @admin WHERE KundeId = @KundeId";
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@navn", kunde.Navn);
+                    cmd.Parameters.AddWithValue("@efternavn", kunde.Efternavn);
+                    cmd.Parameters.AddWithValue("@email", kunde.Email);
+                    cmd.Parameters.AddWithValue("@kode", kunde.Kode);
+                    cmd.Parameters.AddWithValue("@postnr", kunde.Postnr);
+                    cmd.Parameters.AddWithValue("@addrese", kunde.Adresse);
+                    cmd.Parameters.AddWithValue("@admin", kunde.Admin);
+                    cmd.Parameters.AddWithValue("@KundeId", kunde.KundeId);
+
+                    int rows = cmd.ExecuteNonQuery();
+                    if (rows == 0)
+                    {
+                        throw new ArgumentException("Kunne ikke opdatere Kunde = " + kunde);
+                    }
+                }
+            }
+            return kunde;
+        }
+
+        public List<Kunde> Search(int number, string name, string phone)
         private const String updateSql = "update Kunder set Fornavn=@Navn, Efternavn=@Efternavn, Adgangskode = @Kode, Postnr = @Postnr, Adresse = @Adresse WHERE KundeId = @kundeid";
         public Kunde Update(int kundeid, Kunde updatedKunde)
         {
