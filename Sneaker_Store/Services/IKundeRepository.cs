@@ -13,6 +13,7 @@ namespace Sneaker_Store.Services
         public Kunde GetById(int Kundeid);
         public Kunde Opdater(Kunde kunde);
 
+          Kunde GetByEmail(string email);
 
 
         public List<Kunde> Search(int number, string name, string phone);

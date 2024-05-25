@@ -4,16 +4,17 @@
 }
 <h1>Login page</h1>
 
-<form method="post">
-    Email: <input type="text" asp-for="@Model.Email" /><br />
-    Kode: <input type="password" asp-for="@Model.Kode" /><br />
-    <input type="submit" value="Login" class="btn btn-primary" /><br />
-    <input type="submit" value="Opret Bruger" class="btn btn-primary" asp-page="/IndexOpret/OpretIndex"><br />
-    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+<div class="text-center">
+    <form method="post">
+        Email: <input type="text" asp-for="Email" /><br />
+        Kode: <input type="password" asp-for="Kode" /><br />
+        <input type="submit" value="Login" class="btn btn-primary" /><br />
+        <input type="button" value="Opret Bruger" class="btn btn-primary" onclick="location.href='@Url.Page("/IndexOpret/OpretIndex")'" /><br />
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
         {
             <div style="color:red;">
                 @Model.ErrorMessage
             </div>
         }
-</form>
-
+    </form>
+</div>

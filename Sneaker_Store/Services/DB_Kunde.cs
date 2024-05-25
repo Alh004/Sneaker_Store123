@@ -10,9 +10,17 @@ namespace Sneaker_Store.Services
         private const string ConnectionString =
             "Data Source=mssql13.unoeuro.com;Initial Catalog=sirat_dk_db_thread;User ID=sirat_dk;Password=m5k6BgDhAzxbprH49cyE;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public DB_Kunde(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor;
+        }
+        
+        public Kunde LoggedInKunde => _httpContextAccessor.HttpContext?.Items["LoggedInKunde"] as Kunde;
         public Kunde? KundeLoggedIn => /* hack */ null;
 
-        private const String insertSql = "insert into Kunder values(@navn,@efternavn,@email,@kode,@postnr,@addrese)";
+        private const String insertSql = "insert into Kunder values(@navn,@efternavn,@email,@kode,@postnr,@addrese,@admin)";
         public Kunde Add(Kunde newKunde)
         {
             SqlConnection connection = new SqlConnection(DB_Kunde.ConnectionString);
@@ -25,7 +33,7 @@ namespace Sneaker_Store.Services
             cmd.Parameters.AddWithValue("@kode", newKunde.Kode);
             cmd.Parameters.AddWithValue("@postnr", newKunde.Postnr);
             cmd.Parameters.AddWithValue("@addrese", newKunde.Adresse);
-            
+            cmd.Parameters.AddWithValue("@admin", newKunde.Admin);
             
             int rows = cmd.ExecuteNonQuery();
             if (rows == 0)
@@ -144,6 +152,12 @@ namespace Sneaker_Store.Services
         {
             throw new NotImplementedException();
         }
+
+        public Kunde GetByEmail(string email)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Kunde> SortNumber()
         {
             throw new NotImplementedException();

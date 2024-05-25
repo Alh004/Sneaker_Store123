@@ -25,6 +25,8 @@ public class IndexLoginA : PageModel
 
         KundeLoggedIn = _kunder.KundeLoggedIn;
 
-        return Page();
+        return Page(); 
+        
+        
     }
 }

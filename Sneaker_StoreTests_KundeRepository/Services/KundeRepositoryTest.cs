@@ -11,12 +11,7 @@ namespace Sneaker_Store.Services.Tests
         private KundeRepository _kundeRepository;
 
         [TestInitialize]
-        public void TestInitialize()
-        {
-            // Initialiser kunde repository med testdata
-            _kundeRepository = new KundeRepository(mockData: true);
-        }
-
+       
         [TestMethod]
         public void AddKunde_ValidPerson_AddsPersonToList()
         {

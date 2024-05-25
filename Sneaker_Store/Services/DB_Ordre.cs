@@ -47,7 +47,7 @@ public class DB_Ordre : IOrdreRepository
         throw new NotImplementedException();
     }
 
-    public void TilføjOrdre(Ordre ordre)
+    public void AddOrdre(Ordre ordre)
     {
         throw new NotImplementedException();
     }

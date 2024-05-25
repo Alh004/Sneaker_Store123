@@ -9,10 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder.Services.AddSingleton<IKundeRepository>(new DB_Kunde()); // Adjusted for DB
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSingleton<IKundeRepository, DB_Kunde>();
 builder.Services.AddSingleton<ISkoRepository>(new SkoRepository(true));
 builder.Services.AddScoped<Kurv>(); // Register Kurv with scoped lifetime
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 // Add session services
 builder.Services.AddSession(options =>

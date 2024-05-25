@@ -20,7 +20,7 @@ namespace Sneaker_Store.Pages.common
         {
             if (_kunder is null || _kunder.KundeLoggedIn is null)
             {
-                return RedirectToPage("/common/Skoindex");
+                return RedirectToPage("/common/SkoIndex");
             }
 
             return Page();
