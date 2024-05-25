@@ -28,9 +28,9 @@ namespace Sneaker_Store.Pages.common.KundeListe
                 return Page();
             }
 
-            public IActionResult OnPostDelete(Kunde kunde)
+            public IActionResult OnPostDelete(int nummer)
             {
-                _repo.RemoveKunde(kunde);
+                _repo.Remove(nummer);
 
                 return RedirectToPage("Index");
             }

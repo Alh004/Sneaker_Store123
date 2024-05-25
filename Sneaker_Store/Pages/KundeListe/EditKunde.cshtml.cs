@@ -64,6 +64,10 @@ namespace Sneaker_Store.Pages.KundeListe
                 NytKundeId = kunde.KundeId;
                 NytKundeNavn = kunde.Navn;
                 NytKundeEfternavn = kunde.Efternavn;
+                NytKundeEmail = kunde.Email;
+                NytAdresse = kunde.Adresse;
+                NytPostnr = kunde.Postnr;
+                NytAdmin = kunde.Admin;
             }
             catch (KeyNotFoundException knfe)
             {
@@ -80,7 +84,7 @@ namespace Sneaker_Store.Pages.KundeListe
                 return Page();
             }
 
-            Kunde kunde = _repo.Opdater(new Kunde(NytKundeId, NytKundeNavn, NytKundeEfternavn, NytKundeEmail, NytAdresse, NytPostnr, NytKode, NytAdmin));
+            Kunde kunde = _repo.Update(new Kunde(NytKundeId, NytKundeNavn, NytKundeEfternavn, NytKundeEmail, NytAdresse, NytPostnr, NytKode, NytAdmin));
 
             return RedirectToPage("Index");
         }

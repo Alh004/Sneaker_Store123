@@ -43,7 +43,7 @@ public class KundeRepository : IKundeRepository
         _kunder.Add(kunde);
     }
 
-    public void RemoveKunde(Kunde kunde)
+    public void Remove(Kunde kunde)
     {
         _kunder.Remove(kunde);
     }
@@ -65,11 +65,23 @@ public bool CheckKunde(string email, string kode)
         }
     }
 
-    public Kunde Opdater(Kunde kunde)
+    public Kunde Update(int kundeid, Kunde updatedKunde)
     {
-        Kunde editKunde = GetById(kunde.KundeId);
-        _kunder[kunde.KundeId] = kunde;
-        return kunde;
+        if (kundeid != updatedKunde.KundeId)
+        {
+            throw new ArgumentException("kan ikke opdatere kundeid og obj.KundeId er forskellige");
+        }
+
+        Kunde updateThisKunde = GetById(kundeid);
+
+        updateThisKunde.Navn = updatedKunde.Navn;
+        updateThisKunde.Efternavn = updatedKunde.Efternavn;
+        updateThisKunde.Email = updatedKunde.Email;
+        updateThisKunde.Adresse = updatedKunde.Adresse;
+        updateThisKunde.Postnr = updatedKunde.Postnr;
+        updateThisKunde.Kode = updatedKunde.Kode;
+
+        return updateThisKunde;
     }
 
    
@@ -93,6 +105,17 @@ public bool CheckKunde(string email, string kode)
     {
         KundeLoggedIn = null;
     }
-    
-    
+
+    public Kunde Update(Kunde kunde)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Kunde Remove(int kundeid)
+    {
+        Kunde deleteKunde = GetById(kundeid);
+
+        _kunder.Remove(deleteKunde);
+        return deleteKunde;
+    }
 }

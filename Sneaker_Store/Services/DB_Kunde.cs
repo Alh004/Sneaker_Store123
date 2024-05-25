@@ -12,7 +12,7 @@ namespace Sneaker_Store.Services
 
         public Kunde? KundeLoggedIn => /* hack */ null;
 
-        private const String insertSql = "insert into Kunder values(@navn,@efternavn,@email,@kode,@postnr,@addrese)";
+        private const String insertSql = "insert into Kunder values(@navn,@efternavn,@email,@kode,@postnr,@adresse)";
         public Kunde Add(Kunde newKunde)
         {
             SqlConnection connection = new SqlConnection(DB_Kunde.ConnectionString);
@@ -24,7 +24,7 @@ namespace Sneaker_Store.Services
             cmd.Parameters.AddWithValue("@email", newKunde.Email);
             cmd.Parameters.AddWithValue("@kode", newKunde.Kode);
             cmd.Parameters.AddWithValue("@postnr", newKunde.Postnr);
-            cmd.Parameters.AddWithValue("@addrese", newKunde.Adresse);
+            cmd.Parameters.AddWithValue("@adresse", newKunde.Adresse);
             
             
             int rows = cmd.ExecuteNonQuery();
@@ -90,9 +90,29 @@ namespace Sneaker_Store.Services
             throw new NotImplementedException();
         }
 
-        public void RemoveKunde(Kunde kunde)
+        /*
+         * DELETE
+         */
+        private const String deleteByIdlSql = "Delete from Kunder where KundeId = @KundeId";
+        public Kunde Remove(int kundeid)
         {
-            throw new NotImplementedException();
+            Kunde kunde = GetById(kundeid);
+
+            SqlConnection connection = new SqlConnection(DB_Kunde.ConnectionString);
+            connection.Open();
+
+            SqlCommand cmd = new SqlCommand(deleteByIdlSql, connection);
+            cmd.Parameters.AddWithValue("@KundeId", kundeid);
+
+            int rows = cmd.ExecuteNonQuery();
+
+            if (rows == 0)
+            {
+                throw new ArgumentException("Kunne ikke slette Kunder med KundeId=" + kundeid);
+            }
+            connection.Close();
+
+            return kunde;
         }
 
         private Kunde ReadKunde(SqlDataReader reader)
@@ -140,10 +160,32 @@ namespace Sneaker_Store.Services
             return kunde;
         }
 
-        public Kunde Opdater(Kunde kunde)
+        private const String updateSql = "update Kunder set Navn=@navn, Efternavn=@efternavn where KundeId=@kundeid";
+        public Kunde Update(int kundeid, Kunde updatedKunde)
         {
-            throw new NotImplementedException();
+            if (kundeid != updatedKunde.KundeId)
+            {
+                throw new ArgumentException("Kan ikke opdatere id er forskellig fra id i updatedeKunde");
+            }
+
+            SqlConnection connection = new SqlConnection(DB_Kunde.ConnectionString);
+            connection.Open();
+
+            SqlCommand cmd = new SqlCommand(updateSql, connection);
+            cmd.Parameters.AddWithValue("@navn", updatedKunde.Navn);
+            cmd.Parameters.AddWithValue("@efternavn", updatedKunde.Efternavn);
+            cmd.Parameters.AddWithValue("@email", updatedKunde.Email);
+            cmd.Parameters.AddWithValue("@kode", updatedKunde.Kode);
+            cmd.Parameters.AddWithValue("@postnr", updatedKunde.Postnr);
+            cmd.Parameters.AddWithValue("@adresse", updatedKunde.Adresse);
+
+            int row = cmd.ExecuteNonQuery();
+            Console.WriteLine("Rows affected " + row);
+
+            connection.Close();
+            return updatedKunde;
         }
+
         public List<Kunde> SortNumber()
         {
             throw new NotImplementedException();
@@ -155,6 +197,16 @@ namespace Sneaker_Store.Services
         }
 
         public List<Kunde> Search(int number, string name, string phone)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Kunde Update(Kunde kunde)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Remove(Kunde kunde)
         {
             throw new NotImplementedException();
         }
