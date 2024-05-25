@@ -8,7 +8,7 @@ namespace Sneaker_Store.Services
         // Metoder til at arbejde med ordrer
 
         // Tilføj en ny ordre
-        void TilføjOrdre(Ordre ordre);
+        void AddOrdre(Ordre ordre);
 
         // Find en ordre baseret på ID
         Ordre FindOrdre(int ordreId);

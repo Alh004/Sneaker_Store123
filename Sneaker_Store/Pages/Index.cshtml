@@ -5,7 +5,13 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @if (Model.LoggedInKunde != null)
+    {
+        <p class="welcome-message">Velkommen, @Model.LoggedInKunde.Navn @Model.LoggedInKunde.Efternavn</p>
+    }
+    else
+    {
+        <p class="login-message">Log ind for at få adgang til din info</p>
+    }
+    <p>Learn more about <a href="https://docs.microsoft.com/aspnet/core" class="learn-more-link">building Web apps with ASP.NET Core</a>.</p>
 </div>
-

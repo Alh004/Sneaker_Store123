@@ -13,7 +13,7 @@ namespace Sneaker_Store.Services
             // Her kan du initialisere repository med nogle standard ordrer, hvis nødvendigt
         }
 
-        public void TilføjOrdre(Ordre ordre)
+        public void AddOrdre(Ordre ordre)
         {
             _ordrer.Add(ordre);
         }

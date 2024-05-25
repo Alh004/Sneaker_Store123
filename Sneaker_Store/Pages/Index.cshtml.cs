@@ -7,14 +7,23 @@ namespace Sneaker_Store.Pages;
 
 public class IndexModel : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
-    private IKundeRepository _repo;
+    private readonly IKundeRepository _kundeRepository;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-
-    public IndexModel(ILogger<IndexModel> logger, IKundeRepository repo)
+    public IndexModel(IKundeRepository kundeRepository, IHttpContextAccessor httpContextAccessor)
     {
-        _logger = logger;
-        _repo = repo;
+        _kundeRepository = kundeRepository;
+        _httpContextAccessor = httpContextAccessor;
     }
 
+    public Kunde LoggedInKunde { get; private set; }
+
+    public void OnGet()
+    {
+        string email = _httpContextAccessor.HttpContext.Session.GetString("UserEmail");
+        if (!string.IsNullOrEmpty(email))
+        {
+            LoggedInKunde = _kundeRepository.GetByEmail(email);
+        }
+    }
 }

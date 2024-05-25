@@ -6,7 +6,7 @@ public class KundeRepository : IKundeRepository
 {
     private List<Kunde> _kunder = new List<Kunde>();
 
-    // konstruktør
+    // konstruktÃ¸r
 
     public Kunde? KundeLoggedIn { get; private set; }
 
@@ -84,7 +84,12 @@ public bool CheckKunde(string email, string kode)
         return updateThisKunde;
     }
 
-   
+    public Kunde GetByEmail(string email)
+    {
+        return _kunder.FirstOrDefault(k => k.Email == email);
+    }
+
+
     public List<Kunde> Search(int number, string name, string phone)
     {
         throw new NotImplementedException();

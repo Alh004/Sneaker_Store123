@@ -7,39 +7,47 @@ namespace Sneaker_Store.Pages
     public class LoginModel : PageModel
     {
         private readonly IKundeRepository _kundeRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public LoginModel(IKundeRepository kundeRepository)
+        public LoginModel(IKundeRepository kundeRepository, IHttpContextAccessor httpContextAccessor)
         {
             _kundeRepository = kundeRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        [BindProperty]
-        public string Email { get; set; }
-
-        [BindProperty]
-        public string Kode { get; set; }
+        [BindProperty] public string Email { get; set; }
+        [BindProperty] public string Kode { get; set; }
 
         public string ErrorMessage { get; private set; }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            // Kontroller om brugeren allerede er logget ind
+            if (_httpContextAccessor.HttpContext.Session.GetString("UserEmail") != null)
+            {
+                return RedirectToPage("/Index");
+            }
+            return Page();
         }
 
         public IActionResult OnPost()
         {
             if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Kode))
             {
-                ErrorMessage = "baade email og kode er forkert.";
+                ErrorMessage = "Både email og kode skal udfyldes.";
                 return Page();
             }
 
             if (!_kundeRepository.CheckKunde(Email, Kode))
             {
-                ErrorMessage = "Forket kode eller email.";
+                ErrorMessage = "Forkert kode eller email.";
                 return Page();
             }
 
-            return RedirectToPage("/common/Skoindex");
+            // Gem brugerens email i sessionen
+            _httpContextAccessor.HttpContext.Session.SetString("UserEmail", Email);
+
+            return RedirectToPage("Index");
         }
     }
 }
