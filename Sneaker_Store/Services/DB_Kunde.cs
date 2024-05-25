@@ -18,8 +18,7 @@ namespace Sneaker_Store.Services
             _httpContextAccessor = httpContextAccessor;
         }
         
-        public Kunde LoggedInKunde => _httpContextAccessor.HttpContext?.Items["LoggedInKunde"] as Kunde;
-        public Kunde? KundeLoggedIn => /* hack */ null;
+        public Kunde? KundeLoggedIn { get; private set; }
 
         private const string InsertSql = "INSERT INTO Kunder (Fornavn, Efternavn, Email, Adgangskode, Postnr, Adresse, Admin) VALUES (@navn, @efternavn, @email, @kode, @postnr, @addrese, @admin)";
 
@@ -45,19 +44,6 @@ namespace Sneaker_Store.Services
                         throw new ArgumentException("Kunne ikke oprette Kunde = " + newKunde);
                     }
                 }
-            SqlCommand cmd = new SqlCommand(InsertSql, connection);
-            cmd.Parameters.AddWithValue("@navn", newKunde.Navn);
-            cmd.Parameters.AddWithValue("@efternavn", newKunde.Efternavn);
-            cmd.Parameters.AddWithValue("@email", newKunde.Email);
-            cmd.Parameters.AddWithValue("@kode", newKunde.Kode);
-            cmd.Parameters.AddWithValue("@postnr", newKunde.Postnr);
-            cmd.Parameters.AddWithValue("@addrese", newKunde.Adresse);
-            cmd.Parameters.AddWithValue("@admin", newKunde.Admin);
-            
-            int rows = cmd.ExecuteNonQuery();
-            if (rows == 0)
-            {
-                throw new ArgumentException("Kunne ikke oprette Kunde =" + newKunde);
             }
             return newKunde;
         }
@@ -105,8 +91,6 @@ namespace Sneaker_Store.Services
                     }
                 }
             }
-
-            return isKundeValid;
         }
 
         public List<Kunde> GetAll()
@@ -144,11 +128,6 @@ namespace Sneaker_Store.Services
         }
 
         public Kunde GetById(int kundeId)
-        /*
-         * DELETE
-         */
-        private const String deleteByIdlSql = "Delete from Kunder where KundeId = @KundeId";
-        public Kunde Remove(int kundeid)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
@@ -157,51 +136,6 @@ namespace Sneaker_Store.Services
                 using (SqlCommand cmd = new SqlCommand(sql, connection))
                 {
                     cmd.Parameters.AddWithValue("@KundeId", kundeId);
-            Kunde kunde = GetById(kundeid);
-
-            SqlConnection connection = new SqlConnection(DB_Kunde.ConnectionString);
-            connection.Open();
-
-            SqlCommand cmd = new SqlCommand(deleteByIdlSql, connection);
-            cmd.Parameters.AddWithValue("@KundeId", kundeid);
-
-            int rows = cmd.ExecuteNonQuery();
-
-            if (rows == 0)
-            {
-                throw new ArgumentException("Kunne ikke slette Kunder med KundeId=" + kundeid);
-            }
-            connection.Close();
-
-            return kunde;
-        }
-
-        private Kunde ReadKunde(SqlDataReader reader)
-        {
-            Kunde kunde = new Kunde();
-
-            kunde.KundeId = reader.GetInt32(0);
-            kunde.Navn = reader.GetString(1);
-            kunde.Efternavn = reader.GetString(2);
-            kunde.Email = reader.GetString(3);
-            kunde.Adresse = reader.GetString(4);
-            kunde.Postnr = reader.GetInt32(5);
-
-            return kunde;
-            
-          
-            
-        }
-
-        private const string selectByIdlSql = "SELECT * FROM Kunder WHERE KundeId = @KundeId";
-
-        public Kunde GetById(int kundeid)
-        {
-            SqlConnection connection = new SqlConnection(DB_Kunde.ConnectionString);
-            connection.Open();
-
-            SqlCommand cmd = new SqlCommand(selectByIdlSql, connection);
-            cmd.Parameters.AddWithValue("@KundeId", kundeid);
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -273,35 +207,59 @@ namespace Sneaker_Store.Services
             return kunde;
         }
 
-        public List<Kunde> Search(int number, string name, string phone)
-        private const String updateSql = "update Kunder set Fornavn=@Navn, Efternavn=@Efternavn, Adgangskode = @Kode, Postnr = @Postnr, Adresse = @Adresse WHERE KundeId = @kundeid";
-        public Kunde Update(int kundeid, Kunde updatedKunde)
+        public Kunde Remove(int kundeId)
         {
-            if (kundeid != updatedKunde.KundeId)
+            Kunde kunde = GetById(kundeId);
+            RemoveKunde(kunde);
+            return kunde;
+        }
+
+        public Kunde Update(int nytKundeId, Kunde kunde)
+        {
+            if (nytKundeId != kunde.KundeId)
             {
-                throw new ArgumentException("Kan ikke opdatere id er forskellig fra id i updatedeKunde");
+                throw new ArgumentException("Kan ikke opdatere KundeId, de er forskellige.");
             }
 
-            SqlConnection connection = new SqlConnection(DB_Kunde.ConnectionString);
-            connection.Open();
-
-            SqlCommand cmd = new SqlCommand(updateSql, connection);
-            cmd.Parameters.AddWithValue("@KundeId", kundeid);
-            cmd.Parameters.AddWithValue("@Navn", updatedKunde.Navn);
-            cmd.Parameters.AddWithValue("@Efternavn", updatedKunde.Efternavn);
-            cmd.Parameters.AddWithValue("@Email", updatedKunde.Email);
-            cmd.Parameters.AddWithValue("@Kode", updatedKunde.Kode);
-            cmd.Parameters.AddWithValue("@Postnr", updatedKunde.Postnr);
-            cmd.Parameters.AddWithValue("@Adresse", updatedKunde.Adresse);
-
-            int row = cmd.ExecuteNonQuery();
-            Console.WriteLine("Rows affected " + row);
-
-            connection.Close();
-            return updatedKunde;
+            return Opdater(kunde);
         }
 
         public Kunde GetByEmail(string email)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                string sql = "SELECT KundeId, Fornavn, Efternavn, Email, Adresse, Postnr, Adgangskode, Admin FROM Kunder WHERE Email = @Email";
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@Email", email);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Kunde
+                            {
+                                KundeId = reader.GetInt32(0),
+                                Navn = reader.GetString(1),
+                                Efternavn = reader.GetString(2),
+                                Email = reader.GetString(3),
+                                Adresse = reader.GetString(4),
+                                Postnr = reader.GetInt32(5),
+                                Kode = reader.GetString(6),
+                                Admin = reader.GetBoolean(7)
+                            };
+                        }
+                        else
+                        {
+                            throw new KeyNotFoundException();
+                        }
+                    }
+                }
+            }
+        }
+
+        public List<Kunde> Search(int number, string name, string phone)
         {
             throw new NotImplementedException();
         }
@@ -316,19 +274,9 @@ namespace Sneaker_Store.Services
             throw new NotImplementedException();
         }
 
-        public List<Kunde> Search(int number, string name, string phone)
+        public void LogoutKunde()
         {
-            throw new NotImplementedException();
-        }
-
-        public Kunde Update(Kunde kunde)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Remove(Kunde kunde)
-        {
-            throw new NotImplementedException();
+            KundeLoggedIn = null;
         }
     }
 }

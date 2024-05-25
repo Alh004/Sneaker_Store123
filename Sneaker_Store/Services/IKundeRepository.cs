@@ -1,4 +1,5 @@
 ﻿using Sneaker_Store.Model;
+using System.Collections.Generic;
 
 namespace Sneaker_Store.Services
 {
@@ -15,15 +16,8 @@ namespace Sneaker_Store.Services
         List<Kunde> Search(int number, string name, string phone);
         List<Kunde> SortNumber();
         List<Kunde> SortName();
-        public Kunde Remove(int kundeid);
-        public Kunde GetById(int Kundeid);
-        public Kunde Update(int nytKundeId, Kunde kunde);
-
-          Kunde GetByEmail(string email);
-
-
-        public List<Kunde> Search(int number, string name, string phone);
-        public List<Kunde> SortNumber();
-        public List<Kunde> SortName();
+        Kunde Remove(int kundeid);
+        Kunde Update(int nytKundeId, Kunde kunde);
+        Kunde GetByEmail(string email);
     }
 }
