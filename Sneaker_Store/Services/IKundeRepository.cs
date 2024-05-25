@@ -11,7 +11,7 @@ namespace Sneaker_Store.Services
         void LogoutKunde();
         public Kunde Remove(int kundeid);
         public Kunde GetById(int Kundeid);
-        public Kunde Update(Kunde kunde);
+        public Kunde Update(int nytKundeId, Kunde kunde);
 
 
 

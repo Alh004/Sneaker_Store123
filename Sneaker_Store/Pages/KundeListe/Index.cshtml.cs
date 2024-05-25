@@ -39,7 +39,7 @@ namespace Sneaker_Store.Pages.KundeListe
 
         public IActionResult OnPost()
         {
-            return RedirectToPage("NyKunde");
+            return RedirectToPage("Index");
         }
 
         public IActionResult OnPostSearch()

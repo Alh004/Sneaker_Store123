@@ -2,34 +2,39 @@
 @model Sneaker_Store.Pages.KundeListe.EditKundeModel
 @{
 }
+
 <h1>Ændre en kunde</h1>
 
-
 <form method="post">
-    <div class="form-group>">
+    <div class="form-group">
         <label>Kunde nummer</label> : @Model.NytKundeId<br />
-        <input type="hidden" asp-for="@Model.NytKundeId" /><br />
+        <input type="hidden" asp-for="NytKundeId" /><br />
         <label class="text text-danger">@Model.ErrorMessage</label><br />
         <br />
 
-
         <label>Kunde navn</label><br />
-        <input class="form-control" asp-for="@Model.NytKundeNavn" /><br />
-        <span asp-validation-for="@Model.NytKundeNavn" class="text-danger"></span><br />
-
+        <input class="form-control" asp-for="NytKundeNavn" /><br />
+        <span asp-validation-for="NytKundeNavn" class="text-danger"></span><br />
 
         <label>Kunde efternavn</label><br />
-        <input class="form-control" asp-for="@Model.NytKundeEfternavn" /><br />
+        <input class="form-control" asp-for="NytKundeEfternavn" /><br />
+        <span asp-validation-for="NytKundeEfternavn" class="text-danger"></span><br />
 
         <label>Kunde email</label><br />
-        <input class="form-control" asp-for="@Model.NytKundeEmail" />Email<br />
-
+        <input class="form-control" asp-for="NytKundeEmail" /><br />
+        <span asp-validation-for="NytKundeEmail" class="text-danger"></span><br />
 
         <label>Kunde adresse</label><br />
-        <input class="form-control" asp-for="@Model.NytAdresse" /><br />
+        <input class="form-control" asp-for="NytAdresse" /><br />
+        <span asp-validation-for="NytAdresse" class="text-danger"></span><br />
 
         <label>Kunde postnr</label><br />
-        <input class="form-control" asp-for="@Model.NytPostnr" /><br />
+        <input class="form-control" asp-for="NytPostnr" /><br />
+        <span asp-validation-for="NytPostnr" class="text-danger"></span><br />
+
+        <label>Kunde kode</label><br />
+        <input class="form-control" asp-for="NytKode" /><br />
+        <span asp-validation-for="NytKode" class="text-danger"></span><br />
 
 
         @if (Model.Error)

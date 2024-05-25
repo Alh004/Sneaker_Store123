@@ -59,15 +59,15 @@ namespace Sneaker_Store.Pages.KundeListe
 
             try
             {
-                Kunde kunde = _repo.GetById(nummer);
+                Kunde Kunde = _repo.GetById(nummer);
 
-                NytKundeId = kunde.KundeId;
-                NytKundeNavn = kunde.Navn;
-                NytKundeEfternavn = kunde.Efternavn;
-                NytKundeEmail = kunde.Email;
-                NytAdresse = kunde.Adresse;
-                NytPostnr = kunde.Postnr;
-                NytAdmin = kunde.Admin;
+                NytKundeId = Kunde.KundeId;
+                NytKundeNavn = Kunde.Navn;
+                NytKundeEfternavn = Kunde.Efternavn;
+                NytKundeEmail = Kunde.Email;
+                NytAdresse = Kunde.Adresse;
+                NytPostnr = Kunde.Postnr;
+                NytAdmin = Kunde.Admin;
             }
             catch (KeyNotFoundException knfe)
             {
@@ -84,11 +84,31 @@ namespace Sneaker_Store.Pages.KundeListe
                 return Page();
             }
 
-            Kunde kunde = _repo.Update(new Kunde(NytKundeId, NytKundeNavn, NytKundeEfternavn, NytKundeEmail, NytAdresse, NytPostnr, NytKode, NytAdmin));
+            try
+            {
+                Kunde updatedKunde = new Kunde
+                {
+                    KundeId = NytKundeId,
+                    Navn = NytKundeNavn,
+                    Efternavn = NytKundeEfternavn,
+                    Email = NytKundeEmail,
+                    Adresse = NytAdresse,
+                    Postnr = NytPostnr,
+                    Kode = NytKode,
+                    Admin = NytAdmin
+                };
 
-            return RedirectToPage("Index");
+                _repo.Update(NytKundeId, updatedKunde);
+
+                return RedirectToPage("Index");
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+                Error = true;
+                return Page();
+            }
         }
-
 
 
         public IActionResult OnPostCancel()

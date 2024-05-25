@@ -160,7 +160,7 @@ namespace Sneaker_Store.Services
             return kunde;
         }
 
-        private const String updateSql = "update Kunder set Navn=@navn, Efternavn=@efternavn where KundeId=@kundeid";
+        private const String updateSql = "update Kunder set Fornavn=@Navn, Efternavn=@Efternavn, Adgangskode = @Kode, Postnr = @Postnr, Adresse = @Adresse WHERE KundeId = @kundeid";
         public Kunde Update(int kundeid, Kunde updatedKunde)
         {
             if (kundeid != updatedKunde.KundeId)
@@ -172,12 +172,13 @@ namespace Sneaker_Store.Services
             connection.Open();
 
             SqlCommand cmd = new SqlCommand(updateSql, connection);
-            cmd.Parameters.AddWithValue("@navn", updatedKunde.Navn);
-            cmd.Parameters.AddWithValue("@efternavn", updatedKunde.Efternavn);
-            cmd.Parameters.AddWithValue("@email", updatedKunde.Email);
-            cmd.Parameters.AddWithValue("@kode", updatedKunde.Kode);
-            cmd.Parameters.AddWithValue("@postnr", updatedKunde.Postnr);
-            cmd.Parameters.AddWithValue("@adresse", updatedKunde.Adresse);
+            cmd.Parameters.AddWithValue("@KundeId", kundeid);
+            cmd.Parameters.AddWithValue("@Navn", updatedKunde.Navn);
+            cmd.Parameters.AddWithValue("@Efternavn", updatedKunde.Efternavn);
+            cmd.Parameters.AddWithValue("@Email", updatedKunde.Email);
+            cmd.Parameters.AddWithValue("@Kode", updatedKunde.Kode);
+            cmd.Parameters.AddWithValue("@Postnr", updatedKunde.Postnr);
+            cmd.Parameters.AddWithValue("@Adresse", updatedKunde.Adresse);
 
             int row = cmd.ExecuteNonQuery();
             Console.WriteLine("Rows affected " + row);
