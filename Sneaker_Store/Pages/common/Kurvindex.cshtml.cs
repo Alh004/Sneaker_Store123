@@ -37,5 +37,11 @@ namespace Sneaker_Store.Pages.common
             Skos = _kurv.HentAlleSko();
             return RedirectToPage();
         }
+        
+        public IActionResult OnPostKøb()
+        {
+            _kurv.Køb(); 
+            return RedirectToPage("/Shared/Confirmation");
+        }
     }
 }

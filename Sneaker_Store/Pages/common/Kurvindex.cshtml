@@ -1,36 +1,55 @@
 @page
 @model Sneaker_Store.Pages.common.KurvIndexModel
-@{
-    ViewData["Title"] = "Your Basket";
-}
 
-<h2>Your Basket</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Basket</title>
+</head>
+<body>
+<h1>Your Basket</h1>
 
 @if (Model.Skos != null && Model.Skos.Any())
 {
-    <div class="row">
+    <table>
+        <thead>
+        <tr>
+            <th>Image</th>
+            <th>Shoe Name</th>
+            <th>Brand</th>
+            <th>Size</th>
+            <th>Price</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
         @foreach (var sko in Model.Skos)
         {
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <img src="@sko.ImageUrl" class="card-img-top" alt="Shoe Image">
-                    <div class="card-body">
-                        <h5 class="card-title">@sko.Maerke - @sko.Model</h5>
-                        <p class="card-text">Size: @sko.Str</p>
-                        <p class="card-text">Price: @sko.Pris DKK</p>
-                        <form method="post">
-                            <input type="hidden" name="SkoId" value="@sko.SkoId" />
-                            <button type="submit" asp-page-handler="DeleteFromBasket" class="btn btn-danger">Remove</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            <tr>
+                <td><img src="@sko.ImageUrl" alt="@sko.Model" width="100" /></td>
+                <td>@sko.Model</td>
+                <td>@sko.Maerke</td>
+                <td>@(sko.Str.HasValue ? sko.Str.ToString() : "N/A")</td> <!-- Display size if available, otherwise "N/A" -->
+                <td>@sko.Pris.ToString("C")</td>
+                <td>
+                    <form method="post" asp-page-handler="DeleteFromBasket">
+                        <input type="hidden" name="SkoId" value="@sko.SkoId" />
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
         }
-    </div>
+        </tbody>
+    </table>
+    <p>Total Price: @Model.Skos.Sum(s => s.Pris).ToString("C")</p>
 }
 else
 {
     <p>Your basket is empty.</p>
 }
-
-<a asp-page="/common/SkoIndex" class="btn btn-primary">Back to Shoes</a>
+<form method="post">
+    <button type="submit" formaction="/Kurv/Køb">Køb</button>
+</form>
+<a asp-page="/common/SkoIndex" class="btn btn-primary">Back to Shop</a>
+</body>
+</html>

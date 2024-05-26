@@ -1,7 +1,6 @@
 using Sneaker_Store.Model;
 
 namespace Sneaker_Store.Services
-
 {
     public class OrdreRepository : IOrdreRepository
     {
@@ -13,9 +12,22 @@ namespace Sneaker_Store.Services
             // Her kan du initialisere repository med nogle standard ordrer, hvis nødvendigt
         }
 
+        // Inactive AddOrdre method
+        //public void AddOrdre(Ordre ordre)
+        //{
+        //    _ordrer.Add(ordre);
+        //}
+
+        // Inactive AddOrdre method with NotImplementedException
         public void AddOrdre(Ordre ordre)
         {
-            _ordrer.Add(ordre);
+            throw new NotImplementedException();
+        }
+
+        // Inactive TilføjOrdre method with NotImplementedException
+        public void TilføjOrdre(Ordre ordre)
+        {
+            throw new NotImplementedException();
         }
 
         public Ordre FindOrdre(int ordreId)
@@ -27,13 +39,10 @@ namespace Sneaker_Store.Services
         {
             return _ordrer;
         }
-        
 
         public void SletOrdre(int ordreId)
         {
             _ordrer.RemoveAll(o => o.OrdreId == ordreId);
         }
-        
-        
     }
-}   
+}

@@ -43,5 +43,11 @@ namespace Sneaker_Store.Model
         {
             Testsession.Set(items, _httpContextAccessor.HttpContext);
         }
+        
+        public void Køb()
+        {
+            var tomKurv = new List<Sko>(); // Opret en ny tom kurv
+            SaveToSession(tomKurv); // Gem den tomme kurv i sessionen
+        }
     }
 }
