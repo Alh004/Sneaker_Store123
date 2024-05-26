@@ -1,54 +1,45 @@
 @page
 @model Sneaker_Store.Pages.common.SkoIndexModel
 @{
-    ViewData["Title"] = "Sneaker Store";
+    ViewData["Title"] = "Shoe Index";
 }
 
-<h2>Available Shoes</h2>
+<h2>Shoe Index</h2>
 
-<!-- Basket button -->
-<a asp-page="/common/KurvIndex" class="btn btn-primary">Go to Basket</a>
-
-<form method="post">
-    <select asp-for="SelectedBrand" asp-items="@(new SelectList(Model.Brands))">
-        <option value="">All Brands</option>
-    </select>
-    <select asp-for="PriceFilter">
-        <option value="">No Filter</option>
-        <option value="Lowest">Lowest Price</option>
-        <option value="Highest">Highest Price</option>
-    </select>
-    <button type="submit" asp-page-handler="Filter">Filter</button>
+<form method="post" class="form-inline mb-4">
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="SelectedBrand" class="sr-only">Brand:</label>
+        <select asp-for="SelectedBrand" asp-items="@(new SelectList(Model.Brands))" class="form-control">
+            <option value="">All</option>
+        </select>
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="PriceFilter" class="sr-only">Price:</label>
+        <select asp-for="PriceFilter" class="form-control">
+            <option value="">No Filter</option>
+            <option value="Lowest">Lowest</option>
+            <option value="Highest">Highest</option>
+        </select>
+    </div>
+    <button type="submit" asp-page-handler="Filter" class="btn btn-primary mb-2">Apply Filters</button>
 </form>
 
-<div>
+<div class="row">
     @foreach (var sko in Model.Skos)
     {
-        <div class="shoe-item">
-            <img src="@sko.ImageUrl" alt="@sko.Model" width="200" />
-            <h3>@sko.Maerke @sko.Model</h3>
-            <p>Size: @(sko.Str.HasValue ? sko.Str.ToString() : "N/A")</p>
-            <p>Price: @sko.Pris.ToString("C")</p>
-            <form method="post" asp-page-handler="AddToBasket">
-                <input type="hidden" name="SelectedSkoId" value="@sko.SkoId" />
-                <button type="submit">Add to Basket</button>
-            </form>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="@sko.ImageUrl" class="card-img-top" alt="Shoe Image">
+                <div class="card-body">
+                    <h5 class="card-title">@sko.Maerke - @sko.Model</h5>
+                    <p class="card-text">Size: @sko.Str</p>
+                    <p class="card-text">Price: @sko.Pris DKK</p>
+                    <form method="post">
+                        <input type="hidden" asp-for="SelectedSkoId" value="@sko.SkoId" />
+                        <button type="submit" asp-page-handler="AddToBasket" class="btn btn-success">Add to Basket</button>
+                    </form>
+                </div>
+            </div>
         </div>
     }
 </div>
-
-<style>
-    .shoe-item {
-        border: 1px solid #ddd;
-        padding: 10px;
-        margin: 10px;
-        text-align: center;
-        display: inline-block;
-        width: 220px;
-    }
-
-    .shoe-item img {
-        max-width: 100%;
-        height: auto;
-    }
-</style>
