@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Sneaker_Store.Model;
 using Sneaker_Store.Services;
+using static Sneaker_Store.Model.Kunde;
 
 namespace Sneaker_Store.Pages.KundeListe
 {
@@ -20,44 +21,34 @@ namespace Sneaker_Store.Pages.KundeListe
         // property til View'et
         public List<Kunde> Kunder { get; set; }
 
-        [BindProperty]
-        public int SearchNumber { get; set; }
-        [BindProperty]
-        public string SearchName { get; set; }
-        [BindProperty]
-        public string SearchPhone { get; set; }
-
 
         public void OnGet()
         {
+            Kunder = _repo.GetAll();
+        }
 
-            //KundeRepository repo = new KundeRepository(true);
-
+        public void OnPost()
+        {
             Kunder = _repo.GetAll();
 
+            Kunder.Sort(new KundeSortByIdReverse());
+            
         }
 
-        public IActionResult OnPost()
+        public void OnPostSortName()
         {
-            return RedirectToPage("Index");
+            Kunder = _repo.GetAll();
+            try
+            {
+                Kunder.Sort();
+            }
+            catch (Exception ex) { }
         }
 
-        public IActionResult OnPostSearch()
+        public void OnPostSortNameDB()
         {
-            Kunder = _repo.Search(SearchNumber, SearchName, SearchPhone);
-            return Page();
-        }
-
-        public IActionResult OnPostSortNumber()
-        {
-            Kunder = _repo.SortNumber();
-            return Page();
-        }
-
-        public IActionResult OnPostSortName()
-        {
-            Kunder = _repo.SortName();
-            return Page();
+            Kunder = _repo.GetAllKunderSortedByNavnReversed();
         }
     }
 }
+

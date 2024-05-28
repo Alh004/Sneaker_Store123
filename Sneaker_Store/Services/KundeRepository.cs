@@ -89,23 +89,6 @@ public bool CheckKunde(string email, string kode)
         return _kunder.FirstOrDefault(k => k.Email == email);
     }
 
-
-    public List<Kunde> Search(int number, string name, string phone)
-    {
-        throw new NotImplementedException();
-    }
-
-    public List<Kunde> SortNumber()
-    {
-        throw new NotImplementedException();
-    }
-
-    public List<Kunde> SortName()
-    {
-        throw new NotImplementedException();
-    }
-
-
     public void LogoutKunde()
     {
         KundeLoggedIn = null;
@@ -123,4 +106,11 @@ public bool CheckKunde(string email, string kode)
         _kunder.Remove(deleteKunde);
         return deleteKunde;
     }
+
+    public List<Kunde> GetAllKunderSortedByNavnReversed()
+    {
+        // todo - lav metoden 
+        throw new NotImplementedException();
+    }
+
 }

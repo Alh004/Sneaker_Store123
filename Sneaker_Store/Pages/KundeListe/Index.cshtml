@@ -5,25 +5,16 @@
 }
 <h1 class="jumbotron">Vis Alle Kunder</h1>
 
-<form method="post">
-    Vil du oprette en ny kunde tryk på <input type="submit" value="Opret" class="btn btn-outline-primary" />
-</form>
-
-<p></p>
-<form method="post" class="border border-success rounded">
-    <input type="submit" asp-page-handler="Search" value="Søg" class="btn btn-outline-success" />
-    Kunde Nummer <input type="number" asp-for="@Model.SearchNumber" />
-    Kunde Navn <input type="text" asp-for="@Model.SearchName" />
-    Kunde Tlf <input type="text" asp-for="@Model.SearchPhone" />
-</form>
-<p></p>
-
 <table class="table table-hover">
     <thead>
         <tr>
             <form method="post">
             <th><input type="submit" asp-page-handler="SortNumber" value="Kunde Nummer" class="btn btn-outline-success" /></th>
-            <th><input type="submit" asp-page-handler="SortName" value="Navn" class="btn btn-outline-success" /></th>
+            <form method="post">
+                <input type="submit" class="btn btn-success" value="Sorter" asp-page-handler="" /> <br />
+                <input type="submit" class="btn btn-success" value="Sorter Navn" asp-page-handler="SortName" /><br />
+                <input type="submit" class="btn btn-success" value="Sorter Navn Reverse" asp-page-handler="SortNameDB" /><br />
+            </form>
             <th>Navn</th>
             <th>Efternavn</th>
             <th>Kode</th>

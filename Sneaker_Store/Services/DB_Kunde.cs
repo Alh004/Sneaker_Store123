@@ -195,32 +195,33 @@ namespace Sneaker_Store.Services
             return updatedKunde;
         }
 
+        private const String selectAllSqlSortedByNavn = "select * from Kunder order by Fornavn DESC";
+        public List<Kunde> GetAllKunderSortedByNavnReversed()
+        {
+            return GetAllWithParameterSQL(selectAllSqlSortedByNavn);
+        }
+
+        private List<Kunde> GetAllWithParameterSQL(string sql)
+        {
+            List<Kunde> kunder = new List<Kunde>();
+
+            SqlConnection connection = new SqlConnection(DB_Kunde.ConnectionString);
+            connection.Open();
+
+            SqlCommand cmd = new SqlCommand(sql, connection);
+
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Kunde kunde = ReadKunde(reader);
+                kunder.Add(kunde);
+            }
+
+            connection.Close();
+            return kunder;
+        }
+
         public Kunde GetByEmail(string email)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Kunde> SortNumber()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Kunde> SortName()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Kunde> Search(int number, string name, string phone)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Kunde Update(Kunde kunde)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Remove(Kunde kunde)
         {
             throw new NotImplementedException();
         }

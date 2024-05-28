@@ -12,12 +12,8 @@ namespace Sneaker_Store.Services
         public Kunde Remove(int kundeid);
         public Kunde GetById(int Kundeid);
         public Kunde Update(int nytKundeId, Kunde kunde);
+        public Kunde GetByEmail(string email);
 
-          Kunde GetByEmail(string email);
-
-
-        public List<Kunde> Search(int number, string name, string phone);
-        public List<Kunde> SortNumber();
-        public List<Kunde> SortName();
+        List<Kunde> GetAllKunderSortedByNavnReversed();
     }
 }

@@ -1,6 +1,6 @@
 namespace Sneaker_Store.Model;
 
-public class Kunde
+public class Kunde:IComparable<Kunde>
 {
     // Instansfelter
     private int _kundeId;
@@ -90,5 +90,34 @@ public class Kunde
     public override string ToString()
     {
         return $"{nameof(_kundeId)}: {_kundeId}, {nameof(_navn)}: {_navn}, {nameof(_efternavn)}: {_efternavn}, {nameof(_email)}: {_email}, {nameof(_adresse)}: {_adresse}, {nameof(_postnr)}: {_postnr}, {nameof(_kode)}: {_kode}, {nameof(_admin)}: {_admin}";
+    }
+
+    public int CompareTo(Kunde? other)
+    {
+        if (other is null)
+        {
+            return -1;
+        }
+
+        return Navn.CompareTo(other.Navn);
+    }
+
+    public class KundeSortByIdReverse : IComparer<Kunde>
+    {
+        public int Compare(Kunde? x, Kunde? y)
+        {
+            if (x is null)
+            {
+                return 1;
+            }
+
+            if (y is null)
+            {
+                return -1;
+            }
+
+            return y.KundeId.CompareTo(x.KundeId);
+        }
+
     }
 }
