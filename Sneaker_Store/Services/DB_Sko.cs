@@ -52,7 +52,6 @@ namespace Sneaker_Store.Services
             }
             catch (Exception ex)
             {
-                // Log the exception (here just writing to console, use a logging framework in production)
                 Console.WriteLine(ex.Message);
                 throw;
             }
@@ -85,7 +84,6 @@ namespace Sneaker_Store.Services
             }
             catch (Exception ex)
             {
-                // Log the exception (here just writing to console, use a logging framework in production)
                 Console.WriteLine(ex.Message);
                 throw;
             }
@@ -103,13 +101,12 @@ namespace Sneaker_Store.Services
                     Maerke = reader.GetString(1),
                     Model = reader.GetString(2),
                     Str = reader.IsDBNull(3) ? (int?)null : reader.GetInt32(3),
-                    Pris = reader.GetDouble(4),  // Use GetDouble for Pris
+                    Pris = reader.GetDecimal(4),
                     ImageUrl = reader.GetString(5)
                 };
             }
             catch (Exception ex)
             {
-                // Log the exception (here just writing to console, use a logging framework in production)
                 Console.WriteLine(ex.Message);
                 throw;
             }

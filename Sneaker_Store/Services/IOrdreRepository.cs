@@ -1,22 +1,13 @@
 using Sneaker_Store.Model;
+using System.Collections.Generic;
 
 namespace Sneaker_Store.Services
-
 {
-    public interface IOrdreRepository
+    public interface IOrderRepository
     {
-        // Metoder til at arbejde med ordrer
-
-        // Tilføj en ny ordre
-        void AddOrdre(Ordre ordre);
-
-        // Find en ordre baseret på ID
-        Ordre FindOrdre(int ordreId);
-
-        // Hent alle ordrer
-        IEnumerable<Ordre> HentAlleOrdrer();
-        
-        // Slet en ordre
-        void SletOrdre(int ordreId);
+        void AddOrdre(Ordre order);
+        Ordre GetById(int orderId); // Add this method to retrieve order by ID
+        List<Ordre> GetOrdersByCustomerId(int customerId);
+        List<Ordre> GetAllOrders();
     }
 }

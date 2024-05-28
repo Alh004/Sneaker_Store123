@@ -1,7 +1,7 @@
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace Sneaker_Store.Services
-
 {
     public class NoSessionObjectException : ArgumentException
     {
@@ -11,27 +11,26 @@ namespace Sneaker_Store.Services
 
         public NoSessionObjectException(string? message) : base(message)
         {
-            
         }
     }
+
     public static class Testsession
     {
-
         public static T Get<T>(HttpContext context)
         {
-            String sessionName = typeof(T).Name;
-            String? s = context.Session.GetString(sessionName);
+            string sessionName = typeof(T).Name;
+            string? s = context.Session.GetString(sessionName);
             if (string.IsNullOrWhiteSpace(s))
             {
                 throw new NoSessionObjectException($"No session {sessionName}");
             }
             return JsonSerializer.Deserialize<T>(s);
-
         }
+
         public static void Set<T>(T t, HttpContext context)
         {
-            String sessionName = typeof(T).Name;
-            String s = JsonSerializer.Serialize(t);
+            string sessionName = typeof(T).Name;
+            string s = JsonSerializer.Serialize(t);
             context.Session.SetString(sessionName, s);
         }
 

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Sneaker_Store.Model;
 using System.Collections.Generic;
-using System.Data;
 
 namespace Sneaker_Store.Services
 {
@@ -18,7 +18,18 @@ namespace Sneaker_Store.Services
             _httpContextAccessor = httpContextAccessor;
         }
         
-        public Kunde? KundeLoggedIn { get; private set; }
+        public Kunde? KundeLoggedIn 
+        { 
+            get
+            {
+                var email = _httpContextAccessor.HttpContext.Session.GetString("UserEmail");
+                if (string.IsNullOrEmpty(email))
+                {
+                    return null;
+                }
+                return GetByEmail(email);
+            }
+        }
 
         private const string InsertSql = "INSERT INTO Kunder (Fornavn, Efternavn, Email, Adgangskode, Postnr, Adresse, Admin) VALUES (@navn, @efternavn, @email, @kode, @postnr, @addrese, @admin)";
 
@@ -36,7 +47,7 @@ namespace Sneaker_Store.Services
                     cmd.Parameters.AddWithValue("@kode", newKunde.Kode);
                     cmd.Parameters.AddWithValue("@postnr", newKunde.Postnr);
                     cmd.Parameters.AddWithValue("@addrese", newKunde.Adresse);
-                    cmd.Parameters.AddWithValue("@admin", newKunde.Admin); // Add the Admin parameter
+                    cmd.Parameters.AddWithValue("@admin", newKunde.Admin);
 
                     int rows = cmd.ExecuteNonQuery();
                     if (rows == 0)
@@ -67,7 +78,7 @@ namespace Sneaker_Store.Services
                     {
                         if (reader.Read())
                         {
-                            KundeLoggedIn = new Kunde
+                            var kunde = new Kunde
                             {
                                 KundeId = reader.GetInt32(0),
                                 Navn = reader.GetString(1),
@@ -78,14 +89,14 @@ namespace Sneaker_Store.Services
                                 Kode = reader.GetString(6),
                                 Admin = reader.GetBoolean(7)
                             };
+                            _httpContextAccessor.HttpContext.Session.SetString("UserEmail", email); // Store email in session
                             return new LoginResult
                             {
-                                IsAdmin = KundeLoggedIn.Admin
+                                IsAdmin = kunde.Admin
                             };
                         }
                         else
                         {
-                            KundeLoggedIn = null;
                             return null;
                         }
                     }
@@ -276,7 +287,7 @@ namespace Sneaker_Store.Services
 
         public void LogoutKunde()
         {
-            KundeLoggedIn = null;
+            _httpContextAccessor.HttpContext.Session.Remove("UserEmail");
         }
     }
 }

@@ -83,7 +83,7 @@ namespace Sneaker_Store.Services
                 Maerke = reader.GetString(1),
                 Model = reader.GetString(2),
                 Str = reader.IsDBNull(3) ? (int?)null : reader.GetInt32(3),
-                Pris = reader.GetDouble(4),
+                Pris = (decimal)reader.GetDouble(4),
                 ImageUrl = reader.GetString(5)
             };
         }
