@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Sneaker_Store.Services;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Sneaker_Store.Model
 {
@@ -51,29 +50,36 @@ namespace Sneaker_Store.Model
 
         public int Køb()
         {
-            var kunde = _kundeRepository.KundeLoggedIn;
-            if (kunde == null)
+            var items = HentAlleSko();
+            var email = _httpContextAccessor.HttpContext.Session.GetString("UserEmail");
+            if (string.IsNullOrEmpty(email))
             {
-                throw new InvalidOperationException("Customer is not logged in.");
+                throw new InvalidOperationException("Ingen kunde er logget ind.");
             }
 
-            var cartItems = HentAlleSko();
-            var totalPris = cartItems.Sum(item => item.Pris);
-            var totalAntal = cartItems.Count;
-
-            var ordre = new Ordre
+            var customer = _kundeRepository.GetByEmail(email);
+            if (customer == null)
             {
-                KundeId = kunde.KundeId,
-                SkoId = cartItems.First().SkoId, // Assuming all items are the same shoe for simplicity
-                Antal = totalAntal,
-                TotalPris = totalPris
-            };
-            _orderRepository.AddOrdre(ordre);
+                throw new InvalidOperationException("Kunde ikke fundet.");
+            }
 
-            var tomKurv = new List<Sko>(); // Create a new empty cart
-            SaveToSession(tomKurv); // Save the empty cart in session
+            foreach (var sko in items)
+            {
+                var order = new Ordre
+                {
+                    KundeId = customer.KundeId,
+                    SkoId = sko.SkoId,
+                    Antal = 1, // Assuming one item per order for simplicity
+                    TotalPris = sko.Pris
+                };
+                _orderRepository.AddOrdre(order);
+            }
 
-            return ordre.OrdreId;
+            var tomKurv = new List<Sko>();
+            SaveToSession(tomKurv);
+            
+            // Return the last order ID for confirmation page
+            return items.Last().SkoId;
         }
     }
 }
