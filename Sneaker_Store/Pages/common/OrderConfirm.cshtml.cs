@@ -19,7 +19,7 @@ namespace Sneaker_Store.Pages.common
             _orderRepository = orderRepository;
             _skoRepository = skoRepository;
         }
-
+        
         public int OrderId { get; set; }
         public string CustomerName { get; set; }
         public string CustomerEmail { get; set; }
@@ -27,18 +27,20 @@ namespace Sneaker_Store.Pages.common
         public decimal TotalPrice { get; set; }
         public List<Sko> PurchasedShoes { get; set; }
 
-        public void OnGet(int orderId)
+        public IActionResult OnGet(int orderId)
         {
             var order = _orderRepository.GetById(orderId);
             var customer = _kundeRepository.GetById(order.KundeId);
 
-            OrderId = order.OrdreId;
+            OrderId = order.OrdreId + 1; // Forøg Ordre ID med 1
             CustomerName = $"{customer.Navn} {customer.Efternavn}";
             CustomerEmail = customer.Email;
             TotalItems = order.Antal;
             TotalPrice = order.TotalPris;
 
             PurchasedShoes = new List<Sko> { _skoRepository.GetById(order.SkoId) }; // Assuming one type of shoe for simplicity
+
+            return Page();
         }
     }
 }

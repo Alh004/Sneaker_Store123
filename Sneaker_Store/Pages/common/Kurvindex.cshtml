@@ -34,7 +34,7 @@
                 <td>
                     <form method="post" asp-page-handler="DeleteFromBasket">
                         <input type="hidden" name="SkoId" value="@sko.SkoId" />
-                        <button type="submit">Delete</button>
+                        <button type="submit" class="btn-danger">X</button>
                     </form>
                 </td>
             </tr>
@@ -47,9 +47,11 @@ else
 {
     <p>Your basket is empty.</p>
 }
-<form method="post">
-    <button type="submit" formaction="/common/OrderConfirm">Køb</button>
+<form method="post" class="col-6">
+    <button type="submit" formaction="/common/OrderConfirm" class="alert-success btn-lg btn-block">Køb</button>
+
+<a asp-page="/common/SkoIndex" class="btn btn-primary btn-lg btn-block col-6" >Back to Shop</a>
 </form>
-<a asp-page="/common/SkoIndex" class="btn btn-primary">Back to Shop</a>
 </body>
+
 </html>

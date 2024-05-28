@@ -82,7 +82,36 @@ namespace Sneaker_Store.Services
             }
             return orders;
         }
-        
+
+        public int CreateOrder()
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                conn.Open();
+                string sql = "INSERT INTO Orders DEFAULT VALUES; SELECT SCOPE_IDENTITY();";
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    // ExecuteScalar bruges til at få den genererede ordre-ID tilbage
+                    return Convert.ToInt32(cmd.ExecuteScalar());
+                }
+            }
+        }
+
+        public void AddSkoToOrder(int orderId, int skoId)
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                conn.Open();
+                string sql = "INSERT INTO OrderDetails (OrderId, SkoId) VALUES (@OrderId, @SkoId)";
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@OrderId", orderId);
+                    cmd.Parameters.AddWithValue("@SkoId", skoId);
+                    cmd.ExecuteNonQuery(); // Udfører den ikke-returnerende forespørgsel
+                }
+            }
+        }
+
         public Ordre GetById(int ordreId)
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))

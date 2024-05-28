@@ -6,18 +6,21 @@ namespace Sneaker_Store.Pages
 {
     public class LogoutModel : PageModel
     {
-        private IKundeRepository _kundeRepository;
+        private readonly IKundeRepository _kundeRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public LogoutModel(IKundeRepository kundeRepository)
+        public LogoutModel(IKundeRepository kundeRepository, IHttpContextAccessor httpContextAccessor)
         {
             _kundeRepository = kundeRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult OnGet()
         {
-            _kundeRepository.LogoutKunde();
+            // Log ud af brugeren ved at fjerne deres email fra sessionen
+            _httpContextAccessor.HttpContext.Session.Remove("UserEmail");
 
-            return RedirectToPage("Index");
+            return RedirectToPage("/Index");
         }
     }
 }

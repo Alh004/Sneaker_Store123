@@ -15,8 +15,11 @@ namespace Sneaker_Store.Pages
             _httpContextAccessor = httpContextAccessor;
         }
 
-        [BindProperty] public string Email { get; set; }
-        [BindProperty] public string Kode { get; set; }
+        [BindProperty] 
+        public string Email { get; set; }
+
+        [BindProperty] 
+        public string Kode { get; set; }
 
         public string ErrorMessage { get; private set; }
 
@@ -34,7 +37,7 @@ namespace Sneaker_Store.Pages
         {
             if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Kode))
             {
-                ErrorMessage = "baade email og kode er forkert.";
+                ErrorMessage = "Både email og kode skal udfyldes.";
                 return Page();
             }
 
@@ -45,6 +48,7 @@ namespace Sneaker_Store.Pages
                 ErrorMessage = "Forkert kode eller email.";
                 return Page();
             }
+
             // Gem brugerens email i sessionen
             _httpContextAccessor.HttpContext.Session.SetString("UserEmail", Email);
             
@@ -56,10 +60,6 @@ namespace Sneaker_Store.Pages
             {
                 return RedirectToPage("/common/KundeIndex"); // Redirect to regular user page
             }
-            // Gem brugerens email i sessionen
-            _httpContextAccessor.HttpContext.Session.SetString("UserEmail", Email);
-
-            return RedirectToPage("Index");
         }
     }
 }

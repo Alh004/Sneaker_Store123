@@ -9,5 +9,7 @@ namespace Sneaker_Store.Services
         Ordre GetById(int orderId); // Add this method to retrieve order by ID
         List<Ordre> GetOrdersByCustomerId(int customerId);
         List<Ordre> GetAllOrders();
+        int CreateOrder();
+        void AddSkoToOrder(int orderId, int skoId); 
     }
 }
