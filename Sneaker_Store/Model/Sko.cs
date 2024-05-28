@@ -9,7 +9,7 @@ namespace Sneaker_Store.Model
         private string _maerke;
         private string _model;
         private int? _str; // Nullable size attribute
-        private double _pris;
+        private decimal _pris;
         private string _imageUrl;
 
         // Properties
@@ -37,7 +37,7 @@ namespace Sneaker_Store.Model
             set { _str = value; }
         }
 
-        public double Pris
+        public decimal Pris
         {
             get { return _pris; }
             set { _pris = value; }
@@ -56,7 +56,7 @@ namespace Sneaker_Store.Model
             _maerke = maerke;
             _model = model;
             _str = str;
-            _pris = pris;
+            _pris = (decimal)pris;
             _imageUrl = imageUrl;
         }
 

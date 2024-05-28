@@ -1,4 +1,5 @@
 ﻿using Sneaker_Store.Model;
+using System.Collections.Generic;
 
 namespace Sneaker_Store.Services
 {
@@ -7,7 +8,7 @@ namespace Sneaker_Store.Services
         Kunde? KundeLoggedIn { get; }
         List<Kunde> GetAll();
         void AddKunde(Kunde kunde);
-        bool CheckKunde(string email, string kode);
+        LoginResult? CheckKunde(string email, string kode);
         void LogoutKunde();
         public Kunde Remove(int kundeid);
         public Kunde GetById(int Kundeid);

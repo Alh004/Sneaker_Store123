@@ -1,72 +1,71 @@
-namespace Sneaker_Store.Model;
-
-public class Ordre
+namespace Sneaker_Store.Model
 {
-    private int _OrdreID;
-    private int _KundeID;
-    private int _SkoID;
-    private int _Antal;
-    private double _TotalPris;
-
-    /*
-     * Properties
-     */
-    public int OrdreId
+    public class Ordre
     {
-        get { return _OrdreID; }
-        set { _OrdreID = value; }
-    }
+        private int _OrdreID;
+        private int _KundeID;
+        private int _SkoID;
+        private int _Antal;
+        private decimal _TotalPris;
 
-    public int KundeId
-    {
-        get { return _KundeID; }
-        set { _KundeID = value; }
-    }
+        /*
+         * Properties
+         */
+        public int OrdreId
+        {
+            get { return _OrdreID; }
+            set { _OrdreID = value; }
+        }
 
-    public int SkoId
-    {
-        get { return _SkoID; }
-        set { _SkoID = value; }
-    }
+        public int KundeId
+        {
+            get { return _KundeID; }
+            set { _KundeID = value; }
+        }
 
-    public int Antal
-    {
-        get { return _Antal; }
-        set { _Antal = value; }
-    }
+        public int SkoId
+        {
+            get { return _SkoID; }
+            set { _SkoID = value; }
+        }
 
-    public double TotalPris
-    {
-        get { return _TotalPris; }
-        set { _TotalPris = value; }
-    }
+        public int Antal
+        {
+            get { return _Antal; }
+            set { _Antal = value; }
+        }
 
-    
-    /*
-     * Constructor
-     */
+        public decimal TotalPris
+        {
+            get { return _TotalPris; }
+            set { _TotalPris = value; }
+        }
 
-    public Ordre(int ordreId, int kundeId, int skoId, int antal, double totalPris)
-    {
-        _OrdreID = ordreId;
-        _KundeID = kundeId;
-        _SkoID = skoId;
-        _Antal = antal;
-        _TotalPris = totalPris;
-    }
-    
-    public Ordre()
-    {
-        _OrdreID = 0;
-        _KundeID = 0;
-        _SkoID = 0;
-        _Antal = 0;
-        _TotalPris = 0;
-    }
+        /*
+         * Constructor
+         */
 
-    public override string ToString()
-    {
-        return $"{nameof(_OrdreID)}: {_OrdreID}, {nameof(_KundeID)}: {_KundeID}, {nameof(_SkoID)}: {_SkoID}, {nameof(_Antal)}: {_Antal}, {nameof(_TotalPris)}: {_TotalPris}";
+        public Ordre(int ordreId, int kundeId, int skoId, int antal, decimal totalPris)
+        {
+            _OrdreID = ordreId;
+            _KundeID = kundeId;
+            _SkoID = skoId;
+            _Antal = antal;
+            _TotalPris = totalPris;
+        }
+
+        public Ordre()
+        {
+            _OrdreID = 0;
+            _KundeID = 0;
+            _SkoID = 0;
+            _Antal = 0;
+            _TotalPris = 0;
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof(_OrdreID)}: {_OrdreID}, {nameof(_KundeID)}: {_KundeID}, {nameof(_SkoID)}: {_SkoID}, {nameof(_Antal)}: {_Antal}, {nameof(_TotalPris)}: {_TotalPris}";
+        }
     }
-    
 }

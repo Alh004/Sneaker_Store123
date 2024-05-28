@@ -11,7 +11,11 @@ namespace Sneaker_Store.Services.Tests
         private KundeRepository _kundeRepository;
 
         [TestInitialize]
-       
+        public void TestInitialize()
+        {
+            // Initialiser kunde repository med testdata
+        }
+
         [TestMethod]
         public void AddKunde_ValidPerson_AddsPersonToList()
         {
@@ -42,7 +46,7 @@ namespace Sneaker_Store.Services.Tests
         [TestMethod]
         public void RemoveKunde_NonExistingPerson_ListRemainsUnchanged()
         {
-            var nonExistingKunde = new Kunde(999, "non", "existing", "non@999.dk", "vej",  2450, "test999", false);
+            var nonExistingKunde = new Kunde(999, "non", "existing", "non@999.dk", "vej", 2450, "test999", false);
             _kundeRepository.RemoveKunde(nonExistingKunde);
             var result = _kundeRepository.GetAll();
             Assert.AreEqual(2, result.Count);
@@ -66,18 +70,19 @@ namespace Sneaker_Store.Services.Tests
         }
 
         [TestMethod]
-        public void CheckKunde_ValidCredentials_ReturnsTrueAndSetsKundeLoggedIn()
+        public void CheckKunde_ValidCredentials_ReturnsLoginResultAndSetsKundeLoggedIn()
         {
             var result = _kundeRepository.CheckKunde("ali@1.dk", "test");
-            Assert.IsTrue(result);
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.IsAdmin);
             Assert.AreEqual("ali", _kundeRepository.KundeLoggedIn.Navn);
         }
 
         [TestMethod]
-        public void CheckKunde_InvalidCredentials_ReturnsFalseAndKundeLoggedInIsNull()
+        public void CheckKunde_InvalidCredentials_ReturnsNullAndKundeLoggedInIsNull()
         {
             var result = _kundeRepository.CheckKunde("invalid@1.dk", "wrong");
-            Assert.IsFalse(result);
+            Assert.IsNull(result);
             Assert.IsNull(_kundeRepository.KundeLoggedIn);
         }
 

@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Sneaker_Store.Model;
+using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
-using Sneaker_Store.Model;
 
 namespace Sneaker_Store.Services
 {
@@ -9,11 +9,6 @@ namespace Sneaker_Store.Services
         Sko Add(Sko newSko);
         List<Sko> GetAll();
         Sko GetById(int skoid);
-        Sko Delete(int skoid);
-        Sko Update(int skoid, Sko updatedSko);
-
         Sko ReadSko(SqlDataReader reader);
     }
-    
-    
 }

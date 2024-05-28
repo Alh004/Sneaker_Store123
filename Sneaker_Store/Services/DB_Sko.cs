@@ -1,66 +1,115 @@
+using System;
+using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using Sneaker_Store.Model;
 
-namespace Sneaker_Store.Services;
-
-public class DB_Sko:ISkoRepository
+namespace Sneaker_Store.Services
 {
-    private const string ConnectionString =
-        "Data Source=mssql13.unoeuro.com;Initial Catalog=sirat_dk_db_thread;User ID=sirat_dk;Password=m5k6BgDhAzxbprH49cyE;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
-
-    public Kunde? KundeLoggedIn => throw new NotImplementedException();
-    
-    private const string SelectAllSql = "SELECT * FROM Sko";
-
-    public Sko Add(Sko newSko)
+    public class DB_Sko : ISkoRepository
     {
-        throw new NotImplementedException();
-    }
+        private const string ConnectionString = "Data Source=mssql13.unoeuro.com;Initial Catalog=sirat_dk_db_thread;User ID=sirat_dk;Password=m5k6BgDhAzxbprH49cyE;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
-    public List<Sko> GetAll()
-    {
-        List<Sko> skoList = new List<Sko>();
-
-        using (SqlConnection connection = new SqlConnection(ConnectionString))
+        public Sko Add(Sko newSko)
         {
-            connection.Open();
-            SqlCommand cmd = new SqlCommand(SelectAllSql, connection);
-            SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO skoer (Maerke, Model, STORRELSE, Pris, ImageUrl) OUTPUT INSERTED.SkoID VALUES (@Maerke, @Model, @STORRELSE, @Pris, @ImageUrl)", conn))
+                {
+                    cmd.Parameters.AddWithValue("@Maerke", newSko.Maerke);
+                    cmd.Parameters.AddWithValue("@Model", newSko.Model);
+                    cmd.Parameters.AddWithValue("@STORRELSE", newSko.Str);
+                    cmd.Parameters.AddWithValue("@Pris", newSko.Pris);
+                    cmd.Parameters.AddWithValue("@ImageUrl", newSko.ImageUrl);
+
+                    newSko.SkoId = (int)cmd.ExecuteScalar();
+                }
             }
+            return newSko;
         }
 
-        return skoList;
-    }
+        public List<Sko> GetAll()
+        {
+            var skos = new List<Sko>();
 
-    public Sko GetById(int skoid)
-    {
-        throw new NotImplementedException();
-    }
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand("SELECT SkoID, Maerke, Model, STORRELSE, Pris, ImageUrl FROM skoer", conn))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                var sko = ReadSko(reader);
+                                skos.Add(sko);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
 
-    public Sko Delete(int skoid)
-    {
-        throw new NotImplementedException(); 
-    }
+            return skos;
+        }
 
-    public Sko Update(int skoid, Sko updatedSko)
-    {
-        throw new NotImplementedException(); 
-    }
+        public Sko GetById(int id)
+        {
+            Sko sko = null;
 
-    public Sko ReadSko(SqlDataReader reader)
-    {
-        Sko sko = new Sko();
-        
-        sko.SkoId = reader.GetInt32(0);
-        sko.Maerke = reader.GetString(1);
-        sko.Model = reader.GetString(2);
-        sko.Str = reader.GetInt32(3);
-        sko.Pris = reader.GetDouble(4);
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand("SELECT SkoID, Maerke, Model, STORRELSE, Pris, ImageUrl FROM skoer WHERE SkoID = @SkoID", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@SkoID", id);
 
-        return sko;
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                sko = ReadSko(reader);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+
+            return sko;
+        }
+
+        public Sko ReadSko(SqlDataReader reader)
+        {
+            try
+            {
+                return new Sko
+                {
+                    SkoId = reader.GetInt32(0),
+                    Maerke = reader.GetString(1),
+                    Model = reader.GetString(2),
+                    Str = reader.IsDBNull(3) ? (int?)null : reader.GetInt32(3),
+                    Pris = reader.GetDecimal(4),
+                    ImageUrl = reader.GetString(5)
+                };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
     }
-            
-        
 }
