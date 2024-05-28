@@ -90,6 +90,8 @@ namespace Sneaker_Store.Services
 
             return sko;
         }
+        
+        
 
         public Sko ReadSko(SqlDataReader reader)
         {

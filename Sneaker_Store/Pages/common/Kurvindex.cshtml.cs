@@ -9,13 +9,13 @@ namespace Sneaker_Store.Pages.common
 {
     public class KurvIndexModel : PageModel
     {
-        private readonly ISkoRepository _skoRepository;
         private readonly Kurv _kurv;
+        private readonly IOrderRepository _orderRepository;
 
-        public KurvIndexModel(ISkoRepository skoRepository, Kurv kurv)
+        public KurvIndexModel(Kurv kurv, IOrderRepository orderRepository)
         {
-            _skoRepository = skoRepository;
             _kurv = kurv;
+            _orderRepository = orderRepository;
         }
 
         public List<Sko> Skos { get; set; }
@@ -38,9 +38,17 @@ namespace Sneaker_Store.Pages.common
             return RedirectToPage();
         }
 
-        public IActionResult OnPostKøb()
+        public IActionResult OnPostKoeb() // Ændret metodenavnet til OnPostKoeb
         {
-            var orderId = _kurv.Køb();
+            // Opret en ny ordre i databasen og få ordre-ID
+            int orderId = _orderRepository.CreateOrder();
+
+            // Tilføj de købte sko til denne ordre
+            foreach (var sko in _kurv.HentAlleSko())
+            {
+                _orderRepository.AddSkoToOrder(orderId, sko.SkoId);
+            }
+
             return RedirectToPage("OrderConfirm", new { orderId });
         }
     }

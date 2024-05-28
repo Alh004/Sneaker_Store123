@@ -7,7 +7,8 @@ namespace Sneaker_Store.Services
 {
     public class SkoRepository : ISkoRepository
     {
-        private const string ConnectionString = "Data Source=mssql13.unoeuro.com;Initial Catalog=sirat_dk_db_thread;User ID=sirat_dk;Password=m5k6BgDhAzxbprH49cyE;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+        private const string ConnectionString =
+            "Data Source=mssql13.unoeuro.com;Initial Catalog=sirat_dk_db_thread;User ID=sirat_dk;Password=m5k6BgDhAzxbprH49cyE;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
         public Sko Add(Sko newSko)
         {
@@ -51,7 +52,7 @@ namespace Sneaker_Store.Services
             return skos;
         }
 
-        public Sko GetById(int id)
+        public Sko GetById(int skoid)
         {
             Sko sko = null;
 
@@ -60,7 +61,7 @@ namespace Sneaker_Store.Services
                 conn.Open();
                 using (SqlCommand cmd = new SqlCommand("SELECT SkoID, Maerke, Model, STORRELSE, Pris, ImageUrl FROM skoer WHERE SkoID = @SkoID", conn))
                 {
-                    cmd.Parameters.AddWithValue("@SkoID", id);
+                    cmd.Parameters.AddWithValue("@SkoID", skoid);
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -79,12 +80,12 @@ namespace Sneaker_Store.Services
         {
             return new Sko
             {
-                SkoId = reader.GetInt32(0),
-                Maerke = reader.GetString(1),
-                Model = reader.GetString(2),
-                Str = reader.IsDBNull(3) ? (int?)null : reader.GetInt32(3),
-                Pris = (decimal)reader.GetDouble(4),
-                ImageUrl = reader.GetString(5)
+                SkoId = reader.GetInt32(reader.GetOrdinal("SkoID")),
+                Maerke = reader.GetString(reader.GetOrdinal("Maerke")),
+                Model = reader.GetString(reader.GetOrdinal("Model")),
+                Str = reader.IsDBNull(reader.GetOrdinal("STORRELSE")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("STORRELSE")),
+                Pris = reader.GetDecimal(reader.GetOrdinal("Pris")),
+                ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl"))
             };
         }
     }

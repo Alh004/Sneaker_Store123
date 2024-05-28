@@ -1,14 +1,20 @@
 @page
 @model Sneaker_Store.Pages.common.OrderConfirmModel
 
-<h2>Order Confirmation</h2>
+<p>Tak for dit køb!</p>
 
-<p>Thank you for your purchase!</p>
-
-<p>Order ID: @Model.OrderId</p>
-<p>Customer Name: @Model.CustomerName</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bekræftelse af ordre</title>
+</head>
+<body>
+<h1>Bekræftelse af ordre</h1>
+<p>Ordre ID: @Model.OrderId</p>
+<p>Kundenavn: @Model.CustomerName</p>
 <p>Email: @Model.CustomerEmail</p>
-<p>Amount of Shoes: @Model.TotalItems</p>
-<p>Total Price: @Model.TotalPrice</p>
-
-<a href="/Index">Back to Home</a>
+<p>Antal sko: @Model.TotalItems</p>
+<p>Total pris: @Model.TotalPrice</p>
+<p>Tilbage til hjem</p>
+</body>
+</html>
