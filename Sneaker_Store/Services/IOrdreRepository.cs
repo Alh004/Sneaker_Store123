@@ -6,10 +6,11 @@ namespace Sneaker_Store.Services
     public interface IOrderRepository
     {
         void AddOrdre(Ordre order);
-        Ordre GetById(int orderId); // Add this method to retrieve order by ID
+        Ordre GetById(int orderId);
         List<Ordre> GetOrdersByCustomerId(int customerId);
         List<Ordre> GetAllOrders();
-        int CreateOrder();
-        void AddSkoToOrder(int orderId, int skoId); 
+        int CreateOrder(int kundeId);
+        void AddSkoToOrder(int orderId, int skoId);
+        List<Sko> GetSkoInOrder(int orderId);
     }
 }

@@ -11,11 +11,13 @@ namespace Sneaker_Store.Pages.common
     {
         private readonly Kurv _kurv;
         private readonly IOrderRepository _orderRepository;
+        private readonly IKundeRepository _kundeRepository;
 
-        public KurvIndexModel(Kurv kurv, IOrderRepository orderRepository)
+        public KurvIndexModel(Kurv kurv, IOrderRepository orderRepository, IKundeRepository kundeRepository)
         {
             _kurv = kurv;
             _orderRepository = orderRepository;
+            _kundeRepository = kundeRepository;
         }
 
         public List<Sko> Skos { get; set; }
@@ -38,18 +40,33 @@ namespace Sneaker_Store.Pages.common
             return RedirectToPage();
         }
 
-        public IActionResult OnPostKoeb() // Ændret metodenavnet til OnPostKoeb
+        public IActionResult OnPostKoeb()
         {
-            // Opret en ny ordre i databasen og få ordre-ID
-            int orderId = _orderRepository.CreateOrder();
-
-            // Tilføj de købte sko til denne ordre
-            foreach (var sko in _kurv.HentAlleSko())
+            var kundeEmail = HttpContext.Session.GetString("UserEmail");
+            if (string.IsNullOrEmpty(kundeEmail))
             {
-                _orderRepository.AddSkoToOrder(orderId, sko.SkoId);
+                return RedirectToPage("/Login");
             }
 
-            return RedirectToPage("OrderConfirm", new { orderId });
+            var kunde = _kundeRepository.GetByEmail(kundeEmail);
+            if (kunde == null)
+            {
+                return RedirectToPage("/Login");
+            }
+
+            foreach (var sko in _kurv.HentAlleSko())
+            {
+                var ordre = new Ordre
+                {
+                    KundeId = kunde.KundeId,
+                    SkoId = sko.SkoId
+                };
+                _orderRepository.AddOrdre(ordre);
+            }
+
+            _kurv.Køb();
+
+            return RedirectToPage("OrderConfirm", new { orderId = _orderRepository.GetOrdersByCustomerId(kunde.KundeId).LastOrDefault()?.OrdreId });
         }
     }
 }

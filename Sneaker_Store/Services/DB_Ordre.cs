@@ -8,76 +8,18 @@ namespace Sneaker_Store.Services
     {
         private const string ConnectionString =
             "Data Source=mssql13.unoeuro.com;Initial Catalog=sirat_dk_db_thread;User ID=sirat_dk;Password=m5k6BgDhAzxbprH49cyE;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
-       
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IKundeRepository _kundeRepository;
-        private readonly ISkoRepository _skoRepository;
-
-        public DB_Ordre(IHttpContextAccessor httpContextAccessor, IKundeRepository kundeRepository, ISkoRepository skoRepository)
-        {
-            _httpContextAccessor = httpContextAccessor;
-            _kundeRepository = kundeRepository;
-            _skoRepository = skoRepository;
-        }
-        private int GetKundeIdFromSession()
-        {
-            var email = _httpContextAccessor.HttpContext.Session.GetString("UserEmail");
-            if (string.IsNullOrEmpty(email))
-            {
-                throw new UnauthorizedAccessException("User is not logged in.");
-            }
-            var kunde = _kundeRepository.GetByEmail(email);
-            return kunde?.KundeId ?? throw new Exception("Customer not found.");
-        }
-
-        public Sko GetBySkoIdSko(int id)
-        {
-            return _skoRepository.GetById(id);
-        }
 
         public void AddOrdre(Ordre ordre)
         {
-            ordre.KundeId = GetKundeIdFromSession();
-
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
-                string sql = "INSERT INTO Ordre (KundeID, SkoID, Antal, TotalPris) OUTPUT INSERTED.OrdreID VALUES (@KundeID, @SkoID, @Antal, @TotalPris)";
+                string sql = "INSERT INTO Ordre (KundeID, SkoID) OUTPUT INSERTED.OrdreID VALUES (@KundeID, @SkoID)";
                 using (SqlCommand cmd = new SqlCommand(sql, connection))
                 {
                     cmd.Parameters.AddWithValue("@KundeID", ordre.KundeId);
                     cmd.Parameters.AddWithValue("@SkoID", ordre.SkoId);
-                    cmd.Parameters.AddWithValue("@Antal", ordre.Antal);
-                    cmd.Parameters.AddWithValue("@TotalPris", ordre.TotalPris);
                     ordre.OrdreId = (int)cmd.ExecuteScalar();
-                }
-            }
-        }
-        public int CreateOrder()
-        {
-            using (SqlConnection conn = new SqlConnection(ConnectionString))
-            {
-                conn.Open();
-                string sql = "INSERT INTO Orders DEFAULT VALUES; SELECT SCOPE_IDENTITY();";
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
-                {
-                    // ExecuteScalar bruges til at få den genererede ordre-ID tilbage
-                    return Convert.ToInt32(cmd.ExecuteScalar());
-                }
-            }
-        }
-
-        public void AddSkoToOrder(int orderId, int skoId)
-        {
-            using (SqlConnection conn = new SqlConnection(ConnectionString))
-            {
-                conn.Open();
-                string sql = "INSERT INTO OrderDetails (OrderId, SkoId) VALUES (@OrderId, @SkoId)";
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@OrderId", orderId);
-                    cmd.Parameters.AddWithValue("@SkoId", skoId);
-                    cmd.ExecuteNonQuery(); // Udfører den ikke-returnerende forespørgsel
                 }
             }
         }
@@ -155,6 +97,70 @@ namespace Sneaker_Store.Services
             return ordrer;
         }
 
+        public int CreateOrder(int kundeId)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                string sql = "INSERT INTO Ordre (KundeID) OUTPUT INSERTED.OrdreID VALUES (@KundeID)";
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@KundeID", kundeId);
+                    return Convert.ToInt32(cmd.ExecuteScalar());
+                }
+            }
+        }
+
+        public void AddSkoToOrder(int orderId, int skoId)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                string sql = "INSERT INTO Ordre (OrdreID, SkoID) VALUES (@OrdreID, @SkoID)";
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@OrdreID", orderId);
+                    cmd.Parameters.AddWithValue("@SkoID", skoId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public List<Sko> GetSkoInOrder(int orderId)
+        {
+            List<Sko> skos = new List<Sko>();
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                string sql = "SELECT s.SkoID, s.Maerke, s.Model, s.STORRELSE, s.Pris, s.ImageUrl " +
+                             "FROM Sko s " +
+                             "INNER JOIN Ordre o ON s.SkoID = o.SkoID " +
+                             "WHERE o.OrdreID = @OrdreID";
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@OrdreID", orderId);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Sko sko = new Sko
+                            {
+                                SkoId = reader.GetInt32(reader.GetOrdinal("SkoID")),
+                                Maerke = reader.GetString(reader.GetOrdinal("Maerke")),
+                                Model = reader.GetString(reader.GetOrdinal("Model")),
+                                Str = reader.IsDBNull(reader.GetOrdinal("STORRELSE")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("STORRELSE")),
+                                Pris = reader.GetDecimal(reader.GetOrdinal("Pris")),
+                                ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl"))
+                            };
+                            skos.Add(sko);
+                        }
+                    }
+                }
+            }
+
+            return skos;
+        }
 
         private Ordre ReadOrdre(SqlDataReader reader)
         {

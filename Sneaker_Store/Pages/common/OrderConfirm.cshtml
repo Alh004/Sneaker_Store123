@@ -1,20 +1,47 @@
 @page
 @model Sneaker_Store.Pages.common.OrderConfirmModel
 
-<p>Tak for dit køb!</p>
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bekræftelse af ordre</title>
+    <title>Order Confirmation</title>
 </head>
 <body>
-<h1>Bekræftelse af ordre</h1>
-<p>Ordre ID: @Model.OrderId</p>
-<p>Kundenavn: @Model.CustomerName</p>
-<p>Email: @Model.CustomerEmail</p>
-<p>Antal sko: @Model.TotalItems</p>
-<p>Total pris: @Model.TotalPrice</p>
-<p>Tilbage til hjem</p>
+<h1>Order Confirmation</h1>
+<p>Order ID: @Model.OrderId</p>
+<p>Customer Name: @Model.CustomerName</p>
+<p>Customer Email: @Model.CustomerEmail</p>
+    
+<h2>Purchased Shoes</h2>
+@if (Model.PurchasedShoes != null && Model.PurchasedShoes.Any())
+{
+    <table>
+        <thead>
+        <tr>
+            <th>Image</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Size</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var sko in Model.PurchasedShoes)
+        {
+            <tr>
+                <td><img src="@sko.ImageUrl" alt="@sko.Model" width="100" /></td>
+                <td>@sko.Maerke</td>
+                <td>@sko.Model</td>
+                <td>@(sko.Str.HasValue ? sko.Str.ToString() : "N/A")</td>
+                <td>@sko.Pris.ToString("C")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No shoes purchased.</p>
+}
 </body>
 </html>

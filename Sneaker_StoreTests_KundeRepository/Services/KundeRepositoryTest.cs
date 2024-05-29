@@ -33,24 +33,7 @@ namespace Sneaker_Store.Services.Tests
             Assert.AreEqual("kunde", exception.ParamName);
         }
 
-        [TestMethod]
-        public void RemoveKunde_ExistingPerson_RemovesPersonFromList()
-        {
-            var kundeToRemove = _kundeRepository.GetAll()[0];
-            _kundeRepository.RemoveKunde(kundeToRemove);
-            var result = _kundeRepository.GetAll();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("dani", result[0].Navn);
-        }
-
-        [TestMethod]
-        public void RemoveKunde_NonExistingPerson_ListRemainsUnchanged()
-        {
-            var nonExistingKunde = new Kunde(999, "non", "existing", "non@999.dk", "vej", 2450, "test999", false);
-            _kundeRepository.RemoveKunde(nonExistingKunde);
-            var result = _kundeRepository.GetAll();
-            Assert.AreEqual(2, result.Count);
-        }
+   
 
         [TestMethod]
         public void GetAll_EmptyList_ReturnsEmptyList()

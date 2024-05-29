@@ -14,13 +14,11 @@ namespace Sneaker_Store.Services
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
                 conn.Open();
-                var query = "INSERT INTO Ordre (KundeID, SkoID, Antal, TotalPris) OUTPUT INSERTED.OrdreID VALUES (@KundeID, @SkoID, @Antal, @TotalPris)";
+                var query = "INSERT INTO Ordre (KundeID, SkoID) OUTPUT INSERTED.OrdreID VALUES (@KundeID, @SkoID)";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@KundeID", ordre.KundeId);
                     cmd.Parameters.AddWithValue("@SkoID", ordre.SkoId);
-                    cmd.Parameters.AddWithValue("@Antal", ordre.Antal);
-                    cmd.Parameters.AddWithValue("@TotalPris", ordre.TotalPris);
                     ordre.OrdreId = (int)cmd.ExecuteScalar();
                 }
             }
@@ -44,9 +42,7 @@ namespace Sneaker_Store.Services
                             {
                                 OrdreId = reader.GetInt32(reader.GetOrdinal("OrdreID")),
                                 KundeId = reader.GetInt32(reader.GetOrdinal("KundeID")),
-                                SkoId = reader.GetInt32(reader.GetOrdinal("SkoID")),
-                                Antal = reader.GetInt32(reader.GetOrdinal("Antal")),
-                                TotalPris = reader.GetDecimal(reader.GetOrdinal("TotalPris"))
+                                SkoId = reader.GetInt32(reader.GetOrdinal("SkoID"))
                             });
                         }
                     }
@@ -72,9 +68,7 @@ namespace Sneaker_Store.Services
                             {
                                 OrdreId = reader.GetInt32(reader.GetOrdinal("OrdreID")),
                                 KundeId = reader.GetInt32(reader.GetOrdinal("KundeID")),
-                                SkoId = reader.GetInt32(reader.GetOrdinal("SkoID")),
-                                Antal = reader.GetInt32(reader.GetOrdinal("Antal")),
-                                TotalPris = reader.GetDecimal(reader.GetOrdinal("TotalPris"))
+                                SkoId = reader.GetInt32(reader.GetOrdinal("SkoID"))
                             });
                         }
                     }
@@ -83,31 +77,16 @@ namespace Sneaker_Store.Services
             return orders;
         }
 
-        public int CreateOrder()
+        public int CreateOrder(int kundeId)
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
                 conn.Open();
-                string sql = "INSERT INTO Orders DEFAULT VALUES; SELECT SCOPE_IDENTITY();";
+                string sql = "INSERT INTO Ordre (KundeID) OUTPUT INSERTED.OrdreID VALUES (@KundeID)";
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
-                    // ExecuteScalar bruges til at få den genererede ordre-ID tilbage
+                    cmd.Parameters.AddWithValue("@KundeID", kundeId);
                     return Convert.ToInt32(cmd.ExecuteScalar());
-                }
-            }
-        }
-
-        public void AddSkoToOrder(int orderId, int skoId)
-        {
-            using (SqlConnection conn = new SqlConnection(ConnectionString))
-            {
-                conn.Open();
-                string sql = "INSERT INTO OrderDetails (OrderId, SkoId) VALUES (@OrderId, @SkoId)";
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@OrderId", orderId);
-                    cmd.Parameters.AddWithValue("@SkoId", skoId);
-                    cmd.ExecuteNonQuery(); // Udfører den ikke-returnerende forespørgsel
                 }
             }
         }
@@ -129,15 +108,61 @@ namespace Sneaker_Store.Services
                             {
                                 OrdreId = reader.GetInt32(reader.GetOrdinal("OrdreID")),
                                 KundeId = reader.GetInt32(reader.GetOrdinal("KundeID")),
-                                SkoId = reader.GetInt32(reader.GetOrdinal("SkoID")),
-                                Antal = reader.GetInt32(reader.GetOrdinal("Antal")),
-                                TotalPris = reader.GetDecimal(reader.GetOrdinal("TotalPris"))
+                                SkoId = reader.GetInt32(reader.GetOrdinal("SkoID"))
                             };
                         }
                     }
                 }
             }
             throw new KeyNotFoundException("Ordre not found");
+        }
+
+        public void AddSkoToOrder(int orderId, int skoId)
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                conn.Open();
+                string sql = "INSERT INTO Ordre (OrdreID, SkoID) VALUES (@OrdreID, @SkoID)";
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@OrdreID", orderId);
+                    cmd.Parameters.AddWithValue("@SkoID", skoId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public List<Sko> GetSkoInOrder(int orderId)
+        {
+            var shoes = new List<Sko>();
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                conn.Open();
+                var query = "SELECT s.SkoID, s.Maerke, s.Model, s.STORRELSE, s.Pris, s.ImageUrl " +
+                            "FROM Ordre o " +
+                            "JOIN skoer s ON o.SkoID = s.SkoID " +
+                            "WHERE o.OrdreID = @OrdreID";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@OrdreID", orderId);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            shoes.Add(new Sko
+                            {
+                                SkoId = reader.GetInt32(reader.GetOrdinal("SkoID")),
+                                Maerke = reader.GetString(reader.GetOrdinal("Maerke")),
+                                Model = reader.GetString(reader.GetOrdinal("Model")),
+                                Str = reader.IsDBNull(reader.GetOrdinal("STORRELSE")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("STORRELSE")),
+                                Pris = reader.GetDecimal(reader.GetOrdinal("Pris")),
+                                ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl"))
+                            });
+                        }
+                    }
+                }
+            }
+            return shoes;
         }
     }
 }

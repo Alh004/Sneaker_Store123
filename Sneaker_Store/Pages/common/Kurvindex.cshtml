@@ -29,7 +29,7 @@
                 <td><img src="@sko.ImageUrl" alt="@sko.Model" width="100" /></td>
                 <td>@sko.Model</td>
                 <td>@sko.Maerke</td>
-                <td>@(sko.Str.HasValue ? sko.Str.ToString() : "N/A")</td> <!-- Display size if available, otherwise "N/A" -->
+                <td>@(sko.Str.HasValue ? sko.Str.ToString() : "N/A")</td>
                 <td>@sko.Pris.ToString("C")</td>
                 <td>
                     <form method="post" asp-page-handler="DeleteFromBasket">
@@ -47,11 +47,10 @@ else
 {
     <p>Your basket is empty.</p>
 }
-<form method="post" class="col-6">
-    <button type="submit" formaction="/common/OrderConfirm" class="alert-success btn-lg btn-block">Køb</button>
-
-<a asp-page="/common/SkoIndex" class="btn btn-primary btn-lg btn-block col-6" >Back to Shop</a>
+<form method="post" asp-page-handler="Koeb">
+    <button type="submit" class="alert-success btn-lg btn-block">Køb</button>
 </form>
+<a asp-page="/common/SkoIndex" class="btn btn-primary btn-lg btn-block">Back to Shop</a>
 </body>
 
 </html>
