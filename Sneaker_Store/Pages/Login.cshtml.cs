@@ -54,11 +54,11 @@ namespace Sneaker_Store.Pages
             
             if (loginResult.IsAdmin)
             {
-                return RedirectToPage("/AdminSideLogin/IndexLoginA"); // Redirect to admin page
+                return RedirectToPage("/AdminSideLogin/IndexLoginA"); // Redirect til admin siden
             }
             else
             {
-                return RedirectToPage("/common/KundeIndex"); // Redirect to regular user page
+                return RedirectToPage("/common/KundeIndex"); // Redirect til regular bruger siden
             }
         }
     }

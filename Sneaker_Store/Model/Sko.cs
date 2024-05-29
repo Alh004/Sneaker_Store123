@@ -8,7 +8,7 @@ namespace Sneaker_Store.Model
         private int _skoid;
         private string _maerke;
         private string _model;
-        private int? _str; // Nullable size attribute
+        private int? _str; 
         private decimal _pris;
         private string _imageUrl;
 
@@ -31,7 +31,7 @@ namespace Sneaker_Store.Model
             set { _model = value; }
         }
 
-        public int? Str // Nullable size property
+        public int? Str 
         {
             get { return _str; }
             set { _str = value; }
@@ -50,7 +50,7 @@ namespace Sneaker_Store.Model
         }
 
         // Constructor
-        public Sko(int skoid, string maerke, string model, int? str, double pris, string imageUrl) // Update constructor
+        public Sko(int skoid, string maerke, string model, int? str, double pris, string imageUrl) //opdater 
         {
             _skoid = skoid;
             _maerke = maerke;
@@ -60,12 +60,12 @@ namespace Sneaker_Store.Model
             _imageUrl = imageUrl;
         }
 
-        public Sko() // default constructor
+        public Sko() 
         {
             _skoid = 0;
             _maerke = string.Empty;
             _model = string.Empty;
-            _str = null; // Nullable by default
+            _str = null; 
             _pris = 0;
             _imageUrl = string.Empty;
         }

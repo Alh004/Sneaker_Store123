@@ -55,7 +55,7 @@ public class OpretIndex : PageModel
     [Display(Name = "Postnummer")]
     public int postnr { get; set; }
 
-    // ...
+
                                                                                                                                                                                                                                                             
     public IActionResult OnPost()
     {

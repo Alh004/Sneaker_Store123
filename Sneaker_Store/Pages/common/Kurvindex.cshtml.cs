@@ -19,7 +19,7 @@ namespace Sneaker_Store.Pages.common
             _orderRepository = orderRepository;
             _kundeRepository = kundeRepository;
         }
-
+//metoden list gør at vi kan have flere sko i kurven og ik kun en.
         public List<Sko> Skos { get; set; }
 
         public IActionResult OnGet()

@@ -16,14 +16,16 @@ namespace Sneaker_Store.Model
             _orderRepository = orderRepository;
             _kundeRepository = kundeRepository;
         }
-
+        
+        // Tilføjer en sko til kurven og opdaterer sessionen.
         public void Tilføj(Sko sko)
         {
             var items = HentAlleSko();
             items.Add(sko);
             SaveToSession(items);
         }
-
+        
+        //Henter alle sko fra sessionen. Hvis sessionen ikke eksisterer, returnerer den en tom liste.
         public List<Sko> HentAlleSko()
         {
             try
@@ -36,18 +38,21 @@ namespace Sneaker_Store.Model
             }
         }
 
+        // Fjerner en sko fra kurven baseret på sko ID og opdaterer sessionen.
         public void Slet(Sko sko)
         {
             var items = HentAlleSko();
             items.RemoveAll(s => s.SkoId == sko.SkoId);
             SaveToSession(items);
         }
-
+        
+        //Hjælpemetode til at gemme den aktuelle liste af sko i sessionen.
         private void SaveToSession(List<Sko> items)
         {
             Testsession.Set(items, _httpContextAccessor.HttpContext);
         }
 
+        //Afslutter købet af alle sko i kurven, opretter ordrer for hver sko, og tømmer kurven.
         public int Køb()
         {
             var items = HentAlleSko();
@@ -69,7 +74,7 @@ namespace Sneaker_Store.Model
                 {
                     KundeId = customer.KundeId,
                     SkoId = sko.SkoId,
-                    Antal = 1, // Assuming one item per order for simplicity
+                    Antal = 1, 
                     TotalPris = sko.Pris
                 };
                 _orderRepository.AddOrdre(order);
@@ -78,7 +83,7 @@ namespace Sneaker_Store.Model
             var tomKurv = new List<Sko>();
             SaveToSession(tomKurv);
             
-            // Return the last order ID for confirmation page
+           
             return items.Last().SkoId;
         }
     }

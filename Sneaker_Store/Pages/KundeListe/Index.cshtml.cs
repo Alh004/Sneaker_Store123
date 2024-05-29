@@ -18,7 +18,7 @@ namespace Sneaker_Store.Pages.KundeListe
         }
 
 
-        // property til View'et
+        // property til at se
         public List<Kunde> Kunder { get; set; }
 
 

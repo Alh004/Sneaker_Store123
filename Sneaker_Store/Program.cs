@@ -22,7 +22,7 @@ builder.Services.AddScoped<Kurv>();
 // Add session services
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout if needed
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Den logger brugere ud efter 30 min og siden vil blive nulstillet
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
@@ -41,7 +41,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Enable session middleware
+//Til session
 app.UseSession();
 
 app.UseAuthorization();
