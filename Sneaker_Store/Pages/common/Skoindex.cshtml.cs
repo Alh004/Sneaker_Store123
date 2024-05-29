@@ -22,7 +22,7 @@ namespace Sneaker_Store.Pages.common
         [BindProperty] public int SelectedSkoId { get; set; }
         [BindProperty] public string SelectedBrand { get; set; }
         [BindProperty] public string PriceFilter { get; set; }
-        public List<string> Brands { get; set; } = new List<string> { "Nike", "ASICS", "Adidas", "Air Jordan", "Puma", "Crocs", "Converse"};
+        public List<string> Brands { get; set; } = new List<string> { "Nike", "ASICS", "Adidas", "Air Jordan", "Puma", "Crocs", "Converse" };
 
         public void OnGet()
         {
@@ -38,13 +38,13 @@ namespace Sneaker_Store.Pages.common
                 skos = skos.Where(s => s.Maerke == SelectedBrand).ToList();
             }
 
-            if (PriceFilter == "Lowest")
-            {
-                skos = skos.OrderBy(s => s.Pris).ToList();
-            }
-            else if (PriceFilter == "Highest")
+            if (PriceFilter == "Highest")
             {
                 skos = skos.OrderByDescending(s => s.Pris).ToList();
+            }
+            else if (PriceFilter == "Lowest")
+            {
+                skos = skos.OrderBy(s => s.Pris).ToList();
             }
 
             Skos = skos;
@@ -59,7 +59,7 @@ namespace Sneaker_Store.Pages.common
                 return RedirectToPage("/common/KurvIndex");
             }
 
-            ModelState.AddModelError(string.Empty, "Selected shoe not found.");
+            ModelState.AddModelError(string.Empty, "SKO IKK FUNDET.");
             Skos = _skoRepository.GetAll();
             return Page();
         }

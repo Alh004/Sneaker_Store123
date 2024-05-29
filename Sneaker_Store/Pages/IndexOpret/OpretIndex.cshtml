@@ -6,37 +6,57 @@
 }
 
 <style>
-    .side-bar {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        width: 200px;
-        z-index: -1;
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        color: #343a40;
     }
-    
-    .side-bar.left {
-        left: 10%; 
-        transform: translateX(-10000%);
+    .navbar {
+        background-color: #343a40;
     }
-    
-    .side-bar.right {
-        right: 0;
+    .navbar-brand, .nav-link {
+        color: #ffffff;
     }
-    
-  .form-container {
-      margin-left: 50px; 
-      padding: 20px;
-      text-align: center; 
-  }
-  
-  .form-container .form-group {
-      margin-bottom: 20px; /* Add some distance between form groups */
-  }
-   
+    .nav-link:hover {
+        color: #adb5bd;
+    }
+    .form-container {
+        margin: 50px auto;
+        padding: 30px;
+        max-width: 500px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    .form-container h1 {
+        margin-bottom: 30px;
+    }
+    .form-container .form-group {
+        margin-bottom: 20px;
+    }
+    .form-container .form-control {
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        padding: 10px;
+    }
+    .form-container .btn-primary {
+        background-color: #28a745;
+        border-color: #28a745;
+        padding: 10px 20px;
+        font-size: 1.2em;
+        width: 100%;
+    }
+    .form-container .btn-primary:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+    .form-container .btn-secondary {
+        margin-top: 10px;
+        padding: 10px 20px;
+        width: 100%;
+    }
 </style>
-
-<div class="side-bar left"></div>
-<div class="side-bar right"></div>
 
 <div class="form-container">
     <h1>Opret Kunde</h1>
@@ -72,12 +92,20 @@
             <span asp-validation-for="email" class="text-danger"></span>
         </div>
         
-        
         <div class="form-group">
             <label asp-for="kode"></label>
             <input asp-for="kode" type="password" class="form-control" />
             <span asp-validation-for="kode" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary">
+            <span class="mr-2">Tryk her for at oprette dig</span>
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M10.854 4.646a.5.5 0 0 1 0 .708L7.207 9H14.5a.5.5 0 0 1 0 1H7.207l3.647 3.646a.5.5 0 0 1-.708.708l-4.5-4.5a.5.5 0 0 1 0-.708l4.5-4.5a.5.5 0 0 1 .708 0z"/>
+            </svg>
+        </button>
     </form>
+
+    <div class="mt-4">
+        <a asp-page="/Index" class="btn btn-secondary">Tilbage</a>
+    </div>
 </div>

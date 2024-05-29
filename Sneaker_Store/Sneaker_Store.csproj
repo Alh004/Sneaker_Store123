@@ -10,4 +10,16 @@
       <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\KundeListe\DeleteKunde.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\KundeListe\EditKunde.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\KundeListe\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Pages\AdminSideLogin\KundeListe\DeleteKunde.cshtml" />
+      <AdditionalFiles Include="Pages\AdminSideLogin\KundeListe\EditKunde.cshtml" />
+      <AdditionalFiles Include="Pages\AdminSideLogin\KundeListe\Index.cshtml" />
+    </ItemGroup>
+
 </Project>

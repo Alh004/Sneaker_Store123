@@ -20,7 +20,7 @@ namespace Sneaker_Store.Pages
             // Log ud af brugeren ved at fjerne deres email fra sessionen
             _httpContextAccessor.HttpContext.Session.Remove("UserEmail");
 
-            return RedirectToPage("/Index");
+            return RedirectToPage("/Login");
         }
     }
 }

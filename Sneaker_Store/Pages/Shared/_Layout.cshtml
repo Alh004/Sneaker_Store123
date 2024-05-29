@@ -4,57 +4,100 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - Sneaker_Store</title>
+    <title>@ViewData["Title"] - Sneaker Store</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/Sneaker_Store.styles.css" asp-append-version="true"/>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .navbar {
+            background-color: #343a40;
+        }
+        .navbar-brand, .nav-link {
+            color: #ffffff;
+        }
+        .nav-link:hover {
+            color: #adb5bd;
+        }
+        .footer {
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+        .footer a {
+            color: #adb5bd;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+        main {
+            margin-top: 20px;
+        }
+        .container {
+            max-width: 960px;
+        }
+        .login-form {
+            display: flex;
+            align-items: center;
+        }
+        .login-form input[type="text"], .login-form input[type="password"] {
+            margin-right: 0.5rem;
+            padding: 0.25rem 0.5rem;
+        }
+    </style>
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark mb-3">
         <div class="container">
-            <a class="navbar-brand" asp-area="" asp-page="/Index">Sneaker_Store</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+            <a class="navbar-brand" asp-area="" asp-page="/Index">Sneaker Store</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Menu
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" asp-area="" asp-page="/Index">Om Os</a>
+                            <a class="dropdown-item" asp-area="" asp-page="/Privacy">Kontakt</a>
+                            <a class="dropdown-item dropdown-toggle" href="#" id="SkoDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mere</a>
+                            <div class="dropdown-menu" aria-labelledby="SkoDropdown">
+                                <a class="dropdown-item" asp-area="" asp-page="/common/SkoIndex">Alle Sko</a>
+                                <a class="dropdown-item" asp-area="" asp-page="/common/KurvIndex">Kurv</a>
+                            </div>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/common/SkoIndex">Shoes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/common/KurvIndex">Basket</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/KundeListe/Index">tjubay</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/common/KundeIndex">Common</a>
-                    </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/KundeListe/Index">KundeListe</a>
-                        </li>
-                    
+                </ul>
+                <ul class="navbar-nav ml-auto">
                     @if (Kunder.KundeLoggedIn != null && Kunder.KundeLoggedIn.Admin)
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/AdminSideLogin/IndexLoginA">Admin</a>
+                            <a class="nav-link" asp-area="" asp-page="/AdminSideLogin/KundeListe/Index">KundeListe</a>
                         </li>
                     }
                     @if (Kunder.KundeLoggedIn != null)
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Logout</a>
+                            <a class="nav-link" asp-area="" asp-page="/Logout">Logout</a>
+                        </li>
+                    }
+                    @if (Kunder.KundeLoggedIn == null)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/Login">Login</a>
                         </li>
                     }
                 </ul>
@@ -68,9 +111,9 @@
     </main>
 </div>
 
-<footer class="border-top footer text-muted">
+<footer class="footer">
     <div class="container">
-        &copy; 2024 - Sneaker_Store - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        &copy; 2024 Sneaker_Store | Rebaek Soepark | +45 4565712 | puddi@sneakerstore.com
     </div>
 </footer>
 

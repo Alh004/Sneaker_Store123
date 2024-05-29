@@ -6,11 +6,15 @@
 
 <h2>Shoe Index</h2>
 
+<div class="mb-4">
+    <a asp-page="/Index" class="btn btn-primary">Tilbage</a>
+</div>
+
 <form method="post" class="form-inline mb-4">
     <div class="form-group mx-sm-3 mb-2">
         <label for="SelectedBrand" class="sr-only">Maerke:</label>
         <select asp-for="SelectedBrand" asp-items="@(new SelectList(Model.Brands))" class="form-control">
-            <option value="">All</option>
+            <option value="">Alle</option>
         </select>
     </div>
     <div class="form-group mx-sm-3 mb-2">
@@ -32,8 +36,8 @@
                 <img src="@sko.ImageUrl" class="card-img-top" alt="Shoe Image">
                 <div class="card-body">
                     <h5 class="card-title">@sko.Maerke - @sko.Model</h5>
-                    <p class="card-text">Size: @sko.Str</p>
-                    <p class="card-text">Price: @sko.Pris DKK</p>
+                    <p class="card-text">Størrelse: @sko.Str</p>
+                    <p class="card-text">Pris: @sko.Pris DKK</p>
                     <form method="post">
                         <input type="hidden" asp-for="SelectedSkoId" value="@sko.SkoId" />
                         <button type="submit" asp-page-handler="AddToBasket" class="btn btn-success">Tilfoej til kurv</button>
