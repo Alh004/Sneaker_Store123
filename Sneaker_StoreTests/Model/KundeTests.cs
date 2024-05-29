@@ -1,105 +1,183 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sneaker_Store.Model;
 
-namespace Sneaker_Store.Model.Tests
+namespace Sneaker_Store.Tests
 {
     [TestClass]
     public class KundeTests
     {
-        private Kunde _defaultKunde;
-        private Kunde _parameterizedKunde;
-
-        [TestInitialize]
-        public void TestInitialize()
+        [TestMethod]
+        public void Kunde_DefaultConstructor_SkalInitialisereEgenskaber()
         {
-            // Initialiser standard kunde
-            _defaultKunde = new Kunde();
+            // Arrange & Act
+            var kunde = new Kunde();
 
-            // Initialiser parameteriseret kunde
-            _parameterizedKunde = new Kunde(1, "John", "Doe", "john.doe@example.com", "123 Main St", 1234, "password123", true);
+            // Assert
+            Assert.AreEqual(0, kunde.KundeId);
+            Assert.AreEqual(string.Empty, kunde.Navn);
+            Assert.AreEqual(string.Empty, kunde.Efternavn);
+            Assert.AreEqual(string.Empty, kunde.Email);
+            Assert.AreEqual(string.Empty, kunde.Adresse);
+            Assert.AreEqual(0, kunde.Postnr);
+            Assert.AreEqual(string.Empty, kunde.Kode);
+            Assert.IsFalse(kunde.Admin);
         }
 
         [TestMethod]
-        public void Kunde_DefaultConstructor_SetsPropertiesToDefaultValues()
+        public void Kunde_ParameterizedConstructor_SkalInitialisereEgenskaber()
         {
-            // Test standard konstruktør
-            Assert.AreEqual(0, _defaultKunde.KundeId);
-            Assert.AreEqual("", _defaultKunde.Navn);
-            Assert.AreEqual("", _defaultKunde.Efternavn);
-            Assert.AreEqual("", _defaultKunde.Email);
-            Assert.AreEqual("", _defaultKunde.Adresse);
-            Assert.AreEqual(0, _defaultKunde.Postnr);
-            Assert.AreEqual("", _defaultKunde.Kode);
-            Assert.AreEqual(false, _defaultKunde.Admin);
+            // Arrange
+            int kundeId = 1;
+            string navn = "John";
+            string efternavn = "Doe";
+            string email = "john.doe@example.com";
+            string adresse = "123 Main St";
+            int postnr = 12345;
+            string kode = "password";
+            bool admin = true;
+
+            // Act
+            var kunde = new Kunde(kundeId, navn, efternavn, email, adresse, postnr, kode, admin);
+
+            // Assert
+            Assert.AreEqual(kundeId, kunde.KundeId);
+            Assert.AreEqual(navn, kunde.Navn);
+            Assert.AreEqual(efternavn, kunde.Efternavn);
+            Assert.AreEqual(email, kunde.Email);
+            Assert.AreEqual(adresse, kunde.Adresse);
+            Assert.AreEqual(postnr, kunde.Postnr);
+            Assert.AreEqual(kode, kunde.Kode);
+            Assert.AreEqual(admin, kunde.Admin);
         }
 
         [TestMethod]
-        public void Kunde_ParameterizedConstructor_SetsPropertiesCorrectly()
+        public void Kunde_SetAndGetProperties_SkalFungereKorrekt()
         {
-            // Test parameteriseret konstruktør
-            Assert.AreEqual(1, _parameterizedKunde.KundeId);
-            Assert.AreEqual("John", _parameterizedKunde.Navn);
-            Assert.AreEqual("Doe", _parameterizedKunde.Efternavn);
-            Assert.AreEqual("john.doe@example.com", _parameterizedKunde.Email);
-            Assert.AreEqual("123 Main St", _parameterizedKunde.Adresse);
-            Assert.AreEqual(1234, _parameterizedKunde.Postnr);
-            Assert.AreEqual("password123", _parameterizedKunde.Kode);
-            Assert.AreEqual(true, _parameterizedKunde.Admin);
+            // Arrange
+            var kunde = new Kunde();
+            int kundeId = 1;
+            string navn = "John";
+            string efternavn = "Doe";
+            string email = "john.doe@example.com";
+            string adresse = "123 Main St";
+            int postnr = 12345;
+            string kode = "password";
+            bool admin = true;
+
+            // Act
+            kunde.KundeId = kundeId;
+            kunde.Navn = navn;
+            kunde.Efternavn = efternavn;
+            kunde.Email = email;
+            kunde.Adresse = adresse;
+            kunde.Postnr = postnr;
+            kunde.Kode = kode;
+            kunde.Admin = admin;
+
+            // Assert
+            Assert.AreEqual(kundeId, kunde.KundeId);
+            Assert.AreEqual(navn, kunde.Navn);
+            Assert.AreEqual(efternavn, kunde.Efternavn);
+            Assert.AreEqual(email, kunde.Email);
+            Assert.AreEqual(adresse, kunde.Adresse);
+            Assert.AreEqual(postnr, kunde.Postnr);
+            Assert.AreEqual(kode, kunde.Kode);
+            Assert.AreEqual(admin, kunde.Admin);
         }
 
         [TestMethod]
-        public void Kunde_SetProperties_CorrectValuesAreAssigned()
+        public void Kunde_ToString_SkalReturnereKorrektStreng()
         {
-            // Test indstilling af egenskaber
-            _defaultKunde.KundeId = 2;
-            _defaultKunde.Navn = "Jane";
-            _defaultKunde.Efternavn = "Smith";
-            _defaultKunde.Email = "jane.smith@example.com";
-            _defaultKunde.Adresse = "456 Another St";
-            _defaultKunde.Postnr = 5678;
-            _defaultKunde.Kode = "password456";
-            _defaultKunde.Admin = false;
+            // Arrange
+            var kunde = new Kunde(1, "John", "Doe", "john.doe@example.com", "123 Main St", 12345, "password", true);
+            var forventetStreng = "_kundeId: 1, _navn: John, _efternavn: Doe, _email: john.doe@example.com, _adresse: 123 Main St, _postnr: 12345, _kode: password, _admin: True";
 
-            Assert.AreEqual(2, _defaultKunde.KundeId);
-            Assert.AreEqual("Jane", _defaultKunde.Navn);
-            Assert.AreEqual("Smith", _defaultKunde.Efternavn);
-            Assert.AreEqual("jane.smith@example.com", _defaultKunde.Email);
-            Assert.AreEqual("456 Another St", _defaultKunde.Adresse);
-            Assert.AreEqual(5678, _defaultKunde.Postnr);
-            Assert.AreEqual("password456", _defaultKunde.Kode);
-            Assert.AreEqual(false, _defaultKunde.Admin);
+            // Act
+            var resultat = kunde.ToString();
+
+            // Assert
+            Assert.AreEqual(forventetStreng, resultat);
         }
 
         [TestMethod]
-        public void Kunde_Grænseværdier_Test()
+        public void Kunde_CompareTo_SkalSortereEfterNavn()
         {
-            // Test grænseværdier for Postnr
-            _defaultKunde.Postnr = 0;
-            Assert.AreEqual(0, _defaultKunde.Postnr);
+            // Arrange
+            var kunde1 = new Kunde(1, "Alice", "Smith", "alice@example.com", "123 Main St", 12345, "password", false);
+            var kunde2 = new Kunde(2, "Bob", "Jones", "bob@example.com", "456 Elm St", 67890, "password", false);
 
-            _defaultKunde.Postnr = 9999;
-            Assert.AreEqual(9999, _defaultKunde.Postnr);
+            // Act
+            var resultat = kunde1.CompareTo(kunde2);
 
-            // Test grænseværdier for boolean
-            _defaultKunde.Admin = true;
-            Assert.AreEqual(true, _defaultKunde.Admin);
-
-            _defaultKunde.Admin = false;
-            Assert.AreEqual(false, _defaultKunde.Admin);
+            // Assert
+            Assert.IsTrue(resultat < 0); // Alice kommer før Bob
         }
 
         [TestMethod]
-        public void Kunde_ToString_ReturnsCorrectString()
+        public void KundeSortByIdReverse_Compare_SkalSortereEfterIdFaldende()
         {
-            // Test ToString metoden
-            string expectedString = "KundeId: 1, Navn: John, Efternavn: Doe, Email: john.doe@example.com, Adresse: 123 Main St, By: Copenhagen, Postnr: 1234, Kode: password123, Admin: True";
-            string actualString = _parameterizedKunde.ToString();
-            
-            // Udskrivning af den faktiske streng for diagnosticering
-            Console.WriteLine($"Forventet: {expectedString}");
-            Console.WriteLine($"Faktisk: {actualString}");
-            
-            Assert.AreEqual(expectedString, actualString);
+            // Arrange
+            var kunde1 = new Kunde(1, "Alice", "Smith", "alice@example.com", "123 Main St", 12345, "password", false);
+            var kunde2 = new Kunde(2, "Bob", "Jones", "bob@example.com", "456 Elm St", 67890, "password", false);
+            var comparer = new Kunde.KundeSortByIdReverse();
+
+            // Act
+            var resultat = comparer.Compare(kunde1, kunde2);
+
+            // Assert
+            Assert.IsTrue(resultat > 0); // 2 skal komme før 1
+        }
+
+        [TestMethod]
+        public void KundeSortByIdReverse_Compare_MedNullVærdier_SkalHåndtereKorrekt()
+        {
+            // Arrange
+            var kunde1 = new Kunde(1, "Alice", "Smith", "alice@example.com", "123 Main St", 12345, "password", false);
+            var comparer = new Kunde.KundeSortByIdReverse();
+
+            // Act
+            var resultat1 = comparer.Compare(kunde1, null);
+            var resultat2 = comparer.Compare(null, kunde1);
+
+            // Assert
+            Assert.AreEqual(-1, resultat1);
+            Assert.AreEqual(1, resultat2);
+        }
+
+        [TestMethod]
+        public void Kunde_Egenskaber_SkalAcceptereGrænseværdier()
+        {
+            // Arrange
+            var kunde = new Kunde();
+            int minKundeId = int.MinValue;
+            int maxKundeId = int.MaxValue;
+            string maxStreng = new string('A', 255);
+            int minPostnr = 0;
+            int maxPostnr = 99999;
+
+            // Act
+            kunde.KundeId = minKundeId;
+            kunde.Navn = maxStreng;
+            kunde.Efternavn = maxStreng;
+            kunde.Email = maxStreng;
+            kunde.Adresse = maxStreng;
+            kunde.Postnr = minPostnr;
+            kunde.Kode = maxStreng;
+
+            // Assert
+            Assert.AreEqual(minKundeId, kunde.KundeId);
+            Assert.AreEqual(maxStreng, kunde.Navn);
+            Assert.AreEqual(maxStreng, kunde.Efternavn);
+            Assert.AreEqual(maxStreng, kunde.Email);
+            Assert.AreEqual(maxStreng, kunde.Adresse);
+            Assert.AreEqual(minPostnr, kunde.Postnr);
+            Assert.AreEqual(maxStreng, kunde.Kode);
+
+            // Act
+            kunde.Postnr = maxPostnr;
+
+            // Assert
+            Assert.AreEqual(maxPostnr, kunde.Postnr);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Sneaker_Store.Services
         private const string ConnectionString =
             "Data Source=mssql13.unoeuro.com;Initial Catalog=sirat_dk_db_thread;User ID=sirat_dk;Password=m5k6BgDhAzxbprH49cyE;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
-        public Kunde? KundeLoggedIn { get; private set; }
+        public Kunde? KundeLoggedIn { get; set; }
 
         public void AddKunde(Kunde kunde)
         {
@@ -194,7 +194,7 @@ namespace Sneaker_Store.Services
                     cmd.ExecuteNonQuery();
                 }
             }
-            return kunde;
+            return GetById(kundeId);
         }
 
         public void LogoutKunde()
