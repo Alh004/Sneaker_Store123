@@ -6,44 +6,51 @@
 
 <h2>Sko Katalog</h2>
 
-<div class="mb-4">
-    <a asp-page="/Index" class="btn btn-primary">Tilbage</a>
+<div class="container mb-4">
+    <div class="row">
+        <div class="col-md-2">
+            <a asp-page="/Index" class="btn btn-primary">Tilbage</a>
+        </div>
+        <div class="col-md-10">
+            <form method="post" class="form-inline">
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="SelectedBrand" class="sr-only">Mærke:</label>
+                    <select asp-for="SelectedBrand" asp-items="@(new SelectList(Model.Brands))" class="form-control">
+                        <option value="">Alle</option>
+                    </select>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="PriceFilter" class="sr-only">Pris:</label>
+                    <select asp-for="PriceFilter" class="form-control">
+                        <option value="">Intet Filter</option>
+                        <option value="Lowest">Lav</option>
+                        <option value="Highest">Høj</option>
+                    </select>
+                </div>
+                <button type="submit" asp-page-handler="Filter" class="btn btn-primary mb-2">Brug Filter</button>
+            </form>
+        </div>
+    </div>
 </div>
 
-<form method="post" class="form-inline mb-4">
-    <div class="form-group mx-sm-3 mb-2">
-        <label for="SelectedBrand" class="sr-only">Maerke:</label>
-        <select asp-for="SelectedBrand" asp-items="@(new SelectList(Model.Brands))" class="form-control">
-            <option value="">Alle</option>
-        </select>
-    </div>
-    <div class="form-group mx-sm-3 mb-2">
-        <label for="PriceFilter" class="sr-only">Pris:</label>
-        <select asp-for="PriceFilter" class="form-control">
-            <option value="">Intet Filter</option>
-            <option value="Lowest">Lav</option>
-            <option value="Highest">Hoej</option>
-        </select>
-    </div>
-    <button type="submit" asp-page-handler="Filter" class="btn btn-primary mb-2">Brug Filter</button>
-</form>
-
-<div class="row">
-    @foreach (var sko in Model.Skos)
-    {
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <img src="@sko.ImageUrl" class="card-img-top" alt="Shoe Image">
-                <div class="card-body">
-                    <h5 class="card-title">@sko.Maerke - @sko.Model</h5>
-                    <p class="card-text">Størrelse: @sko.Str</p>
-                    <p class="card-text">Pris: @sko.Pris DKK</p>
-                    <form method="post">
-                        <input type="hidden" asp-for="SelectedSkoId" value="@sko.SkoId" />
-                        <button type="submit" asp-page-handler="AddToBasket" class="btn btn-success">Tilfoej til kurv</button>
-                    </form>
+<div class="container">
+    <div class="row">
+        @foreach (var sko in Model.Skos)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="@sko.ImageUrl" class="card-img-top" alt="Shoe Image">
+                    <div class="card-body">
+                        <h5 class="card-title">@sko.Maerke - @sko.Model</h5>
+                        <p class="card-text">Størrelse: @sko.Str</p>
+                        <p class="card-text">Pris: @sko.Pris DKK</p>
+                        <form method="post">
+                            <input type="hidden" asp-for="SelectedSkoId" value="@sko.SkoId" />
+                            <button type="submit" asp-page-handler="AddToBasket" class="btn btn-success">Tilføj til kurv</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 </div>

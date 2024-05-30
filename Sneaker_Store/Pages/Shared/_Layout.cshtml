@@ -45,14 +45,6 @@
         .container {
             max-width: 960px;
         }
-        .login-form {
-            display: flex;
-            align-items: center;
-        }
-        .login-form input[type="text"], .login-form input[type="password"] {
-            margin-right: 0.5rem;
-            padding: 0.25rem 0.5rem;
-        }
     </style>
 </head>
 <body>
@@ -66,6 +58,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-page="/common/Skoindex">Sko</a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Menu
