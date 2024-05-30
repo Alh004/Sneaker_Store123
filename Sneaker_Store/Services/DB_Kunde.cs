@@ -7,10 +7,13 @@ namespace Sneaker_Store.Services
 {
     public class DB_Kunde : IKundeRepository
     {
+        // Forbindelsesstreng til databasen
         private const string ConnectionString = "Data Source=mssql13.unoeuro.com;Initial Catalog=sirat_dk_db_thread;User ID=sirat_dk;Password=m5k6BgDhAzxbprH49cyE;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
+        // Egenskab til at holde den loggede ind kunde
         public Kunde? KundeLoggedIn { get; private set; }
 
+        // Metode til at tjekke om en kunde eksisterer med den angivne email og kode
         public LoginResult? CheckKunde(string email, string kode)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
@@ -53,17 +56,20 @@ namespace Sneaker_Store.Services
                 }
                 catch (SqlException ex)
                 {
+                    // Log SQL undtagelse
                     Console.WriteLine($"SQL Exception: {ex.Message}");
                     return null;
                 }
                 catch (Exception ex)
                 {
+                    // Log generel undtagelse
                     Console.WriteLine($"Exception: {ex.Message}");
                     return null;
                 }
             }
         }
 
+        // Metode til at hente en kunde efter deres ID
         public Kunde GetById(int kundeId)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
@@ -99,6 +105,7 @@ namespace Sneaker_Store.Services
             }
         }
 
+        // Metode til at hente alle kunder
         public List<Kunde> GetAll()
         {
             List<Kunde> kunder = new List<Kunde>();
@@ -133,6 +140,7 @@ namespace Sneaker_Store.Services
             return kunder;
         }
 
+        // Metode til at hente en kunde efter deres email
         public Kunde GetByEmail(string email)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
@@ -168,6 +176,7 @@ namespace Sneaker_Store.Services
             }
         }
 
+        // Metode til at tilføje en ny kunde
         public void AddKunde(Kunde kunde)
         {
             if (kunde == null)
@@ -194,6 +203,7 @@ namespace Sneaker_Store.Services
             }
         }
 
+        // Metode til at fjerne en kunde med deres ID
         public void RemoveKunde(int kundeId)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
@@ -208,6 +218,7 @@ namespace Sneaker_Store.Services
             }
         }
 
+        // Metode til at opdatere en eksisterende kunde
         public Kunde UpdateKunde(int kundeId, Kunde kunde)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
@@ -231,6 +242,7 @@ namespace Sneaker_Store.Services
             return kunde;
         }
 
+        // Metode til at fjerne en kunde
         public Kunde Remove(int kundeId)
         {
             Kunde kunde = GetById(kundeId);
@@ -238,6 +250,7 @@ namespace Sneaker_Store.Services
             return kunde;
         }
 
+        // Metode til at opdatere en kunde og sikre, at ID'erne matcher
         public Kunde Update(int nytKundeId, Kunde kunde)
         {
             if (nytKundeId != kunde.KundeId)
@@ -248,30 +261,18 @@ namespace Sneaker_Store.Services
             return UpdateKunde(nytKundeId, kunde);
         }
 
+        // Metode til at logge den aktuelle kunde ud
         public void LogoutKunde()
         {
             KundeLoggedIn = null;
         }
 
+        // Metode til at hente alle kunder sorteret efter navn i omvendt rækkefølge
         public List<Kunde> GetAllKunderSortedByNavnReversed()
         {
             var kunder = GetAll();
             return kunder.OrderByDescending(k => k.Navn).ToList();
         }
 
-        public List<Kunde> Search(int number, string name, string phone)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Kunde> SortNumber()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Kunde> SortName()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -17,7 +17,7 @@ public class OpretIndex : PageModel
     }
     [BindProperty]
     [Required(ErrorMessage = "Indtast Navn")]
-    [StringLength(50, MinimumLength = 2, ErrorMessage = "Navn skal være mellem 2 og 50 tegn")]
+    [StringLength(50, MinimumLength = 2, ErrorMessage = "Navn skal vaere mellem 2 og 50 tegn")]
     [RegularExpression(@"^[A-Za-zÆØÅæøå ]+$", ErrorMessage = "Navn må kun indeholde bogstaver og mellemrum")]
     [Display(Name = "Navn")]
     public string navn { get; set; }
@@ -25,7 +25,7 @@ public class OpretIndex : PageModel
     [BindProperty]
     [Required(ErrorMessage = "Indtast Efternavn")]
     [StringLength(50, MinimumLength = 2, ErrorMessage = "Efternavn skal være mellem 2 og 50 tegn")]
-    [RegularExpression(@"^[A-Za-zÆØÅæøå ]+$", ErrorMessage = "Efternavn må kun indeholde bogstaver og mellemrum")]
+    [RegularExpression(@"^[A-Za-zÆØÅæøå ]+$", ErrorMessage = "Efternavn maa kun indeholde bogstaver og mellemrum")]
     [Display(Name = "Efternavn")]
     public string efternavn { get; set; }
 

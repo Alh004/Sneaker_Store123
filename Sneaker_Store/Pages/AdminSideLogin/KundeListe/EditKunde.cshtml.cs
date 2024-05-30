@@ -21,13 +21,13 @@ namespace Sneaker_Store.Pages.KundeListe
 
 
         [BindProperty]
-        [Required(ErrorMessage = "Der skal være et navn")]
-        [StringLength(100, MinimumLength = 2, ErrorMessage = "Der skal være mindst to tegn i et navn")]
+        [Required(ErrorMessage = "Der skal vaere et navn")]
+        [StringLength(100, MinimumLength = 2, ErrorMessage = "Der skal vaere mindst to tegn i et navn")]
         public string NytKundeNavn { get; set; }
 
         [BindProperty]
-        [Required(ErrorMessage = "Der skal være et navn")]
-        [StringLength(100, MinimumLength = 2, ErrorMessage = "Der skal være mindst to tegn i et navn")]
+        [Required(ErrorMessage = "Der skal vaere et navn")]
+        [StringLength(100, MinimumLength = 2, ErrorMessage = "Der skal vaere mindst to tegn i et navn")]
         public string NytKundeEfternavn { get; set; }
 
         [BindProperty]
