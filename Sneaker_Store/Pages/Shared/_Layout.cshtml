@@ -1,5 +1,4 @@
 ﻿@inject Sneaker_Store.Services.IKundeRepository Kunder
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -9,43 +8,42 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/Sneaker_Store.styles.css" asp-append-version="true"/>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
-            color: #343a40;
-        }
-        .navbar {
-            background-color: #343a40;
-        }
-        .navbar-brand, .nav-link {
-            color: #ffffff;
-        }
-        .nav-link:hover {
-            color: #adb5bd;
-        }
-        .footer {
-            background-color: #343a40;
-            color: #ffffff;
-            padding: 10px 0;
-            text-align: center;
-            font-size: 0.9em;
-            white-space: nowrap;
-        }
-        .footer a {
-            color: #adb5bd;
-            text-decoration: none;
-        }
-        .footer a:hover {
-            color: #ffffff;
-            text-decoration: underline;
-        }
-        main {
-            margin-top: 20px;
-        }
-        .container {
-            max-width: 960px;
-        }
-    </style>
+           body {
+               font-family: 'Arial', sans-serif;
+               background-color: #f8f9fa;
+               color: #343a40;
+               padding-top: 70px; 
+           }
+           .navbar {
+               background-color: #343a40;
+               position: fixed;
+               width: 100%;
+               top: 0;
+               z-index: 1000;
+           }
+           .footer {
+               background-color: #343a40;
+               color: #ffffff;
+               padding: 10px 0;
+               text-align: center;
+               font-size: 0.9em;
+               white-space: nowrap;
+           }
+           .footer a {
+               color: #adb5bd;
+               text-decoration: none;
+           }
+           .footer a:hover {
+               color: #ffffff;
+               text-decoration: underline;
+           }
+           main {
+               margin-top: 20px;
+           }
+           .container {
+               max-width: 960px;
+           }
+       </style>
 </head>
 <body>
 <header>
@@ -86,7 +84,7 @@
                     @if (Kunder.KundeLoggedIn != null)
                     {
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Logout">Logout</a>
+                            <a class="nav-link" asp-area="" asp-page="/Logout">Log Ud</a>
                         </li>
                     }
                     @if (Kunder.KundeLoggedIn == null)

@@ -4,15 +4,16 @@
     ViewData["Title"] = "";
 }
 
-<h2>Sko Katalog</h2>
-
 <div class="container mb-4">
-    <div class="row">
+    <div class="row align-items-center">
         <div class="col-md-2">
             <a asp-page="/Index" class="btn btn-primary">Tilbage</a>
         </div>
-        <div class="col-md-10">
-            <form method="post" class="form-inline">
+        <div class="col-md-2">
+            <h2>Sneakers </h2>
+        </div>
+        <div class="col-md-8">
+            <form method="post" class="form-inline justify-content-end">
                 <div class="form-group mx-sm-3 mb-2">
                     <label for="SelectedBrand" class="sr-only">Mærke:</label>
                     <select asp-for="SelectedBrand" asp-items="@(new SelectList(Model.Brands))" class="form-control">

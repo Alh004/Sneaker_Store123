@@ -51,7 +51,7 @@ public class OpretIndex : PageModel
 
     [BindProperty]
     [Required(ErrorMessage = "Indtast Postnummer")]
-    [RegularExpression(@"^\d{4}$", ErrorMessage = "Postnummer skal være 4 cifre")]
+    [RegularExpression(@"^\d{4}$", ErrorMessage = "Postnummer skal være mellem 1000-9999")]
     [Display(Name = "Postnummer")]
     public int postnr { get; set; }
 

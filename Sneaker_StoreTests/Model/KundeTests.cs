@@ -9,10 +9,9 @@ namespace Sneaker_Store.Tests
         [TestMethod]
         public void Kunde_DefaultConstructor_SkalInitialisereEgenskaber()
         {
-            // Arrange & Act
+            // Test for standardkonstruktør initialisering
             var kunde = new Kunde();
 
-            // Assert
             Assert.AreEqual(0, kunde.KundeId);
             Assert.AreEqual(string.Empty, kunde.Navn);
             Assert.AreEqual(string.Empty, kunde.Efternavn);
@@ -26,7 +25,7 @@ namespace Sneaker_Store.Tests
         [TestMethod]
         public void Kunde_ParameterizedConstructor_SkalInitialisereEgenskaber()
         {
-            // Arrange
+            // Test for konstruktør med parametre
             int kundeId = 1;
             string navn = "John";
             string efternavn = "Doe";
@@ -36,10 +35,8 @@ namespace Sneaker_Store.Tests
             string kode = "password";
             bool admin = true;
 
-            // Act
             var kunde = new Kunde(kundeId, navn, efternavn, email, adresse, postnr, kode, admin);
 
-            // Assert
             Assert.AreEqual(kundeId, kunde.KundeId);
             Assert.AreEqual(navn, kunde.Navn);
             Assert.AreEqual(efternavn, kunde.Efternavn);
@@ -53,7 +50,7 @@ namespace Sneaker_Store.Tests
         [TestMethod]
         public void Kunde_SetAndGetProperties_SkalFungereKorrekt()
         {
-            // Arrange
+            // Test for get- og set-metoder
             var kunde = new Kunde();
             int kundeId = 1;
             string navn = "John";
@@ -64,7 +61,6 @@ namespace Sneaker_Store.Tests
             string kode = "password";
             bool admin = true;
 
-            // Act
             kunde.KundeId = kundeId;
             kunde.Navn = navn;
             kunde.Efternavn = efternavn;
@@ -74,7 +70,6 @@ namespace Sneaker_Store.Tests
             kunde.Kode = kode;
             kunde.Admin = admin;
 
-            // Assert
             Assert.AreEqual(kundeId, kunde.KundeId);
             Assert.AreEqual(navn, kunde.Navn);
             Assert.AreEqual(efternavn, kunde.Efternavn);
@@ -88,58 +83,50 @@ namespace Sneaker_Store.Tests
         [TestMethod]
         public void Kunde_ToString_SkalReturnereKorrektStreng()
         {
-            // Arrange
+            // Test for ToString metode
             var kunde = new Kunde(1, "John", "Doe", "john.doe@example.com", "123 Main St", 12345, "password", true);
             var forventetStreng = "_kundeId: 1, _navn: John, _efternavn: Doe, _email: john.doe@example.com, _adresse: 123 Main St, _postnr: 12345, _kode: password, _admin: True";
 
-            // Act
             var resultat = kunde.ToString();
 
-            // Assert
             Assert.AreEqual(forventetStreng, resultat);
         }
 
         [TestMethod]
         public void Kunde_CompareTo_SkalSortereEfterNavn()
         {
-            // Arrange
+            // Test for CompareTo metode (sortering efter navn)
             var kunde1 = new Kunde(1, "Alice", "Smith", "alice@example.com", "123 Main St", 12345, "password", false);
             var kunde2 = new Kunde(2, "Bob", "Jones", "bob@example.com", "456 Elm St", 67890, "password", false);
 
-            // Act
             var resultat = kunde1.CompareTo(kunde2);
 
-            // Assert
             Assert.IsTrue(resultat < 0); // Alice kommer før Bob
         }
 
         [TestMethod]
         public void KundeSortByIdReverse_Compare_SkalSortereEfterIdFaldende()
         {
-            // Arrange
+            // Test for KundeSortByIdReverse (sortering efter ID faldende)
             var kunde1 = new Kunde(1, "Alice", "Smith", "alice@example.com", "123 Main St", 12345, "password", false);
             var kunde2 = new Kunde(2, "Bob", "Jones", "bob@example.com", "456 Elm St", 67890, "password", false);
             var comparer = new Kunde.KundeSortByIdReverse();
 
-            // Act
             var resultat = comparer.Compare(kunde1, kunde2);
 
-            // Assert
             Assert.IsTrue(resultat > 0); // 2 skal komme før 1
         }
 
         [TestMethod]
         public void KundeSortByIdReverse_Compare_MedNullVærdier_SkalHåndtereKorrekt()
         {
-            // Arrange
+            // Test for KundeSortByIdReverse med null-værdier
             var kunde1 = new Kunde(1, "Alice", "Smith", "alice@example.com", "123 Main St", 12345, "password", false);
             var comparer = new Kunde.KundeSortByIdReverse();
 
-            // Act
             var resultat1 = comparer.Compare(kunde1, null);
             var resultat2 = comparer.Compare(null, kunde1);
 
-            // Assert
             Assert.AreEqual(-1, resultat1);
             Assert.AreEqual(1, resultat2);
         }
@@ -147,7 +134,7 @@ namespace Sneaker_Store.Tests
         [TestMethod]
         public void Kunde_Egenskaber_SkalAcceptereGrænseværdier()
         {
-            // Arrange
+            // Test for at egenskaber accepterer grænseværdier
             var kunde = new Kunde();
             int minKundeId = int.MinValue;
             int maxKundeId = int.MaxValue;
@@ -155,7 +142,6 @@ namespace Sneaker_Store.Tests
             int minPostnr = 0;
             int maxPostnr = 99999;
 
-            // Act
             kunde.KundeId = minKundeId;
             kunde.Navn = maxStreng;
             kunde.Efternavn = maxStreng;
@@ -164,7 +150,6 @@ namespace Sneaker_Store.Tests
             kunde.Postnr = minPostnr;
             kunde.Kode = maxStreng;
 
-            // Assert
             Assert.AreEqual(minKundeId, kunde.KundeId);
             Assert.AreEqual(maxStreng, kunde.Navn);
             Assert.AreEqual(maxStreng, kunde.Efternavn);
@@ -173,10 +158,8 @@ namespace Sneaker_Store.Tests
             Assert.AreEqual(minPostnr, kunde.Postnr);
             Assert.AreEqual(maxStreng, kunde.Kode);
 
-            // Act
             kunde.Postnr = maxPostnr;
 
-            // Assert
             Assert.AreEqual(maxPostnr, kunde.Postnr);
         }
     }

@@ -7,19 +7,19 @@
     <title>Order Konfirmation</title>
 </head>
 <body>
-<h1>Order Confirmation</h1>
+<h1>Ordre Bekræftelse</h1>
 <p>Order ID: @Model.OrderId</p>
-<p>Customer Name: @Model.CustomerName</p>
-<p>Customer Email: @Model.CustomerEmail</p>
+<p>Navn: @Model.CustomerName</p>
+<p>Email: @Model.CustomerEmail</p>
     
-<h2>Purchased Shoes</h2>
+<h2>Købte Sko</h2>
 @if (Model.PurchasedShoes != null && Model.PurchasedShoes.Any())
 {
     <table>
         <thead>
         <tr>
             <th> </th>
-            <th>Maerke</th>
+            <th>Mærke</th>
             <th></th>
             <th>Str.</th>
             <th>Pris</th>

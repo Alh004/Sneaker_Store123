@@ -17,9 +17,9 @@
             </form>
             <th>Navn</th>
             <th>Efternavn</th>
-            <th>Kode</th>
-            <th></th>
-            <th></th>
+            <th>Email</th>
+            <th>Addresse</th>
+            <th>Postnr</th>
             </form>
         </tr>
     </thead>
@@ -33,7 +33,7 @@
                 <td>@k.Email</td>
                 <td>@k.Adresse</td>
                 <td>@k.Postnr</td>
-                <td><a asp-page="EditKunde" asp-route-nummer="@k.KundeId">Aendre</a></td>
+                <td><a asp-page="EditKunde" asp-route-nummer="@k.KundeId">Ændre</a></td>
                 <td><a asp-page="DeleteKunde" asp-route-nummer="@k.KundeId">Slet</a></td>
             </tr>
         }

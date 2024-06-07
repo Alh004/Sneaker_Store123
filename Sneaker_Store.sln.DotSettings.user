@@ -1,5 +1,20 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=faca9ecf_002D005c_002D47b2_002Da34f_002Dc767c8334601/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="KundeTest1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/CreateUnitTestDialog/TestProjectMapping/=1E3F4E5D_002DFE02_002D46E2_002D9367_002D70350A45EC54/@EntryIndexedValue">D8479A4A-7EA9-4CC9-A476-C5CC95D12770</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/CreateUnitTestDialog/TestTemplateMapping/=MSTest/@EntryIndexedValue">d6790ab7-33c2-4425-b2c9-51480cd1a852</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a6475845_002D98c5_002D45a1_002Dbd52_002Df56e6f64eaa0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from DB_Kunde.cs" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Or&gt;
+    &lt;ProjectFile&gt;D8479A4A-7EA9-4CC9-A476-C5CC95D12770/d:Services/f:DB_KundeTest.cs&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;D8479A4A-7EA9-4CC9-A476-C5CC95D12770/d:Model/f:KundeTests.cs&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;FFC44610-D827-49E8-8B9C-346C6BF4875C/d:Services/f:KundeRepositoryTest.cs&lt;/ProjectFile&gt;
+  &lt;/Or&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c8d2da1e_002D77c8_002D43a7_002D8d9a_002De2562178be68/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from KundeTests.cs" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Or&gt;
+    &lt;ProjectFile&gt;D8479A4A-7EA9-4CC9-A476-C5CC95D12770/d:Model/f:KundeTests.cs&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;FFC44610-D827-49E8-8B9C-346C6BF4875C/d:Services/f:KundeRepositoryTest.cs&lt;/ProjectFile&gt;
+  &lt;/Or&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=faca9ecf_002D005c_002D47b2_002Da34f_002Dc767c8334601/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="KundeTest1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Or&gt;
     &lt;ProjectFile&gt;FFC44610-D827-49E8-8B9C-346C6BF4875C/d:Services/f:KundeRepositoryTest.cs&lt;/ProjectFile&gt;
     &lt;ProjectFile&gt;D8479A4A-7EA9-4CC9-A476-C5CC95D12770/d:Model/f:KundeTests.cs&lt;/ProjectFile&gt;

@@ -22,7 +22,7 @@ namespace Sneaker_Store.Pages.common
         [BindProperty] public int SelectedSkoId { get; set; }
         [BindProperty] public string SelectedBrand { get; set; }
         [BindProperty] public string PriceFilter { get; set; }
-        public List<string> Brands { get; set; } = new List<string> { "Nike", "ASICS", "Adidas", "Air Jordan", "Puma", "Crocs", "Converse" };
+        public List<string> Brands { get; set; } = new List<string> { "ASICS", "Adidas", "Air Jordan", "Crocs", "Converse","Nike" };
 
         public void OnGet()
         {

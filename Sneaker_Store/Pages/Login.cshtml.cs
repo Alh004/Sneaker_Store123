@@ -58,7 +58,7 @@ namespace Sneaker_Store.Pages
             }
             else
             {
-                return RedirectToPage("/common/Skoindex"); // Redirect to regular user page
+                return RedirectToPage("/index"); // Redirect to regular user page
             }
         }
     }
