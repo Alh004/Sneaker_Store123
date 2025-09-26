@@ -1,0 +1,42 @@
+Sneaker Store er en ASP.NET Core Razor Pages-webshop, hvor brugere kan oprette profil, logge ind, gennemse sneakers, filtrere efter mærke og pris, lægge varer i kurv og gennemføre køb. 
+Der bruges session til at huske login og indkøbskurv midlertidigt.
+
+
+I Program.cs aktiveres Razor Pages, statiske filer, HTTPS-redirect, routing og autorisation. Services (repositories) registreres via Dependency Injection. 
+
+Udviklingskonfigurationen viser detaljerede fejl (Development) og opsætter logging.
+
+
+Sko hentes fra databasen: Listen over sneakers (med brand, model, pris m.m.) læses fra SQL-databasen og vises i Razor Pages. Filtrering/sortering sker i PageModel, men data kommer altid fra DB.
+
+Ordre oprettes i databasen: Når brugeren går til checkout, oprettes der en Order-post i DB samt tilhørende ordrelinjer for hver vare i kurven. Ordre-ID’et bruges til at vise ordrebekræftelsen.
+
+Login & roller: Bruger logger ind med email/kode; login tjekkes mod databasen. Hvis brugeren er admin, sendes de til adminsider; ellers til kunde-flowet.
+
+Session & kurv: Indkøbskurven ligger i session (midlertidigt). Ved køb læses kurven, og databasetransaktionen opretter ordren + linjer.
+
+Repository/Service-lag: Al DB-adgang går via repositories (parameteriserede SQL-kald), så UI-laget kun kalder metoder som GetSneakers(), CreateOrder(...), CheckUser(...) osv.
+
+Sikkerhed & robusthed: Parameteriserede queries for at undgå SQL-injektion og simpel fejlhåndtering/logning i service-laget.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+ASP.NET Core Razor Pages services registreres i Program.cs AddRazorPages, repositories som singletons og routes mappes med MapRazorPages(). Pipeline: HTTPS, static files, routing og UseAuthorization().
+
+Login (kunde/admin): OnPost() på login-siden validerer input; kalder repository for at tjekke email+kode; ved succes gemmes UserEmail i session og der redirectes forskelligt for admin vs kunde.
+
+Login-tjek i repository: CheckKunde(email, kode) åbner DB-forbindelse, bruger parameteriseret SQL, læser resultat med SqlDataReader og returnerer kunde + admin-flag (eller null).
+
+Session & kurv: Kurven gemmes i session. Metoder som Tilføj(sko) og RemoveAll opdaterer en intern liste og skriver tilbage til session.
+
+Checkout/ordre: Ved køb hentes UserEmail fra session kunde slås op via repository  der oprettes ordrer for skoene i kurven og redirectes til OrderConfirm med ordre-ID.
+
+Filtrering af sneakers: PageModel har OnGet() henter alle sko og OnPostFilter() filtrerer på brand og evt. pris. Properties bindes med [BindProperty] til formfelter.
+
+PageModel: OnGet() til visning, OnPost() til handlinger (login, filter, køb).
+
+
+Repository-lag: Kapsler DB-adgang (kunde/sko/ordre). Login bruger parameteriserede queries for at undgå SQL-injektion.
+
+Session-hjælpere: Små metoder til at hente/gemme kurv-items i session og rydde efter køb/timeout.
